@@ -9,13 +9,13 @@ const Header = () => {
             <div className="container-fluid bg-warning py-2 ">
                 <div className="row d-flex align-items-center">
                     <div className="col-sm-12 col-md-1">
-                       <div className='d-flex justify-content-center  py-0 py-sm-3'>
+                       <div className='d-flex justify-content-center justify-content-lg-end  py-0 py-sm-3'>
                        <img src="/images/logo.png" alt="SEDA logo" style={{ maxHeight: "100px" }} className="img-fluid" />
                        </div>
                     </div>
                     <div className="col-sm-12 col-md-5">
                         <h4>Welcome, {userDetails?.name}</h4>
-                        <h6>{userDetails?.role === "superAdmin" ? "Super Admin" : userDetails?.role}</h6>
+                        <h6 className='text-capitalize'>{userDetails?.role === "superAdmin" ? "Super Admin" : userDetails?.role}</h6>
                         <p>{new Date().getDate()}/{new Date().getMonth() +1}/{new Date().getFullYear()} - {new Date().getHours()}:{new Date().getMinutes()}</p>
                     </div>
                     <div className="col-md-2">
