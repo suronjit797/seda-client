@@ -69,16 +69,16 @@ const AddInstaller = () => {
     return (
         <div className='add-installer'>
             <div className="container-fluid">
-                <div className="row">
+                <div className="row my-5">
                     <div className="col-md-2">
-                        <h3 className='mt-2'>Manage Installer</h3>
+                        <h3 className=''>Manage Installer</h3>
                         <ul className="list-group mb-3">
                             <li className='list-group-item'><Link to='/installers' className='text-dark text-decoration-none'>All Installer</Link></li>
                             <li className='list-group-item'><Link to='/add-installer' className='text-dark text-decoration-none'>Add New Installer</Link></li>
                         </ul>
                     </div>
                     <div className="col-md-10">
-                        <div className="card p-3 my-3">
+                        <div className="card p-3">
                             <h3>Add New Installer</h3>
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
