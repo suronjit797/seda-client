@@ -1,0 +1,15 @@
+.top-nav .nav-item{
+padding: 6px 60px;
+border: 1px solid;
+}
+.navbar-bg{
+    background-color: #fdffbc;
+}
+.top-nav .nav-link{
+    color: #000;
+    font-weight: 400;
+}
+.top-nav .nav-link .active{
+    color: #00205c;
+    font-weight: 600;
+}
