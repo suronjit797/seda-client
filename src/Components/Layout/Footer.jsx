@@ -6,7 +6,7 @@ const Footer = () => {
             <div className="container-fluid bg-light">
                 <div className="row">
                     <div className="col">
-                        <p className='py-2 text-center'>&copy; {new Date().getFullYear()} IVIS 2.0</p>
+                        <p className='py-2 text-center'>&copy; {new Date().getFullYear()} SEDA Malaysia. All Rights Reserved</p>
                     </div>
                 </div>
             </div>

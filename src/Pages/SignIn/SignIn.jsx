@@ -42,24 +42,24 @@ const SignIn = () => {
                             <p className='text-white mx-3'>PIHAK BERKUASA PEMBANGUNAN TENAGA LESTARI SUSTAINABLE ENERGY DEVELOPMENT AUTHORITY (SEDA) MALAYSIA</p>
                         </div>
                     </div>
-                    <div className="row d-flex algin-items-center mt-5 mb-auto mx-sm-0 mx-md-5">
-                        <div className="col-md-6">
+                    <div className="row d-flex algin-items-center mt-3 mt-xl-5 mb-auto mx-0 mx-xl-5">
+                        <div className="col-md-6 col-lg-5 col-xl-6">
                             <div className="mb-5 d-flex justify-content-md-start login-logo">
                                 <img src="/images/logo.png" alt="SEDA Logo" className='img-fluid' />
                             </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-6 col-lg-7 col-xl-6">
                             <h3 className='mt-sm-3'>Welcome Back</h3>
                             <form onSubmit={SubmitHandler}>
                                 <div className="row mb-3">
-                                    <label for="email" className="col-sm-2 col-form-label">Email</label>
-                                    <div className="col-sm-10">
+                                    <label for="email" className="col-sm-4 col-md-3 col-form-label">Email</label>
+                                    <div className="col-sm-6 col-md-9">
                                         <input type="email" name='email' value={email} onChange={e => onInputChange(e)} className="form-control" id="email" placeholder="Enter Your Email Address" />
                                     </div>
                                 </div>
                                 <div className="row mb-3">
-                                    <label for="password" className="col-sm-2 col-form-label">Password</label>
-                                    <div className="col-sm-10">
+                                    <label for="password" className="col-sm-4 col-md-3 col-form-label">Password</label>
+                                    <div className="col-sm-6 col-md-9">
                                         <input type="password" name='password' value={password} onChange={e => onInputChange(e)} className="form-control" id="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
                                         <label htmlFor="forgot" className='float-end'><u>Forgot Password?</u></label>
                                     </div>

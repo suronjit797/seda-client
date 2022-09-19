@@ -64,8 +64,8 @@ const AddInstaller = () => {
                                     }
                                 </div>
                                 <div className='float-end'>
-                                    <Link to="/" class="btn btn-secondary me-2">Cancel</Link>
-                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <button type="submit" class="btn btn-success me-2">Submit</button>
+                                    <Link to="/" class="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>
                         </div>

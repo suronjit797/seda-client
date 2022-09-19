@@ -1,15 +1,24 @@
-.top-nav .nav-item{
-padding: 6px 60px;
-border: 1px solid;
+.top-nav .nav-item {
+    padding: 6px 60px;
+    border: 1px solid;
 }
-.navbar-bg{
+
+.navbar-bg {
     background-color: #fdffbc;
 }
-.top-nav .nav-link{
+
+.top-nav .nav-link {
     color: #000;
     font-weight: 400;
 }
-.top-nav .nav-link .active{
+
+.top-nav .nav-link .active {
     color: #00205c;
     font-weight: 600;
+}
+
+@media only screen and (max-width: 1200px) {
+    .top-nav .nav-item {
+        padding: 6px 30px;
+    }
 }
