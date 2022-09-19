@@ -1,6 +1,7 @@
 .top-nav .nav-item {
     padding: 6px 60px;
     border: 1px solid;
+    font-weight: 600;
 }
 
 .navbar-bg {
@@ -9,7 +10,7 @@
 
 .top-nav .nav-link {
     color: #000;
-    font-weight: 400;
+    font-weight: 600;
 }
 
 .top-nav .nav-link .active {
@@ -17,8 +18,13 @@
     font-weight: 600;
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1280px) {
     .top-nav .nav-item {
         padding: 6px 30px;
+    }
+}
+@media only screen and (max-width: 1024px) {
+    .top-nav .nav-item {
+        padding: 6px 16px;
     }
 }

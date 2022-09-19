@@ -39,7 +39,7 @@ const Navbar = () => {
                         </li>
                         <li class="nav-item dropdown">
                             <Dropdown className=''>
-                                <Dropdown.Toggle id="dropdown-basic" className='bg-transparent text-dark border-0'>
+                                <Dropdown.Toggle id="dropdown-basic" className='bg-transparent text-dark border-0 fw-semibold'>
                                     Users
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
