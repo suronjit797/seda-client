@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import Installers from './Pages/Installer/Installers';
 import Footer from './Components/Layout/Footer';
 import AddInstaller from './Pages/Installer/AddInstaller';
+import InstallerView from './Pages/Installer/InstallerView';
 
 function App() {
   const isLogged = useSelector((state) => state.user?.isLogged);
@@ -23,6 +24,7 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/installers" element={<Installers />} />
               <Route path="/add-installer" element={<AddInstaller />} />
+              <Route path="/installer/:installerId" element={<InstallerView />} />
             </Routes>
             <Footer/>
           </>

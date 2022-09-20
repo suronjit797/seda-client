@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import { Spinner } from 'react-bootstrap';
+import InstallerSidebarNav from '../../Components/Installer/InstallerSidebarNav';
 
 const Installers = () => {
     const [installers, setInstallers] = useState([]);
@@ -29,36 +30,39 @@ const Installers = () => {
         },
         {
             name: 'Logo',
-            cell: row => <img src={row.logo} width={80} className="m-2" alt={`${row.name}`}></img>,
+            cell: row => <img src={row.logo} width={80} className="my-2" alt={`${row.name}`}></img>,
             selector: row => row.logo,
-            width: '120px'
+          
         },
         {
             name: 'Name',
             selector: row => (row.name),
-            width: '200px'
+            
         },
         {
             name: 'Email',
             selector: row => (row.email),
-            width: '250px'
+           
         },
         {
             name: 'Phone',
             selector: row => (row.phone),
-            width: '250px'
+           
         },
         {
             name: 'Date Created',
             selector: row => (moment(row.createdAt).format("MMMM Do YYYY")),
+            
         },
         {
             name: 'Action',
-            cell: row => <>
-                <Link to={`/installers`} className='btn btn-warning me-1'>View</Link>
+            cell: row => <div>
+                <Link to={`/installer/`+ row._id} className='btn btn-warning me-1'>View</Link>
                 <Link to={`/installers`} className='btn btn-info me-1'>Edit</Link>
                 <button className='btn btn-danger' onClick={()=>deleteUser(row._id)}>Delete</button>
-            </>,
+            </div>,
+            grow:2,
+            center:'yes'
         },
     ];
     const deleteUser = async(userId)=>{
@@ -77,11 +81,7 @@ const Installers = () => {
             <div className="container-fluid">
                 <div className="row my-5">
                     <div className="col-md-2">
-                        <h3 className=''>Manage Installer</h3>
-                        <ul className="list-group mb-3">
-                            <li className='list-group-item'><Link to='/installers' className='text-dark text-decoration-none'>All Installer</Link></li>
-                            <li className='list-group-item'><Link to='/add-installer' className='text-dark text-decoration-none'>Add New Installer</Link></li>
-                        </ul>
+                        <InstallerSidebarNav/>
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3 mb-3">
