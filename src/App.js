@@ -10,6 +10,9 @@ import Installers from './Pages/Installer/Installers';
 import Footer from './Components/Layout/Footer';
 import AddInstaller from './Pages/Installer/AddInstaller';
 import InstallerView from './Pages/Installer/InstallerView';
+import EditInstaller from './Pages/Installer/EditInstaller';
+import SiteAdmins from './Pages/SiteAdmins/SiteAdmins'
+import AddSiteAdmin from './Pages/SiteAdmins/AddSiteAdmin';
 
 function App() {
   const isLogged = useSelector((state) => state.user?.isLogged);
@@ -22,11 +25,18 @@ function App() {
             <Navbar />
             <Routes>
               <Route path="/" element={<Dashboard />} />
+              {/* Installer related routes */}
               <Route path="/installers" element={<Installers />} />
               <Route path="/add-installer" element={<AddInstaller />} />
               <Route path="/installer/:installerId" element={<InstallerView />} />
+              <Route path="/edit-installer/:installerId" element={<EditInstaller />} />
+              {/* site admin related routes */}
+              <Route path="/admins" element={<SiteAdmins />} />
+              <Route path="/add-admins" element={<AddSiteAdmin />} />
+              {/* <Route path="/admin/:adminId" element={<InstallerView />} />
+              <Route path="/edit-admin/:adminId" element={<EditInstaller />} /> */}
             </Routes>
-            <Footer/>
+            <Footer />
           </>
           :
           <Routes>

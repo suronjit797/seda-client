@@ -10,6 +10,7 @@ const Navbar = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [ToggleNav, setToggleNav] = useState(false);
+    const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
     const logOut = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/logout`, { withCredentials: true })
@@ -25,7 +26,8 @@ const Navbar = () => {
             console.log(error)
         }
     }
-
+    const toggleDropdown = () => setDropdownIsOpen(!dropdownIsOpen)
+    console.log(dropdownIsOpen)
     return (
         <nav class="navbar navbar-expand-lg navbar-bg p-0">
             <div class="container-fluid">
@@ -38,13 +40,13 @@ const Navbar = () => {
                             <Link to='/' className="nav-link active">Main</Link>
                         </li>
                         <li class="nav-item dropdown">
-                            <Dropdown className=''>
-                                <Dropdown.Toggle id="dropdown-basic" className='bg-transparent text-dark border-0 fw-semibold'>
+                            <Dropdown show={dropdownIsOpen}>
+                                <Dropdown.Toggle id="dropdown-basic" className='bg-transparent text-dark border-0 fw-semibold' onClick={(e)=>toggleDropdown()}>
                                     Users
                                 </Dropdown.Toggle>
-                                <Dropdown.Menu>
+                                <Dropdown.Menu onClick={(e)=>toggleDropdown()}>
                                     <Link to='/installers' className='dropdown-item'>Manage Installers</Link>
-                                    <Link className='dropdown-item'>Manage Admins</Link>
+                                    <Link to="/admins" className='dropdown-item'>Manage Admins</Link>
                                     <Link className='dropdown-item'>Manage Users</Link>
                                 </Dropdown.Menu>
                             </Dropdown>

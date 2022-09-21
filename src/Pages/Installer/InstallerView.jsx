@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import InstallerSidebarNav from '../../Components/Installer/InstallerSidebarNav';
 
 const InstallerView = () => {
     const Params = useParams()
     const installerId = Params.installerId
     const [installerDetails, setInstallerDetails] = useState();
+
+    const getInstaller = async()=>{
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/`+installerId, { withCredentials: true })
+        if(response){
+            setInstallerDetails(response.data[0])
+        }
+    }
+    useEffect(() => {
+        getInstaller()
+    }, []);
+
     return (
         <div className='installer-view'>
             <div className="container-fluid">
@@ -20,30 +32,32 @@ const InstallerView = () => {
                                 <div className="col-md-6">
                                     <div className="row mb-2">
                                         <div className="col-3">Name</div>
-                                        <div className="col-9">: John doe</div>
+                                        <div className="col-9">: {installerDetails?.name}</div>
                                     </div>
                                     <div className="row mb-2">
                                         <div className="col-3">Email</div>
-                                        <div className="col-9">: example@gmail.com</div>
+                                        <div className="col-9">: {installerDetails?.email}</div>
                                     </div>
                                     <div className="row mb-2">
                                         <div className="col-3">Phone</div>
-                                        <div className="col-9">: 018238082138</div>
+                                        <div className="col-9">: {installerDetails?.phone}</div>
                                     </div>
                                     <div className="row mb-2">
                                         <div className="col-3">Company Name</div>
-                                        <div className="col-9">: ABC Company</div>
+                                        <div className="col-9">: {installerDetails?.companyName}</div>
                                     </div>
                                 </div>
                                 <div className="col-md-6">
                                     <div className="row mb-2">
                                         <div className="col-3">Building Name</div>
-                                        <div className="col-9">: 1G</div>
+                                        <div className="col-9">: {installerDetails?.buildingName}</div>
                                     </div>
                                     <div className="row mb-2">
                                         <div className="col-3">Logo</div>
                                         <div className="col-9">
-                                            <img src="/images/logo.png" alt="logo" style={{height: "150px"}}/>
+                                        {installerDetails?.logo && 
+                                         <img src={installerDetails?.logo} alt="logo" style={{height: "150px"}}/>
+                                        }
                                         </div>
                                     </div>
                                    
@@ -51,8 +65,8 @@ const InstallerView = () => {
                             </div>
                             <div className="row">
                                 <div className="col-md-12 d-flex justify-content-end">
-                                    <button className='btn btn-success me-1'>Edit</button>
-                                    <button className='btn btn-secondary'>Cancel</button>
+                                    <Link to={`/edit-installer/`+ installerId} className="btn btn-success me-1">Edit</Link>
+                                    <Link to={`/installers`} className="btn btn-secondary">Cancel</Link>
                                 </div>
                             </div>
                         </div>

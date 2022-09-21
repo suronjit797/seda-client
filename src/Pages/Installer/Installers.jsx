@@ -58,7 +58,7 @@ const Installers = () => {
             name: 'Action',
             cell: row => <div>
                 <Link to={`/installer/`+ row._id} className='btn btn-warning me-1'>View</Link>
-                <Link to={`/installers`} className='btn btn-info me-1'>Edit</Link>
+                <Link to={`/edit-installer/`+ row._id} className='btn btn-info me-1'>Edit</Link>
                 <button className='btn btn-danger' onClick={()=>deleteUser(row._id)}>Delete</button>
             </div>,
             grow:2,

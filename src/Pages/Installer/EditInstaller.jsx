@@ -1,25 +1,24 @@
-import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import InstallerSidebarNav from '../../Components/Installer/InstallerSidebarNav';
+import axios from 'axios';
 
-const AddInstaller = () => {
-    const [createInstallerData, setCreateInstallerData] = useState({
+const EditInstaller = () => {
+    const Params = useParams()
+    const installerId = Params.installerId
+
+    const [InstallerData, setInstallerData] = useState({
         name: "",
         email: "",
-        password: "",
         phone: "",
         companyName: "",
         buildingName: "",
-        role: "installer"
     });
-    const { name, email,password, phone, companyName, buildingName } = createInstallerData;
-
+    const { name, email, password, phone, companyName, buildingName } = InstallerData;
     const onInputChange = e => {
-        setCreateInstallerData({ ...createInstallerData, [e.target.name]: e.target.value });
+        setInstallerData({ ...InstallerData, [e.target.name]: e.target.value });
     };
-
     const [selectedImage, setSelectedImage] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
     const [SuccessMessage, setSuccessMessage] = useState();
@@ -34,7 +33,7 @@ const AddInstaller = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
         setIsLoading(true)
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/users`, createInstallerData, { withCredentials: true }).catch(function (error) {
+        const response = await axios.put(`${process.env.REACT_APP_API_URL}/users/`+installerId, InstallerData, { withCredentials: true }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.data);
                 console.log(error.response.status);
@@ -48,7 +47,7 @@ const AddInstaller = () => {
         if (data) {
             if (selectedImage === null) {
                 setIsLoading(false)
-                setSuccessMessage("Installer created successfully")
+                setSuccessMessage("Installer Information has been updated successfully")
                 setTimeout(() => {
                     setSuccessMessage()
                     navigate('/installers')
@@ -58,7 +57,7 @@ const AddInstaller = () => {
                 const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/logoUpload/`, selectedImage, { withCredentials: true })
                 if (addImageResponse) {
                     setIsLoading(false)
-                    setSuccessMessage("Installer created successfully")
+                    setSuccessMessage("Installer Information has been updated successfully")
                     setTimeout(() => {
                         setSuccessMessage()
                         navigate('/installers')
@@ -67,16 +66,37 @@ const AddInstaller = () => {
             }
         }
     }
+    const getInstaller = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/` + installerId, { withCredentials: true })
+        if (response) {
+            const data = response.data[0]
+            setInstallerData({
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+                companyName: data.companyName,
+                buildingName:data.buildingName,
+            })
+            setImageUrl(data.logo)
+        }
+    }
+    useEffect(() => {
+        getInstaller()
+    }, []);
+
+
+
+
     return (
         <div className='add-installer'>
             <div className="container-fluid">
                 <div className="row my-5">
                     <div className="col-md-2">
-                        <InstallerSidebarNav/>
+                        <InstallerSidebarNav />
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3">
-                            <h3>Add New Installer</h3>
+                            <h3>Update Installer Information</h3>
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
@@ -89,10 +109,6 @@ const AddInstaller = () => {
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
                                     <input type="email" name='email' value={email} onChange={onInputChange} class="form-control" id="email" placeholder='Enter email address' required />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" name='password' value={password} onChange={onInputChange} class="form-control" id="password" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
                                 </div>
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Phone</label>
@@ -108,10 +124,9 @@ const AddInstaller = () => {
                                 </div>
                                 <div class="mb-3">
                                     <label for="bname" class="form-label">Logo</label>
-                                    {imageUrl && selectedImage ? (
+                                    {imageUrl ? (
                                         <div mt={2} textAlign="center">
-                                            <div>Preview:</div>
-                                            <img src={imageUrl} alt={selectedImage.name} height="100px" />
+                                            <img src={imageUrl} alt="logo" height="100px" />
                                         </div>
                                     )
                                         :
@@ -124,7 +139,7 @@ const AddInstaller = () => {
                                     }
                                 </div>
                                 <div className='float-end'>
-                                    <button type="submit" class="btn btn-success me-2">Submit</button>
+                                    <button type="submit" class="btn btn-success me-2">Update</button>
                                     <Link to="/installers" class="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>
@@ -136,4 +151,4 @@ const AddInstaller = () => {
     );
 }
 
-export default AddInstaller;
+export default EditInstaller;
