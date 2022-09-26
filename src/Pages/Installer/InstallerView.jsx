@@ -31,16 +31,20 @@ const InstallerView = () => {
                             <div className="row mt-4">
                                 <div className="col-md-6">
                                     <div className="row mb-2">
-                                        <div className="col-3">Name</div>
+                                        <div className="col-3">Full Name</div>
                                         <div className="col-9">: {installerDetails?.name}</div>
                                     </div>
                                     <div className="row mb-2">
-                                        <div className="col-3">Email</div>
+                                        <div className="col-3">Email Address</div>
                                         <div className="col-9">: {installerDetails?.email}</div>
                                     </div>
                                     <div className="row mb-2">
-                                        <div className="col-3">Phone</div>
-                                        <div className="col-9">: {installerDetails?.phone}</div>
+                                        <div className="col-3">Phone Number</div>
+                                        <div className="col-9">: +6{installerDetails?.phone}</div>
+                                    </div>
+                                    <div className="row mb-2">
+                                        <div className="col-3">Fax Number</div>
+                                        <div className="col-9">: +6{installerDetails?.fax}</div>
                                     </div>
                                     <div className="row mb-2">
                                         <div className="col-3">Company Name</div>

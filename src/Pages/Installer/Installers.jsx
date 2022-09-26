@@ -5,11 +5,10 @@ import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import { Spinner } from 'react-bootstrap';
 import InstallerSidebarNav from '../../Components/Installer/InstallerSidebarNav';
-
+import Swal from "sweetalert2";
 const Installers = () => {
     const [installers, setInstallers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [SuccessMessage, setSuccessMessage] = useState();
     const getInstaller = async () => {
         setIsLoading(true)
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/role/installer`, { withCredentials: true })
@@ -30,7 +29,7 @@ const Installers = () => {
         },
         {
             name: 'Logo',
-            cell: row => <img src={row.logo} width={80} className="my-2" alt={`${row.name}`}></img>,
+            cell: row => row.logo && <img src={row.logo} width={80} height={80} className="my-2" alt={`${row.name}`}/>,
             selector: row => row.logo,
           
         },
@@ -51,13 +50,13 @@ const Installers = () => {
         },
         {
             name: 'Date Created',
-            selector: row => (moment(row.createdAt).format("MMMM Do YYYY")),
+            selector: row => (moment(row.createdAt).format("DD/MM/YYYY")),
             
         },
         {
             name: 'Action',
             cell: row => <div>
-                <Link to={`/installer/`+ row._id} className='btn btn-warning me-1'>View</Link>
+                <Link to={`/installer/`+ row._id} className='btn btn-success me-1'>View</Link>
                 <Link to={`/edit-installer/`+ row._id} className='btn btn-info me-1'>Edit</Link>
                 <button className='btn btn-danger' onClick={()=>deleteUser(row._id)}>Delete</button>
             </div>,
@@ -66,15 +65,36 @@ const Installers = () => {
         },
     ];
     const deleteUser = async(userId)=>{
-        setIsLoading(true)
-        const response= await axios.delete(`${process.env.REACT_APP_API_URL}/users/`+userId, { withCredentials: true })
-        if(response){
-            setSuccessMessage("Installed deleted successfully.")
-            getInstaller()
-            setTimeout(() => {
-                setSuccessMessage()
-            }, 2000)
-        }
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to delete this Installer?",
+            //icon: "warning",
+            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`${process.env.REACT_APP_API_URL}/users/`+userId, { withCredentials: true })
+                        .then(res => {
+                            getInstaller()
+                            Swal.fire({
+                                title: "Done!",
+                                text: "Installer deleted Successfully",
+                                icon: "success",
+                                timer: 2000,
+                                button: false
+                            })
+                         
+                        });
+            } else if (
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+                Swal.fire(
+                'Cancelled',
+                'Your Installer is safe :)'
+              )
+            }
+          })
     }
     return (
         <div className='installer'>
@@ -89,7 +109,6 @@ const Installers = () => {
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
-                            {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             <DataTable
                                 columns={columns}
                                 data={installers}
@@ -102,6 +121,7 @@ const Installers = () => {
                     </div>
                 </div>
             </div>
+
         </div>
     );
 }

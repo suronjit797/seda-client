@@ -11,8 +11,16 @@ import Footer from './Components/Layout/Footer';
 import AddInstaller from './Pages/Installer/AddInstaller';
 import InstallerView from './Pages/Installer/InstallerView';
 import EditInstaller from './Pages/Installer/EditInstaller';
-import SiteAdmins from './Pages/SiteAdmins/SiteAdmins'
-import AddSiteAdmin from './Pages/SiteAdmins/AddSiteAdmin';
+import Settings from './Pages/Settings/Settings';
+import BuildingBackgroundTypes from './Pages/Settings/BuildingBackgroundTypes';
+import EditAdmin from './Pages/Admins/EditAdmin';
+import AdminView from './Pages/Admins/AdminView';
+import Admins from './Pages/Admins/Admins';
+import AddAdmin from './Pages/Admins/AddAdmin';
+import SiteLocations from './Pages/SiteLocation/SiteLocations';
+import AddSiteLocation from './Pages/SiteLocation/AddSiteLocation';
+import SiteLocationView from './Pages/SiteLocation/SiteLocationView';
+import EditSiteLocation from './Pages/SiteLocation/EditSiteLocation';
 
 function App() {
   const isLogged = useSelector((state) => state.user?.isLogged);
@@ -30,11 +38,22 @@ function App() {
               <Route path="/add-installer" element={<AddInstaller />} />
               <Route path="/installer/:installerId" element={<InstallerView />} />
               <Route path="/edit-installer/:installerId" element={<EditInstaller />} />
+
               {/* site admin related routes */}
-              <Route path="/admins" element={<SiteAdmins />} />
-              <Route path="/add-admins" element={<AddSiteAdmin />} />
-              {/* <Route path="/admin/:adminId" element={<InstallerView />} />
-              <Route path="/edit-admin/:adminId" element={<EditInstaller />} /> */}
+              <Route path="/admins" element={<Admins />} />
+              <Route path="/add-admins" element={<AddAdmin />} />
+              <Route path="/admin/:adminId" element={<AdminView />} />
+              <Route path="/edit-admin/:adminId" element={<EditAdmin />} />
+
+              {/* site Location related routes */}
+              <Route path="/site-locations" element={<SiteLocations />} />
+              <Route path="/add-location" element={<AddSiteLocation />} />
+              <Route path="/site-location/:siteLocationId" element={<SiteLocationView />} />
+              <Route path="/edit-site-location/:siteLocationId" element={<EditSiteLocation />} />
+
+              {/* settings */}
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/building-background-types" element={<BuildingBackgroundTypes />} />
             </Routes>
             <Footer />
           </>

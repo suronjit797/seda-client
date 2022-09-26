@@ -12,10 +12,11 @@ const EditInstaller = () => {
         name: "",
         email: "",
         phone: "",
+        fax: "",
         companyName: "",
         buildingName: "",
     });
-    const { name, email, password, phone, companyName, buildingName } = InstallerData;
+    const { name, email, phone, fax, companyName, buildingName } = InstallerData;
     const onInputChange = e => {
         setInstallerData({ ...InstallerData, [e.target.name]: e.target.value });
     };
@@ -33,7 +34,7 @@ const EditInstaller = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
         setIsLoading(true)
-        const response = await axios.put(`${process.env.REACT_APP_API_URL}/users/`+installerId, InstallerData, { withCredentials: true }).catch(function (error) {
+        const response = await axios.put(`${process.env.REACT_APP_API_URL}/users/` + installerId, InstallerData, { withCredentials: true }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.data);
                 console.log(error.response.status);
@@ -71,13 +72,14 @@ const EditInstaller = () => {
         if (response) {
             const data = response.data[0]
             setInstallerData({
-                name: data.name,
-                email: data.email,
-                phone: data.phone,
-                companyName: data.companyName,
-                buildingName:data.buildingName,
+                name: data?.name,
+                email: data?.email,
+                phone: data?.phone,
+                fax: data?.fax,
+                companyName: data?.companyName,
+                buildingName: data?.buildingName,
             })
-            setImageUrl(data.logo)
+            setImageUrl(data?.logo)
         }
     }
     useEffect(() => {
@@ -107,23 +109,33 @@ const EditInstaller = () => {
                                     <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter full name' required />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
+                                    <label for="email" class="form-label">Email Address</label>
                                     <input type="email" name='email' value={email} onChange={onInputChange} class="form-control" id="email" placeholder='Enter email address' required />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="phone" class="form-label">Phone</label>
-                                    <input type="text" name='phone' value={phone} onChange={onInputChange} class="form-control" id="phone" placeholder='Enter phone number' />
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <div className='input-group'>
+                                        <span class="input-group-text" id="basic-addon1">+6</span>
+                                        <input type="text" name='phone' value={phone} onChange={onInputChange} class="form-control" id="phone" placeholder='Enter phone number' />
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fax" class="form-label">Fax Number</label>
+                                    <div className='input-group'>
+                                        <span class="input-group-text" id="basic-addon1">+6</span>
+                                        <input type="text" name='fax' value={fax} onChange={onInputChange} class="form-control" id="fax" placeholder='Enter fax number' />
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="cname" class="form-label">Company  Name</label>
                                     <input type="text" name='companyName' value={companyName} onChange={onInputChange} class="form-control" id="cname" placeholder='Enter company name' />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="bname" class="form-label">Building Name</label>
-                                    <input type="text" name='buildingName' value={buildingName} onChange={onInputChange} class="form-control" id="bname" placeholder='Enter building name' />
+                                    <label for="buildingName" class="form-label">Building Name</label>
+                                    <input type="text" name='buildingName' value={buildingName} onChange={onInputChange} class="form-control" id="buildingName" placeholder='Enter building name' />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="bname" class="form-label">Logo</label>
+                                    <label for="logo" class="form-label">Logo</label>
                                     {imageUrl ? (
                                         <div mt={2} textAlign="center">
                                             <img src={imageUrl} alt="logo" height="100px" />

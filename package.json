@@ -25,6 +25,7 @@
     "redux-persist-transform-encrypt": "^4.0.0",
     "redux-thunk": "^2.4.1",
     "styled-components": "^5.3.5",
+    "sweetalert2": "^11.4.33",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

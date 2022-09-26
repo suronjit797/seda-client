@@ -10,11 +10,12 @@ const AddInstaller = () => {
         email: "",
         password: "",
         phone: "",
+        fax: "",
         companyName: "",
         buildingName: "",
         role: "installer"
     });
-    const { name, email,password, phone, companyName, buildingName } = createInstallerData;
+    const { name, email, password, phone, fax, companyName, buildingName } = createInstallerData;
 
     const onInputChange = e => {
         setCreateInstallerData({ ...createInstallerData, [e.target.name]: e.target.value });
@@ -48,17 +49,17 @@ const AddInstaller = () => {
         if (data) {
             if (selectedImage === null) {
                 setIsLoading(false)
-                setSuccessMessage("Installer created successfully")
+                setSuccessMessage("Installer account has been created successfully")
                 setTimeout(() => {
                     setSuccessMessage()
                     navigate('/installers')
                 }, 2000)
 
             } else {
-                const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/logoUpload/`, selectedImage, { withCredentials: true })
+                const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/avatarUpload/`, selectedImage, { withCredentials: true })
                 if (addImageResponse) {
                     setIsLoading(false)
-                    setSuccessMessage("Installer created successfully")
+                    setSuccessMessage("Installer account has been created successfully")
                     setTimeout(() => {
                         setSuccessMessage()
                         navigate('/installers')
@@ -72,7 +73,7 @@ const AddInstaller = () => {
             <div className="container-fluid">
                 <div className="row my-5">
                     <div className="col-md-2">
-                        <InstallerSidebarNav/>
+                        <InstallerSidebarNav />
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3">
@@ -87,7 +88,7 @@ const AddInstaller = () => {
                                     <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter full name' required />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
+                                    <label for="email" class="form-label">Email Address</label>
                                     <input type="email" name='email' value={email} onChange={onInputChange} class="form-control" id="email" placeholder='Enter email address' required />
                                 </div>
                                 <div class="mb-3">
@@ -95,8 +96,18 @@ const AddInstaller = () => {
                                     <input type="password" name='password' value={password} onChange={onInputChange} class="form-control" id="password" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="phone" class="form-label">Phone</label>
-                                    <input type="text" name='phone' value={phone} onChange={onInputChange} class="form-control" id="phone" placeholder='Enter phone number' />
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <div className='input-group'>
+                                        <span class="input-group-text" id="basic-addon1">+6</span>
+                                        <input type="number" name='phone' value={phone} onChange={onInputChange} class="form-control" id="phone" placeholder='Enter phone number' />
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="fax" class="form-label">Fax Number</label>
+                                    <div className='input-group'>
+                                        <span class="input-group-text" id="basic-addon1">+6</span>
+                                        <input type="number" name='fax' value={fax} onChange={onInputChange} class="form-control" id="fax" placeholder='Enter fax number' />
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="cname" class="form-label">Company  Name</label>
@@ -124,7 +135,7 @@ const AddInstaller = () => {
                                     }
                                 </div>
                                 <div className='float-end'>
-                                    <button type="submit" class="btn btn-success me-2">Submit</button>
+                                    <button type="submit" class="btn btn-success me-2">Save</button>
                                     <Link to="/installers" class="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>

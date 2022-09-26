@@ -48,6 +48,7 @@ const Navbar = () => {
                                     <Link to='/installers' className='dropdown-item'>Manage Installers</Link>
                                     <Link to="/admins" className='dropdown-item'>Manage Admins</Link>
                                     <Link className='dropdown-item'>Manage Users</Link>
+                                    <Link className='dropdown-item'>Manage Public</Link>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </li>
@@ -61,7 +62,7 @@ const Navbar = () => {
                             <a class="nav-link" href="#">Display</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Setting</a>
+                            <Link to="/settings" class="nav-link">Settings</Link>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Profile</a>

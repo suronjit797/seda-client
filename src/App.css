@@ -1,4 +1,20 @@
-.btn-primary{
+.btn-primary {
   background-color: #00205c;
   border-color: #00205c;
+}
+
+.btn-info {
+  background: #00205b;
+  border-color: #00205b;
+  color: #fff;
+}
+
+.btn-info:hover {
+  background: #033ba2 !important;
+  border: #033ba2 !important;
+  color: #fff !important;
+}
+.swal2-styled.swal2-confirm{
+  background-color:#dc3545 !important;
+  border:#dc3545 !important;
 }
