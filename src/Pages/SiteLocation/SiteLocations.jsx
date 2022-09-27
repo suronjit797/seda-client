@@ -20,6 +20,7 @@ const SiteLocations = () => {
         }
     }
     useEffect(() => {
+        document.title="SEDA - All Site Locations"
         getSiteLocations()
     }, []);
     const columns = [

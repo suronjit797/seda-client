@@ -20,6 +20,7 @@ const Admins = () => {
         }
     }
     useEffect(() => {
+        document.title="SEDA - All Site Admins"
         getAdmins()
     }, []);
     const columns = [
