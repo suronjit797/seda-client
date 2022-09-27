@@ -32,7 +32,7 @@ const EditSiteLocation = () => {
         remark: "",
         buildingBackground: ""
     });
-    const { name, admin,installer, buildingName, buildingType, buildingAddress1, buildingAddress2, buildingPostalCode, buildingOwnerName, buildingOwnerEmail, contactPersonName, contactPersonPhone, localAuthority, netFloorArea, tariffElectricity, remark, buildingBackground } = siteLocationData
+    const { name, admin, installer, buildingName, buildingType, buildingAddress1, buildingAddress2, buildingPostalCode, buildingOwnerName, buildingOwnerEmail, contactPersonName, contactPersonPhone, localAuthority, netFloorArea, tariffElectricity, remark, buildingBackground } = siteLocationData
 
     const onInputChange = e => {
         setSiteLocationData({ ...siteLocationData, [e.target.name]: e.target.value });
@@ -54,7 +54,7 @@ const EditSiteLocation = () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/role/installer`, { withCredentials: true })
         if (response) {
             setInstallers(response.data)
-            
+
         }
     }
     useEffect(() => {
@@ -66,11 +66,11 @@ const EditSiteLocation = () => {
     const getSiteLocation = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/` + siteLocationId, { withCredentials: true })
         if (response) {
-            const data = response.data[0]
+            const data = response.data
             setSiteLocationData({
                 name: data?.name,
                 admin: data?.admin?._id,
-                installer: data?.installer?._id,
+                installer: data?.installer?._id || Installers[0]?._id,
                 buildingName: data?.buildingName,
                 buildingType: data?.buildingType,
                 buildingAddress1: data?.buildingAddress1,
@@ -146,15 +146,15 @@ const EditSiteLocation = () => {
                                 </div>
                                 <div className="row mb-3">
                                     <div className="col-md-6">
-                                    <label for="installer" class="form-label">Assign Installer</label>
+                                        <label for="installer" class="form-label">Assign Installer</label>
                                         <select class="form-select" id='installer' name='installer' value={installer} onChange={onInputChange} aria-label="Select an admin">
                                             {Installers && Installers.length > 0 && Installers.map((item, index) => (
-                                                <option value={item._id} key={index}>{item.name}</option>
+                                                installer === item._id ? <option value={item._id} key={index} selected>{item.name}</option> : <option value={item._id} key={index}>{item.name}</option>
                                             ))}
                                         </select>
                                     </div>
                                 </div>
-                                <h5 className='mt-5'>Building Information</h5>
+                                <h5 className='mt-4'>Building Information</h5>
                                 <div className="row mb-3">
                                     <div className="col-md-6">
                                         <label for="bname" class="form-label">Building Name</label>
@@ -195,7 +195,7 @@ const EditSiteLocation = () => {
                                         <input type="email" name='buildingOwnerEmail' value={buildingOwnerEmail} onChange={onInputChange} class="form-control" id="buildingOwnerEmail" placeholder='Enter building owner email' />
                                     </div>
                                 </div>
-                                <h3>Contact Person Information</h3>
+                                <h5 className='mt-4'>Contact Person Information</h5>
                                 <div class="row mb-3">
                                     <div className="col-md-6">
                                         <label for="contactPersonName" class="form-label">Contact Person Name</label>
@@ -228,7 +228,7 @@ const EditSiteLocation = () => {
                                         <label htmlFor="buildingBackground">Physical Building Background</label>
                                         <select class="form-select" id='buildingBackground' name='buildingBackground' value={buildingBackground} onChange={onInputChange} aria-label="Select a Building Background">
                                             {buildingTypes && buildingTypes.length > 0 && buildingTypes.map((item, index) => (
-                                                buildingBackground === item._id ?  <option value={item._id} key={index} selected>{item.name}</option> : <option value={item._id} key={index}>{item.name}</option>
+                                                buildingBackground === item._id ? <option value={item._id} key={index} selected>{item.name}</option> : <option value={item._id} key={index}>{item.name}</option>
                                             ))}
                                         </select>
                                     </div>

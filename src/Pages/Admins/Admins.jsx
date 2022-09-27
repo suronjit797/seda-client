@@ -5,6 +5,7 @@ import { Spinner } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
 import AdminSidebarNav from '../../Components/Admins/AdminSidebarNav';
+import Swal from "sweetalert2";
 
 const Admins = () => {
     const [admins, setAdmins] = useState([]);
@@ -68,15 +69,33 @@ const Admins = () => {
         },
     ];
     const deleteUser = async(userId)=>{
-        setIsLoading(true)
-        const response= await axios.delete(`${process.env.REACT_APP_API_URL}/users/`+userId, { withCredentials: true })
-        if(response){
-            setSuccessMessage("Installed deleted successfully.")
-            getAdmins()
-            setTimeout(() => {
-                setSuccessMessage()
-            }, 2000)
-        }
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to delete this admin?",
+            //icon: "warning",
+            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonText: 'Confirm'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`${process.env.REACT_APP_API_URL}/users/`+userId, { withCredentials: true })
+                        .then(res => {
+                            getAdmins()
+                            Swal.fire({
+                                title: "Done!",
+                                text: "Site Admin Successfully Deleted",
+                                icon: "success",
+                                timer: 2000,
+                                button: false
+                            })
+                         
+                        });
+            } else if (
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+               
+            }
+          })
     }
 
     return (
@@ -88,7 +107,7 @@ const Admins = () => {
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3 mb-3">
-                            <h3>Admins</h3>
+                            <h3>All Site Admins</h3>
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>

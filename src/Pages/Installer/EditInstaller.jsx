@@ -14,9 +14,9 @@ const EditInstaller = () => {
         phone: "",
         fax: "",
         companyName: "",
-        buildingName: "",
+        companyAddress: "",
     });
-    const { name, email, phone, fax, companyName, buildingName } = InstallerData;
+    const { name, email, phone, fax, companyName, companyAddress } = InstallerData;
     const onInputChange = e => {
         setInstallerData({ ...InstallerData, [e.target.name]: e.target.value });
     };
@@ -77,7 +77,7 @@ const EditInstaller = () => {
                 phone: data?.phone,
                 fax: data?.fax,
                 companyName: data?.companyName,
-                buildingName: data?.buildingName,
+                companyAddress: data?.companyAddress,
             })
             setImageUrl(data?.logo)
         }
@@ -98,7 +98,7 @@ const EditInstaller = () => {
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3">
-                            <h3>Update Installer Information</h3>
+                            <h3 className='mb-4'>Update Installer Information</h3>
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
@@ -116,14 +116,14 @@ const EditInstaller = () => {
                                     <label for="phone" class="form-label">Phone Number</label>
                                     <div className='input-group'>
                                         <span class="input-group-text" id="basic-addon1">+6</span>
-                                        <input type="text" name='phone' value={phone} onChange={onInputChange} class="form-control" id="phone" placeholder='Enter phone number' />
+                                        <input type="number" name='phone' value={phone} onChange={onInputChange} class="form-control" id="phone" placeholder='Enter phone number' />
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="fax" class="form-label">Fax Number</label>
                                     <div className='input-group'>
                                         <span class="input-group-text" id="basic-addon1">+6</span>
-                                        <input type="text" name='fax' value={fax} onChange={onInputChange} class="form-control" id="fax" placeholder='Enter fax number' />
+                                        <input type="number" name='fax' value={fax} onChange={onInputChange} class="form-control" id="fax" placeholder='Enter fax number' />
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -131,12 +131,12 @@ const EditInstaller = () => {
                                     <input type="text" name='companyName' value={companyName} onChange={onInputChange} class="form-control" id="cname" placeholder='Enter company name' />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="buildingName" class="form-label">Building Name</label>
-                                    <input type="text" name='buildingName' value={buildingName} onChange={onInputChange} class="form-control" id="buildingName" placeholder='Enter building name' />
+                                    <label for="companyAddress" class="form-label">Company Address</label>
+                                    <input type="text" name='companyAddress' value={companyAddress} onChange={onInputChange} class="form-control" id="companyAddress" placeholder='Enter company address' />
                                 </div>
                                 <div class="mb-3">
                                     <label for="logo" class="form-label">Logo</label>
-                                    {imageUrl ? (
+                                    {imageUrl && selectedImage? (
                                         <div mt={2} textAlign="center">
                                             <img src={imageUrl} alt="logo" height="100px" />
                                         </div>
@@ -145,7 +145,7 @@ const EditInstaller = () => {
                                         <>
                                             <input className='form-control' accept="image/*" type="file" id="select-image" style={{ display: 'none' }} onChange={e => handleFileUpload(e.target.files[0])} />
                                             <label for="select-image">
-                                                <img src="/images/upload.png" alt="" height="100px" className='rounded-3 border p-2 ms-2' />
+                                                <img src={imageUrl || '/images/upload.png'} alt="" height="100px" className='rounded-3 border p-2 ms-2' />
                                             </label>
                                         </>
                                     }

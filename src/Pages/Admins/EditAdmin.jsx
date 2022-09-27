@@ -55,7 +55,7 @@ const EditAdmin = () => {
                 }, 2000)
 
             } else {
-                const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/logoUpload/`, selectedImage, { withCredentials: true })
+                const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/avatarUpload`, selectedImage, { withCredentials: true })
                 if (addImageResponse) {
                     setIsLoading(false)
                     setSuccessMessage("admin Information has been updated successfully")
@@ -95,7 +95,7 @@ const EditAdmin = () => {
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3">
-                            <h3>Update Admin Information</h3>
+                            <h3 className='mb-4'>Update Admin Information</h3>
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
@@ -137,7 +137,7 @@ const EditAdmin = () => {
                                 </div>
                                 <div class="mb-3">
                                     <label for="bname" class="form-label">Profile Photo</label>
-                                    {imageUrl ? (
+                                    {imageUrl && selectedImage? (
                                         <div mt={2} textAlign="center">
                                             <img src={imageUrl} alt="avatar" height="100px" />
                                         </div>
@@ -146,7 +146,7 @@ const EditAdmin = () => {
                                         <>
                                             <input className='form-control' accept="image/*" type="file" id="select-image" style={{ display: 'none' }} onChange={e => handleFileUpload(e.target.files[0])} />
                                             <label for="select-image">
-                                                <img src="/images/avatar.png" alt="" height="100px" className='rounded-3 border p-2 ms-2' />
+                                                <img src={imageUrl} alt="" height="100px" className='rounded-3 border p-2 ms-2' />
                                             </label>
                                         </>
                                     }

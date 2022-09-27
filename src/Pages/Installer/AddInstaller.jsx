@@ -9,13 +9,14 @@ const AddInstaller = () => {
         name: "",
         email: "",
         password: "",
+        reenterPassword: "",
         phone: "",
         fax: "",
         companyName: "",
-        buildingName: "",
+        companyAddress: "",
         role: "installer"
     });
-    const { name, email, password, phone, fax, companyName, buildingName } = createInstallerData;
+    const { name, email, password, reenterPassword, phone, fax, companyName, companyAddress } = createInstallerData;
 
     const onInputChange = e => {
         setCreateInstallerData({ ...createInstallerData, [e.target.name]: e.target.value });
@@ -24,6 +25,7 @@ const AddInstaller = () => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
     const [SuccessMessage, setSuccessMessage] = useState();
+    const [ErrorMessage, setErrorMessage] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate()
     const handleFileUpload = file => {
@@ -34,38 +36,45 @@ const AddInstaller = () => {
     }
     const submitHandler = async (e) => {
         e.preventDefault();
-        setIsLoading(true)
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/users`, createInstallerData, { withCredentials: true }).catch(function (error) {
-            if (error.response) {
-                console.log(error.response.data);
-                console.log(error.response.status);
-                if (error.response.status === 400 || 500) {
-                    console.log(error)
+        if (password === reenterPassword) {
+            setIsLoading(true)
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/users`, createInstallerData, { withCredentials: true }).catch(function (error) {
+                if (error.response) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    if (error.response.status === 400 || 500) {
+                        console.log(error)
+                    }
+                    console.log(error.response.headers);
                 }
-                console.log(error.response.headers);
-            }
-        });
-        const data = response.data
-        if (data) {
-            if (selectedImage === null) {
-                setIsLoading(false)
-                setSuccessMessage("Installer account has been created successfully")
-                setTimeout(() => {
-                    setSuccessMessage()
-                    navigate('/installers')
-                }, 2000)
-
-            } else {
-                const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/avatarUpload/`, selectedImage, { withCredentials: true })
-                if (addImageResponse) {
+            });
+            const data = response.data
+            if (data) {
+                if (selectedImage === null) {
                     setIsLoading(false)
                     setSuccessMessage("Installer account has been created successfully")
                     setTimeout(() => {
                         setSuccessMessage()
                         navigate('/installers')
                     }, 2000)
+
+                } else {
+                    const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/logoUpload/`, selectedImage, { withCredentials: true })
+                    if (addImageResponse) {
+                        setIsLoading(false)
+                        setSuccessMessage("Installer account has been created successfully")
+                        setTimeout(() => {
+                            setSuccessMessage()
+                            navigate('/installers')
+                        }, 2000)
+                    }
                 }
             }
+        } else {
+            setErrorMessage("Both Passwords Are Not Matching")
+            setTimeout(() => {
+                setErrorMessage()
+            }, 2000)
         }
     }
     return (
@@ -77,11 +86,12 @@ const AddInstaller = () => {
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3">
-                            <h3>Add New Installer</h3>
+                            <h3 className='mb-4'>Add New Installer</h3>
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
+                            {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
                             <form onSubmit={submitHandler}>
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Full Name</label>
@@ -94,6 +104,10 @@ const AddInstaller = () => {
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password</label>
                                     <input type="password" name='password' value={password} onChange={onInputChange} class="form-control" id="password" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="reenterPassword" class="form-label">Reenter Password</label>
+                                    <input type="password" name='reenterPassword' value={reenterPassword} onChange={onInputChange} class="form-control" id="reenterPassword" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
                                 </div>
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Phone Number</label>
@@ -114,8 +128,8 @@ const AddInstaller = () => {
                                     <input type="text" name='companyName' value={companyName} onChange={onInputChange} class="form-control" id="cname" placeholder='Enter company name' />
                                 </div>
                                 <div class="mb-3">
-                                    <label for="bname" class="form-label">Building Name</label>
-                                    <input type="text" name='buildingName' value={buildingName} onChange={onInputChange} class="form-control" id="bname" placeholder='Enter building name' />
+                                    <label for="companyAddress" class="form-label">Company Address</label>
+                                    <input type="text" name='companyAddress' value={companyAddress} onChange={onInputChange} class="form-control" id="companyAddress" placeholder='Enter company address' />
                                 </div>
                                 <div class="mb-3">
                                     <label for="bname" class="form-label">Logo</label>

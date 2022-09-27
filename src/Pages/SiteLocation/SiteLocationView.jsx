@@ -10,7 +10,7 @@ const SiteLocationView = () => {
     const getSiteLocation = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/` + siteLocationId, { withCredentials: true })
         if (response) {
-            setSiteLocationDetails(response.data[0])
+            setSiteLocationDetails(response.data)
         }
     }
     useEffect(() => {

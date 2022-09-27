@@ -6,6 +6,7 @@ import DataTable from 'react-data-table-component';
 import { Spinner } from 'react-bootstrap';
 import InstallerSidebarNav from '../../Components/Installer/InstallerSidebarNav';
 import Swal from "sweetalert2";
+
 const Installers = () => {
     const [installers, setInstallers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +19,7 @@ const Installers = () => {
         }
     }
     useEffect(() => {
+        document.title="SEDA - Installers"
         getInstaller()
     }, []);
     const columns = [
@@ -45,6 +47,7 @@ const Installers = () => {
         },
         {
             name: 'Phone',
+            cell: row=><div>+6{row.phone}</div>,
             selector: row => (row.phone),
            
         },
@@ -67,11 +70,11 @@ const Installers = () => {
     const deleteUser = async(userId)=>{
         Swal.fire({
             title: "Are you sure?",
-            text: "You want to delete this Installer?",
+            text: "You want to delete this installer?",
             //icon: "warning",
             dangerMode: true,
             showCancelButton: true,
-            confirmButtonText: 'Yes'
+            confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
                 axios.delete(`${process.env.REACT_APP_API_URL}/users/`+userId, { withCredentials: true })
@@ -79,7 +82,7 @@ const Installers = () => {
                             getInstaller()
                             Swal.fire({
                                 title: "Done!",
-                                text: "Installer deleted Successfully",
+                                text: "Installer Successfully Deleted",
                                 icon: "success",
                                 timer: 2000,
                                 button: false
@@ -89,10 +92,7 @@ const Installers = () => {
             } else if (
               result.dismiss === Swal.DismissReason.cancel
             ) {
-                Swal.fire(
-                'Cancelled',
-                'Your Installer is safe :)'
-              )
+                
             }
           })
     }
@@ -105,7 +105,7 @@ const Installers = () => {
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3 mb-3">
-                            <h3>Installers</h3>
+                            <h3>All Installers</h3>
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>

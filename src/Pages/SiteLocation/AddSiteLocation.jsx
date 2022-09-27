@@ -133,7 +133,7 @@ const AddSiteLocation = () => {
                                         </select>
                                     </div>
                                 </div>
-                                <h5 className='mt-5'>Building Information</h5>
+                                <h5 className='mt-4'>Building Information</h5>
                                 <div className="row mb-3">
                                     <div className="col-md-6">
                                         <label for="bname" class="form-label">Building Name</label>
@@ -174,7 +174,7 @@ const AddSiteLocation = () => {
                                         <input type="email" name='buildingOwnerEmail' value={buildingOwnerEmail} onChange={onInputChange} class="form-control" id="buildingOwnerEmail" placeholder='Enter building owner email' />
                                     </div>
                                 </div>
-                                <h3>Contact Person Information</h3>
+                                <h5 className='mt-4'>Contact Person Information</h5>
                                 <div class="row mb-3">
                                     <div className="col-md-6">
                                         <label for="contactPersonName" class="form-label">Contact Person Name</label>

@@ -5,13 +5,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { setIsLogged, setUserDetails } from '../../redux/userSlice';
 import Dropdown from 'react-bootstrap/Dropdown';
 import "./Layout.css"
+import Swal from "sweetalert2";
 
 const Navbar = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [ToggleNav, setToggleNav] = useState(false);
     const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
-    const logOut = async () => {
+
+    const logOut2 = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/logout`, { withCredentials: true })
             if (response.statusText === 'OK') {
@@ -28,6 +30,31 @@ const Navbar = () => {
     }
     const toggleDropdown = () => setDropdownIsOpen(!dropdownIsOpen)
     console.log(dropdownIsOpen)
+
+    const logOut = async(userId)=>{
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to logout.",
+            //icon: "warning",
+            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonText: 'Confirm'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.get(`${process.env.REACT_APP_API_URL}/users/logout`, { withCredentials: true })
+                        .then(res => {
+                            dispatch(setIsLogged(false))
+                            dispatch(setUserDetails({}))
+                            window.localStorage.clear()
+                            navigate("/")
+                        });
+            } else if (
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+               
+            }
+          })
+    }
     return (
         <nav class="navbar navbar-expand-lg navbar-bg p-0">
             <div class="container-fluid">

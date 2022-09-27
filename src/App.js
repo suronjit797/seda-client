@@ -21,6 +21,9 @@ import SiteLocations from './Pages/SiteLocation/SiteLocations';
 import AddSiteLocation from './Pages/SiteLocation/AddSiteLocation';
 import SiteLocationView from './Pages/SiteLocation/SiteLocationView';
 import EditSiteLocation from './Pages/SiteLocation/EditSiteLocation';
+import SiteDocuments from './Pages/SiteLocation/SiteDocuments';
+import "react-awesome-lightbox/build/style.css";
+import ForgotPassword from './Pages/SignIn/ForgotPassword';
 
 function App() {
   const isLogged = useSelector((state) => state.user?.isLogged);
@@ -50,6 +53,7 @@ function App() {
               <Route path="/add-location" element={<AddSiteLocation />} />
               <Route path="/site-location/:siteLocationId" element={<SiteLocationView />} />
               <Route path="/edit-site-location/:siteLocationId" element={<EditSiteLocation />} />
+              <Route path="/site-document/:siteLocationId" element={<SiteDocuments />} />
 
               {/* settings */}
               <Route path="/settings" element={<Settings />} />
@@ -60,6 +64,7 @@ function App() {
           :
           <Routes>
             <Route path="/" element={<SignIn />} />
+            <Route path='/forgot-password' element={<ForgotPassword/>}/>
           </Routes>
         }
       </div>

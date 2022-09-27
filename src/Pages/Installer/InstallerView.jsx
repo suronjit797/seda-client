@@ -50,12 +50,12 @@ const InstallerView = () => {
                                         <div className="col-3">Company Name</div>
                                         <div className="col-9">: {installerDetails?.companyName}</div>
                                     </div>
+                                    <div className="row mb-2">
+                                        <div className="col-3">Company Address</div>
+                                        <div className="col-9">: {installerDetails?.companyAddress}</div>
+                                    </div>
                                 </div>
                                 <div className="col-md-6">
-                                    <div className="row mb-2">
-                                        <div className="col-3">Building Name</div>
-                                        <div className="col-9">: {installerDetails?.buildingName}</div>
-                                    </div>
                                     <div className="row mb-2">
                                         <div className="col-3">Logo</div>
                                         <div className="col-9">

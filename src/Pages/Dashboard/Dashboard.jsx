@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import LineChart from '../../Components/Charts/LineChart';
 
 const Dashboard = () => {
+    useEffect(() => {
+       document.title="SEDA - Dashboard"
+    }, []);
     return (
         <div className='dashboard'>
             <div className="container-fluid">
