@@ -6,16 +6,20 @@ import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
 import AdminSidebarNav from '../../Components/Admins/AdminSidebarNav';
 import Swal from "sweetalert2";
+import { useDispatch } from 'react-redux';
+import { setSiteDetails } from '../../redux/userSlice';
 
 const SiteLocations = () => {
     const [siteLocations, setSiteLocations] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [SuccessMessage, setSuccessMessage] = useState();
+    const dispatch= useDispatch()
+
     const getSiteLocations = async () => {
         setIsLoading(true)
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location`, { withCredentials: true })
         if (response) {
             setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+            dispatch(setSiteDetails(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1)))
             setIsLoading(false)
         }
     }
@@ -116,7 +120,6 @@ const SiteLocations = () => {
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
-                            {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             <DataTable
                                 columns={columns}
                                 data={siteLocations}

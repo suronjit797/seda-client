@@ -1,29 +1,41 @@
 import axios from 'axios';
 import moment from 'moment';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import AdminSidebarNav from '../../Components/Admins/AdminSidebarNav';
 import Swal from "sweetalert2";
 
-const Admins = () => {
-    const [admins, setAdmins] = useState([]);
+const AdminSites = () => {
+    const Params = useParams()
+    const adminId = Params.adminId
+    const [siteLocations, setSiteLocations] = useState([]);
+    const [adminDetails, setAdminDetails] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const [SuccessMessage, setSuccessMessage] = useState();
-    const getAdmins = async () => {
+    const getSiteLocations = async () => {
         setIsLoading(true)
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/role/admin`, { withCredentials: true })
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/admin-sites/`+adminId, { withCredentials: true })
         if (response) {
-            setAdmins(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+            setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
             setIsLoading(false)
         }
     }
-    useEffect(() => {
-        document.title="SEDA - All Site Admins"
-        getAdmins()
-    }, []);
 
+    const getAdmin = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/` + adminId, { withCredentials: true })
+        if (response) {
+            console.log(response.data)
+            setAdminDetails(response.data)
+        }
+    }
+
+    useEffect(() => {
+        document.title="SEDA - All Site Locations"
+        getAdmin()
+        getSiteLocations()
+    }, []);
     const columns = [
         {
             name: "#",
@@ -33,65 +45,69 @@ const Admins = () => {
         },
         {
             name: 'Name',
-            cell:(row)=><div><img src={row.avatar} width={40} height={40} className="my-2 rounded-circle" alt={`${row.name}`}/>  {row.name}</div>,
-            selector: row => (row),
+            selector: row => (row.name),
             
         },
         {
-            name: 'Company',
-            selector: row => (row.companyName),
+            name: 'Building Name',
+            selector: row => (row.buildingName),
             
         },
         {
-            name: 'Email',
-            selector: row => (row.email),
-            width:"230px"
+            name: 'Contact Person',
+            selector: row => (row.contactPersonName),
            
         },
         {
             name: 'Phone',
-            cell: row => <>+6{row.phone}</>,
-            selector: row => (row.phone),
+            cell: row => <>+6{row.contactPersonPhone}</>,
+            selector: row => (row.contactPersonPhone),
+            width:"130px"
+           
+        },
+        {
+            name: 'Installer',
+            cell: row => <>{row?.installer?.name}</>,
+            selector: row => (row.installer),
            
         },
         {
             name: 'Date Created',
             selector: row => (moment(row.createdAt).format("DD/MM/YYYY")),
-            
+            width:"120px"
         },
         {
             name: 'Action',
             cell: row => <div>
-                <Link to={`/admin/`+ row._id} className='btn btn-success me-1'>View Profile</Link>
-                <Link to={`/admin-sites/`+ row._id} className='btn btn-warning me-1'>View Site</Link>
-                <Link to={`/edit-admin/`+ row._id} className='btn btn-info me-1'>Edit</Link>
-                <button className='btn btn-danger' onClick={()=>deleteUser(row._id)}>Delete</button>
+                <Link to={`/site-location/`+ row._id} className='btn btn-success me-1'>View</Link>
+                <Link to={`/edit-site-location/`+ row._id} className='btn btn-info me-1'>Edit</Link>
+                <Link to={`/site-document/`+ row._id} className='btn btn-warning me-1'>Documents</Link>
+                <button className='btn btn-danger' onClick={()=>deleteSiteLocation(row._id)}>Delete</button>
             </div>,
-            grow:3,
+            grow:2,
             center:'yes'
         },
     ];
-    const deleteUser = async(userId)=>{
+    const deleteSiteLocation = async(siteLocationId)=>{
         Swal.fire({
             title: "Are you sure?",
-            text: "You want to delete this admin?",
+            text: "You want to delete this site location?",
             //icon: "warning",
             dangerMode: true,
             showCancelButton: true,
             confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`${process.env.REACT_APP_API_URL}/users/`+userId, { withCredentials: true })
+                axios.delete(`${process.env.REACT_APP_API_URL}/site-location/`+siteLocationId, { withCredentials: true })
                         .then(res => {
-                            getAdmins()
+                            getSiteLocations()
                             Swal.fire({
                                 title: "Done!",
-                                text: "Site Admin Successfully Deleted",
+                                text: "Site location Successfully Deleted",
                                 icon: "success",
                                 timer: 2000,
                                 button: false
                             })
-                         
                         });
             } else if (
               result.dismiss === Swal.DismissReason.cancel
@@ -100,9 +116,8 @@ const Admins = () => {
             }
           })
     }
-
     return (
-        <div className='site-admins'>
+        <div className='site-Locations'>
             <div className="container-fluid">
                 <div className="row my-5">
                     <div className="col-md-2">
@@ -110,14 +125,14 @@ const Admins = () => {
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3 mb-3">
-                            <h3>All Site Admins</h3>
+                            <h3>Site Locations of {adminDetails?.name}</h3>
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             <DataTable
                                 columns={columns}
-                                data={admins}
+                                data={siteLocations}
                                 pagination
                                 striped
                                 paginationPerPage={10}
@@ -131,4 +146,4 @@ const Admins = () => {
     );
 }
 
-export default Admins;
+export default AdminSites;

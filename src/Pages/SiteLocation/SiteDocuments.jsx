@@ -8,7 +8,7 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 import { Spinner } from 'react-bootstrap';
 import moment from 'moment';
 import Lightbox from "react-awesome-lightbox";
-
+import Swal from "sweetalert2";
 
 const SiteDocuments = () => {
     const Params = useParams()
@@ -49,6 +49,9 @@ const SiteDocuments = () => {
     }
 
     //SD related states
+    const [SuccessSDMessage, setSuccessSDMessage] = useState();
+    const [ErrorSDMessage, setErrorSDMessage] = useState();
+    const [isLoadingSD, setIsLoadingSD] = useState(false);
     const [SDDocumentData, setSDDocumentData] = useState({
         name: "",
         type: "SchematicDiagram",
@@ -86,11 +89,40 @@ const SiteDocuments = () => {
                 if (addImageResponse) {
                     setIsLoading(false)
                     setSuccessMessage("Electric Bill Uploaded Successfully")
+                    setEBDocumentData({ ...EBDocumentData, name: "" })
+                    setEBImageUrl()
                     getEBDocuments()
                     setTimeout(() => {
-                        setEBDocumentData({ ...EBDocumentData, name: "" })
-                        setSDImageUrl()
                         setSuccessMessage()
+                    }, 2000)
+                }
+            }
+        }
+
+    }
+    const handleSDSubmit = async (e) => {
+        e.preventDefault()
+        setIsLoadingSD(true)
+        if (SDSelectedImage === null) {
+            //show a Error Message here
+            setIsLoadingSD(false)
+            setErrorSDMessage("Please select a Schematic Diagram!")
+            setTimeout(() => {
+                setErrorSDMessage()
+            }, 2000)
+        } else {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/documents`, SDDocumentData, { withCredentials: true })
+            if (response) {
+                const data = response.data
+                const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/documents/${data._id}`, SDSelectedImage, { withCredentials: true })
+                if (addImageResponse) {
+                    setIsLoadingSD(false)
+                    setSuccessSDMessage("Schematic Diagram Uploaded Successfully")
+                    setSDDocumentData({ ...SDDocumentData, name: "" })
+                    setSDImageUrl()
+                    getSDDocuments()
+                    setTimeout(() => {
+                        setSuccessSDMessage()
                     }, 2000)
                 }
             }
@@ -105,10 +137,74 @@ const SiteDocuments = () => {
             setEBDocuments(response.data)
         }
     }
+    const [SDDocuments, setSDDocuments] = useState();
+    const getSDDocuments = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/documents/` + siteLocationId + `/SchematicDiagram`, { withCredentials: true })
+        if (response.data) {
+            setSDDocuments(response.data)
+        }
+    }
     useEffect(() => {
         getEBDocuments()
+        getSDDocuments()
     }, []);
-    console.log(EBDocuments)
+    
+    const download = (file, name) => {
+        var filename = file.substring(file.lastIndexOf('/')+1);
+        console.log(filename, "filename")
+        var fileExtension = filename.split('.').pop();
+        console.log(fileExtension, "fileExtension")
+        fetch(file, {
+            method: "GET",
+            headers: {}
+        })
+            .then(response => {
+                response.arrayBuffer().then(function (buffer) {
+                    const url = window.URL.createObjectURL(new Blob([buffer]));
+                    const link = document.createElement("a");
+                    link.href = url;
+                    link.setAttribute("download", `${name}.${fileExtension}`); //or any other extension
+                    document.body.appendChild(link);
+                    link.click();
+                });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+
+
+    const deleteDocument=async(documentId)=>{
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to delete this document?",
+            //icon: "warning",
+            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonText: 'Confirm'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`${process.env.REACT_APP_API_URL}/documents/`+documentId, { withCredentials: true })
+                        .then(res => {
+                            getEBDocuments()
+                            getSDDocuments()
+                            Swal.fire({
+                                title: "Done!",
+                                text: "Document Successfully Deleted",
+                                icon: "success",
+                                timer: 2000,
+                                button: false
+                            })
+                         
+                        });
+            } else if (
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+               
+            }
+          })
+    }
+
     return (
         <div className='site-admins'>
             <div className="container-fluid">
@@ -131,20 +227,19 @@ const SiteDocuments = () => {
                                         <div className="row d-flex align-items-center">
                                             <div className="col-md-6">
                                                 <label for="name" class="form-label">Bill Name</label>
-                                                <input type="text" name='name' onChange={onEBInputChange} class="form-control" id="name" placeholder='Enter bill name' required />
+                                                <input type="text" name='name' value={EBDocumentData.name} onChange={onEBInputChange} class="form-control" id="name" placeholder='Enter bill name' required />
                                             </div>
                                             <div className="col-md-3 text-center">
 
                                                 {EBImageUrl && EBSelectedImage ? (
                                                     <div mt={2} textAlign="center">
-                                                        <div>Preview:</div>
                                                         <img src={EBImageUrl} alt={EBSelectedImage.name} height="100px" />
                                                     </div>
                                                 )
                                                     :
                                                     <>
                                                         <input className='form-control' accept="image/*" type="file" id="select-image" style={{ display: 'none' }} onChange={e => handleEBFileUpload(e.target.files[0])} />
-                                                        <label for="select-image">
+                                                        <label htmlFor='select-image'>
                                                             <img src="/images/upload.png" alt="" height="100px" className='rounded-3 border p-2 ms-2' />
                                                         </label>
                                                     </>
@@ -161,14 +256,14 @@ const SiteDocuments = () => {
                                             <div className="row">
                                                 <div className="col-md-6">
                                                     <b>Bill Name: {item.name}</b>
-                                                    <p className='text-muted p-0 mb-1' style={{fontSize:"15px"}}>Uploaded By: {item?.uploadBy?.name}</p>
-                                                    <p className='text-muted p-0' style={{fontSize:"15px"}}>Uploaded On: {moment(item.createdAt).format("DD/MM/YYYY HH:MM A")}</p>
+                                                    <p className='text-muted p-0 mb-1' style={{ fontSize: "15px" }}>Uploaded By: {item?.uploadBy?.name}</p>
+                                                    <p className='text-muted p-0' style={{ fontSize: "15px" }}>Uploaded On: {moment(item.createdAt).format("DD/MM/YYYY HH:MM A")}</p>
                                                 </div>
                                                 <div className="col-md-3"> <img src={item?.media} alt="" onClick={() => { setCurrentSelectedImage(item?.media); setIsOpen(true) }} id='lightbox-img' height="80px" className='rounded-3 border p-2 ms-2' /></div>
                                                 <div className="col-md-3">
                                                     <div className="icons d-flex algin-items-center justify-content-end pe-3">
-                                                        <GrDownload size="2em" className='me-2' />
-                                                        <RiDeleteBinLine size="2em" />
+                                                        <GrDownload size="2em" className='me-2' onClick={(e) => download(item?.media, item.name)} />
+                                                        <RiDeleteBinLine size="2em" onClick={()=>deleteDocument(item._id)}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -178,24 +273,28 @@ const SiteDocuments = () => {
                                 <div className="col-md-1"></div>
                                 <div className="col-md-5">
                                     <h5 className='mb-3'>Upload Electric Schematic Diagram</h5>
-                                    <form>
+                                    <div className='d-flex justify-content-center'>
+                                        {isLoadingSD && <Spinner animation="border" variant="dark" />}
+                                    </div>
+                                    {ErrorSDMessage && <div className="alert alert-danger" role="alert">{ErrorSDMessage} </div>}
+                                    {SuccessSDMessage && <div className="alert alert-success" role="alert">{SuccessSDMessage} </div>}
+                                    <form onSubmit={handleSDSubmit}>
                                         <div className="row d-flex align-items-center">
                                             <div className="col-md-6">
                                                 <label for="name" class="form-label">Diagram Name</label>
-                                                <input type="text" name='name' onChange={onSDInputChange} class="form-control" id="name" placeholder='Enter diagram name' required />
+                                                <input type="text" name='name' value={SDDocumentData.name} onChange={onSDInputChange} class="form-control" id="name" placeholder='Enter diagram name' required />
                                             </div>
                                             <div className="col-md-3 text-center">
 
                                                 {SDImageUrl && SDSelectedImage ? (
                                                     <div mt={2} textAlign="center">
-                                                        <div>Preview:</div>
                                                         <img src={SDImageUrl} alt={SDSelectedImage.name} height="100px" />
                                                     </div>
                                                 )
                                                     :
                                                     <>
-                                                        <input className='form-control' accept="image/*" type="file" id="select-image" style={{ display: 'none' }} onChange={e => handleSDFileUpload(e.target.files[0])} />
-                                                        <label for="select-image">
+                                                        <input className='form-control' accept="image/*" type="file" id="select-image1" style={{ display: 'none' }} onChange={e => handleSDFileUpload(e.target.files[0])} />
+                                                        <label htmlFor="select-image1">
                                                             <img src="/images/upload.png" alt="" height="100px" className='rounded-3 border p-2 ms-2' />
                                                         </label>
                                                     </>
@@ -207,23 +306,24 @@ const SiteDocuments = () => {
                                         </div>
                                     </form>
                                     <h5 className='mt-2  mb-3'>Electric Schematic Diagrams</h5>
-                                    <div className="card p-2">
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <b>Diagram Name: September 2022</b>
-                                                <p className='text-muted p-0 mb-1'>Uploaded By: Super Admin</p>
-                                                <p className='text-muted p-0'>Uploaded On: 26/09/2022 10:15 AM</p>
-                                            </div>
-                                            <div className="col-md-3"> <img src="https://wcs.smartdraw.com/wiring-diagram/img/wiring_diagram_example.jpg" alt="" height="100px" className='rounded-3 border p-2 ms-2' /></div>
-                                            <div className="col-md-3">
-                                                <div className="icons d-flex algin-items-center justify-content-end pe-3">
-                                                    <FaRegEye size="2em" className='me-2' />
-                                                    <GrDownload size="2em" className='me-2' />
-                                                    <RiDeleteBinLine size="2em" />
+                                    {SDDocuments && SDDocuments.length > 0 && SDDocuments.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1).map((item, index) => (
+                                        <div className="card p-2 mb-2" key={index}>
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <b>Diagram Name: {item.name}</b>
+                                                    <p className='text-muted p-0 mb-1' style={{ fontSize: "15px" }}>Uploaded By: {item?.uploadBy?.name}</p>
+                                                    <p className='text-muted p-0' style={{ fontSize: "15px" }}>Uploaded On: {moment(item.createdAt).format("DD/MM/YYYY HH:MM A")}</p>
+                                                </div>
+                                                <div className="col-md-3"> <img src={item?.media} alt="" onClick={() => { setCurrentSelectedImage(item?.media); setIsOpen(true) }} id='lightbox-img' height="80px" className='rounded-3 border p-2 ms-2' /></div>
+                                                <div className="col-md-3">
+                                                    <div className="icons d-flex algin-items-center justify-content-end pe-3">
+                                                        <GrDownload size="2em" className='me-2' onClick={(e) => download(item?.media, item.name)} />
+                                                        <RiDeleteBinLine size="2em" onClick={()=>deleteDocument(item._id)}/>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -231,7 +331,7 @@ const SiteDocuments = () => {
                 </div>
             </div>
             {IsOpen && (
-                <Lightbox image={CurrentSelectedImage} onClose={()=>setIsOpen(false)}/>
+                <Lightbox image={CurrentSelectedImage} onClose={() => setIsOpen(false)} />
             )}
         </div>
     );

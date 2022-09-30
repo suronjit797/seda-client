@@ -48,7 +48,7 @@ const EditInstaller = () => {
         if (data) {
             if (selectedImage === null) {
                 setIsLoading(false)
-                setSuccessMessage("Installer Information has been updated successfully")
+                setSuccessMessage("Installer Edited Successfully")
                 setTimeout(() => {
                     setSuccessMessage()
                     navigate('/installers')
@@ -58,7 +58,7 @@ const EditInstaller = () => {
                 const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/logoUpload/`, selectedImage, { withCredentials: true })
                 if (addImageResponse) {
                     setIsLoading(false)
-                    setSuccessMessage("Installer Information has been updated successfully")
+                    setSuccessMessage("Installer Edited Successfully")
                     setTimeout(() => {
                         setSuccessMessage()
                         navigate('/installers')
@@ -70,7 +70,7 @@ const EditInstaller = () => {
     const getInstaller = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/` + installerId, { withCredentials: true })
         if (response) {
-            const data = response.data[0]
+            const data = response.data
             setInstallerData({
                 name: data?.name,
                 email: data?.email,

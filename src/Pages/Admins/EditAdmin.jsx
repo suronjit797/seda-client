@@ -48,7 +48,7 @@ const EditAdmin = () => {
         if (data) {
             if (selectedImage === null) {
                 setIsLoading(false)
-                setSuccessMessage("admin Information has been updated successfully")
+                setSuccessMessage("Admin Edited Successfully")
                 setTimeout(() => {
                     setSuccessMessage()
                     navigate('/admins')
@@ -58,7 +58,7 @@ const EditAdmin = () => {
                 const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/avatarUpload`, selectedImage, { withCredentials: true })
                 if (addImageResponse) {
                     setIsLoading(false)
-                    setSuccessMessage("admin Information has been updated successfully")
+                    setSuccessMessage("Admin Edited Successfully")
                     setTimeout(() => {
                         setSuccessMessage()
                         navigate('/admins')
@@ -70,7 +70,7 @@ const EditAdmin = () => {
     const getAdmin = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/` + adminId, { withCredentials: true })
         if (response) {
-            const data = response.data[0]
+            const data = response.data
             setAdminData({
                 name: data?.name,
                 email: data?.email,
@@ -152,7 +152,7 @@ const EditAdmin = () => {
                                     }
                                 </div>
                                 <div className='float-end'>
-                                    <button type="submit" class="btn btn-success me-2">Save</button>
+                                    <button type="submit" class="btn btn-success me-2">Update</button>
                                     <Link to="/admins" class="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>

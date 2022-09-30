@@ -4,7 +4,9 @@ export const userSlice = createSlice({
     name: 'user',
     initialState: {
         isLogged: false,
-        userDetails: {}
+        userDetails: {},
+        userSites: {},
+        currentSite: {}
     },
     reducers: {
         setIsLogged: (state, action) => {
@@ -13,8 +15,14 @@ export const userSlice = createSlice({
         setUserDetails: (state, action) => {
             state.userDetails = action.payload
         },
+        setSiteDetails: (state, action) => {
+            state.userSites = action.payload
+        },
+        setCurrentSite: (state, action) => {
+            state.currentSite = action.payload
+        },
     }
 })
-export const { setIsLogged, setUserDetails } = userSlice.actions
+export const { setIsLogged, setUserDetails, setSiteDetails, setCurrentSite } = userSlice.actions
 
 export default userSlice.reducer

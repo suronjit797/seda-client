@@ -52,7 +52,7 @@ const AddInstaller = () => {
             if (data) {
                 if (selectedImage === null) {
                     setIsLoading(false)
-                    setSuccessMessage("Installer account has been created successfully")
+                    setSuccessMessage("Installer Created Successfully")
                     setTimeout(() => {
                         setSuccessMessage()
                         navigate('/installers')
@@ -62,7 +62,7 @@ const AddInstaller = () => {
                     const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/logoUpload/`, selectedImage, { withCredentials: true })
                     if (addImageResponse) {
                         setIsLoading(false)
-                        setSuccessMessage("Installer account has been created successfully")
+                        setSuccessMessage("Installer Created Successfully")
                         setTimeout(() => {
                             setSuccessMessage()
                             navigate('/installers')
@@ -103,11 +103,11 @@ const AddInstaller = () => {
                                 </div>
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password</label>
-                                    <input type="password" name='password' value={password} onChange={onInputChange} class="form-control" id="password" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
+                                    <input type="password" name='password' value={password} minlength="6" onChange={onInputChange} class="form-control" id="password" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
                                 </div>
                                 <div class="mb-3">
                                     <label for="reenterPassword" class="form-label">Reenter Password</label>
-                                    <input type="password" name='reenterPassword' value={reenterPassword} onChange={onInputChange} class="form-control" id="reenterPassword" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
+                                    <input type="password" name='reenterPassword' value={reenterPassword} minlength="6" onChange={onInputChange} class="form-control" id="reenterPassword" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
                                 </div>
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Phone Number</label>
@@ -149,7 +149,7 @@ const AddInstaller = () => {
                                     }
                                 </div>
                                 <div className='float-end'>
-                                    <button type="submit" class="btn btn-success me-2">Save</button>
+                                    <button type="submit" class="btn btn-success me-2">Create Installer</button>
                                     <Link to="/installers" class="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>

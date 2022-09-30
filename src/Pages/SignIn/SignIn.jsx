@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { setIsLogged, setUserDetails } from '../../redux/userSlice';
 import './signin.css';
 const SignIn = () => {
+    const [ErrorMessage, setErrorMessage] = useState();
     const [login, setLogin] = useState({
         email: "",
         password: ""
@@ -18,7 +19,19 @@ const SignIn = () => {
 
     const SubmitHandler = async (e) => {
         e.preventDefault();
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/login`, login, { withCredentials: true });
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/login`, login, { withCredentials: true }).catch(function (error) {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                if (error.response.status === 401 || 500) {
+                    setErrorMessage("Credentials information wrong!")
+                    setTimeout(() => {
+                        setErrorMessage()
+                    }, 2000)
+                }
+                console.log(error.response.headers);
+            }
+        });
         const data = response.data
         if (data) {
             dispatch(setIsLogged(true))
@@ -50,6 +63,7 @@ const SignIn = () => {
                         </div>
                         <div className="col-md-6 col-lg-7 col-xl-6">
                             <h3 className='mt-sm-3 mb-3'>Welcome Back</h3>
+                            {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
                             <form onSubmit={SubmitHandler}>
                                 <div className="row mb-3">
                                     <label for="email" className="col-sm-4 col-md-3 col-form-label">Email</label>

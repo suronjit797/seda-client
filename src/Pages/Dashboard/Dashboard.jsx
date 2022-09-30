@@ -1,13 +1,14 @@
 import React, {useEffect} from 'react';
 import LineChart from '../../Components/Charts/LineChart';
-
-const Dashboard = () => {
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
+const Dashboard = ({handle}) => {
     useEffect(() => {
        document.title="SEDA - Dashboard"
     }, []);
     return (
         <div className='dashboard'>
             <div className="container-fluid">
+            <FullScreen handle={handle}>
                 <div className="row">
                     <div className="col-md-12">
                         <div className="row mt-4">
@@ -59,6 +60,7 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
+                </FullScreen>
             </div>
         </div>
     );

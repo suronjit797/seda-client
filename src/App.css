@@ -15,14 +15,20 @@ a:hover {
 }
 .btn-info:hover {
   background: #033ba2 !important;
-  border: #033ba2 !important;
+  border-color: #033ba2 !important;
   color: #fff !important;
 }
 .swal2-styled.swal2-confirm{
   background-color:#dc3545 !important;
   border:#dc3545 !important;
 }
+.swal2-styled.swal2-confirm:focus {
+  box-shadow: none !important;
+}
 
 .eUeqdG {
   font-size: 15px;
+}
+.fullscreen-enabled{
+  background-color: #fff !important;
 }

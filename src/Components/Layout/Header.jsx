@@ -1,21 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Dropdown from 'react-bootstrap/Dropdown';
 import moment from 'moment';
 import axios from 'axios';
+import { setCurrentSite, setSiteDetails } from '../../redux/userSlice';
 
 const Header = () => {
     const userDetails = useSelector((state) => state.user.userDetails);
-    const [siteLocations, setSiteLocations] = useState([]);
-    const getSiteLocations = async () => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location`, { withCredentials: true })
+    let userSites = useSelector((state) => state.user.userSites);
+    const dispatch = useDispatch()
+    const getSiteLocations = async (userDetails) => {
+        if (userDetails.role === "superAdmin") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location`, { withCredentials: true })
+            if (response) {
+                dispatch(setSiteDetails(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1)))
+            }
+        }
+        if (userDetails.role === "admin") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/admin-sites/` + userDetails._id, { withCredentials: true })
+            if (response) {
+                dispatch(setSiteDetails(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1)))
+            }
+        }
+        if (userDetails.role === "installer") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/installer-sites/admin-sites/` + userDetails._id, { withCredentials: true })
+            if (response) {
+                dispatch(setSiteDetails(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1)))
+            }
+        }
+
+    }
+    useEffect(() => {
+        getSiteLocations(userDetails)
+    }, [userDetails]);
+
+    const handleSiteChange = async (e) => {
+        const locationId = e.target.value
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/` + locationId, { withCredentials: true })
         if (response) {
-            setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+            dispatch(setCurrentSite(response.data))
         }
     }
     useEffect(() => {
-        getSiteLocations()
-    }, []);
+        if (userDetails.role === "admin") {
+
+        }
+    }, [userDetails]);
+
     return (
         <div className='header'>
             <div className="container-fluid bg-warning py-2 ">
@@ -31,12 +62,25 @@ const Header = () => {
                         <p>{moment(new Date()).format("DD/MM/YYYY hh:MM A")}</p>
                     </div>
                     <div className="col-md-2">
-                        <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' aria-label="Select an admin">
-                            <option >Site Selector</option>
-                            {siteLocations && siteLocations.length > 0 && siteLocations.map((item, index) => (
-                                <option value={item._id} key={index}>{item.name}</option>
-                            ))}
-                        </select>
+                        {(() => {
+                            switch (userDetails.role) {
+                                case 'user':
+                                    return <div><p>Site: {userDetails?.site?.name}</p></div>;
+                                case 'public':
+                                    return <div><p>Site: {userDetails?.site?.name}</p></div>;
+                                default:
+                                    return (
+                                        <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin">
+                                            <option >Site Selector</option>
+                                            {userSites && userSites.length > 0 && userSites.map((item, index) => (
+                                                <option value={item._id} key={index}>{item.name}</option>
+                                            ))}
+                                        </select>
+                                    )
+
+                            }
+                        })
+                            ()}
                     </div>
                     <div className="col-md-2">
                         <Dropdown className='mt-2 mt-md-0'>
@@ -52,7 +96,7 @@ const Header = () => {
                         </Dropdown>
                     </div>
                     <div className="col-md-2 d-flex justify-content-end">
-                        <img src={userDetails?.avatar} alt="" className='img-fluid rounded-circle' style={{ maxHeight: "200px" }} />
+                        <img src={userDetails?.avatar} alt="" className='img-fluid rounded-circle' style={{ maxHeight: "100px" }} />
                     </div>
                 </div>
             </div>

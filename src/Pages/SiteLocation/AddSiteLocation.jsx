@@ -87,7 +87,7 @@ const AddSiteLocation = () => {
         const data = response.data
         if (data) {
             setIsLoading(false)
-            setSuccessMessage("New Site has been created successfully")
+            setSuccessMessage("Site Location Created Successfully")
             setTimeout(() => {
                 setSuccessMessage()
                 navigate('/site-locations')
@@ -213,7 +213,7 @@ const AddSiteLocation = () => {
                                     </div>
                                 </div>
                                 <div className='float-end'>
-                                    <button type="submit" class="btn btn-success me-2">Save</button>
+                                    <button type="submit" class="btn btn-success me-2">Create Site Location</button>
                                     <Link to="/site-locations" class="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>

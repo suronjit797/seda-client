@@ -3,22 +3,28 @@ import React, { useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import EditBTModal from '../../Components/Modals/EditBTModal';
+import EditDTModel from '../../Components/Modals/EditDTModel';
 
-const BuildingTypeTable = ({ data, getBuildingTypes }) => {
+const DeviceTypeTable = ({ data, getDeviceTypes }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [SuccessMessage, setSuccessMessage] = useState();
     const [modalShow, setModalShow] = useState(false);
-    const [btDataToEdit, setBtDataToEdit] = useState();
+    const [deviceTypeDataToEdit, setDeviceTypeDataToEdit] = useState();
     const columns = [
         {
-            name: "#",
+            name: "No.",
             cell: (row, index, column, id) => <div>{index + 1}</div>,
             selector: row => (console.log(row)),
-            width: "50px"
+            width: "60px"
         },
         {
             name: 'Name',
             selector: row => (row.name),
+
+        },
+        {
+            name: 'Description',
+            selector: row => (row?.description),
 
         },
         {
@@ -27,21 +33,20 @@ const BuildingTypeTable = ({ data, getBuildingTypes }) => {
                 <button className='btn btn-info me-1' onClick={() => editType(row)}>Edit</button>
                 <button className='btn btn-danger' onClick={() => deleteType(row._id)}>Delete</button>
             </div>,
-            grow: 2,
-            center: 'yes'
+            right: 'yes'
         },
     ];
     const editType = (data) => {
-        setBtDataToEdit(data)
+        setDeviceTypeDataToEdit(data)
         setModalShow(true)
     }
     const deleteType = async (typeId) => {
         setIsLoading(true)
-        const response = await axios.delete(`${process.env.REACT_APP_API_URL}/building-type/` + typeId, { withCredentials: true })
+        const response = await axios.delete(`${process.env.REACT_APP_API_URL}/device-type/` + typeId, { withCredentials: true })
         if (response) {
             setIsLoading(false)
-            setSuccessMessage("Building Type deleted successfully.")
-            getBuildingTypes()
+            setSuccessMessage("Device Type deleted successfully.")
+            getDeviceTypes()
             setTimeout(() => {
                 setSuccessMessage()
             }, 2000)
@@ -49,7 +54,7 @@ const BuildingTypeTable = ({ data, getBuildingTypes }) => {
     }
     return (
         <div>
-            <h3>Building Types</h3>
+            <h4>Device Types</h4>
             <div className='d-flex justify-content-center'>
                 {isLoading && <Spinner animation="border" variant="dark" />}
             </div>
@@ -62,15 +67,15 @@ const BuildingTypeTable = ({ data, getBuildingTypes }) => {
                 paginationPerPage={10}
                 paginationRowsPerPageOptions={[10, 20, 50]}
             />
-            <EditBTModal
+            <EditDTModel
                 show={modalShow}
                 onHide={() => setModalShow(false)}
-                btDataToEdit={btDataToEdit}
+                deviceTypeDataToEdit={deviceTypeDataToEdit}
                 setModalShow={setModalShow}
-                getBuildingTypes={getBuildingTypes}
+                getDeviceTypes={getDeviceTypes}
             />
         </div>
     );
 }
 
-export default BuildingTypeTable;
+export default DeviceTypeTable;

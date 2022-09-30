@@ -11,7 +11,7 @@ const InstallerView = () => {
     const getInstaller = async()=>{
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/`+installerId, { withCredentials: true })
         if(response){
-            setInstallerDetails(response.data[0])
+            setInstallerDetails(response.data)
         }
     }
     useEffect(() => {

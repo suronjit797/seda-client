@@ -4,9 +4,8 @@ import { Link } from 'react-router-dom';
 const ForgotPassword = () => {
     const [login, setLogin] = useState({
         email: "",
-        password: ""
     });
-    const { email, password } = login
+    const { email } = login
     const onInputChange = e => {
         setLogin({ ...login, [e.target.name]: e.target.value });
     };

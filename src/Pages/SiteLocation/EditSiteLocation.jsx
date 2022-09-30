@@ -108,7 +108,7 @@ const EditSiteLocation = () => {
         const data = response.data
         if (data) {
             setIsLoading(false)
-            setSuccessMessage("Site location information has been updated successfully")
+            setSuccessMessage("Site Location Edited Successfully")
             setTimeout(() => {
                 setSuccessMessage()
                 navigate('/site-locations')
@@ -234,7 +234,7 @@ const EditSiteLocation = () => {
                                     </div>
                                 </div>
                                 <div className='float-end'>
-                                    <button type="submit" class="btn btn-success me-2">Save</button>
+                                    <button type="submit" class="btn btn-success me-2">Update</button>
                                     <Link to="/site-locations" class="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>

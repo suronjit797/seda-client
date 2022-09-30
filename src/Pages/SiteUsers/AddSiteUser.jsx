@@ -1,26 +1,27 @@
+import { Spinner } from 'react-bootstrap';
+import SiteUserSidebar from '../../Components/SiteUsers/SiteUserSidebar';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Spinner } from 'react-bootstrap';
-import AdminSidebarNav from '../../Components/Admins/AdminSidebarNav';
 
-const AddAdmin = () => {
+
+const AddSiteUser = () => {
     const [SuccessMessage, setSuccessMessage] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate()
-    const [buildingTypes, setBuildingTypes] = useState([]);
-    const [adminData, setAdminData] = useState({
+    const [userData, setUserData] = useState({
         name: "",
         email: "",
         password: "",
-        companyName: "",
         phone: "",
         fax: "",
-        role: "admin"
+        site: "",
+        parent: "",
+        role: "user"
     });
-    const { name, email, password, phone, fax, companyName } = adminData
+    const { name, email, password, phone, fax, site } = userData
     const onInputChange = e => {
-        setAdminData({ ...adminData, [e.target.name]: e.target.value });
+        setUserData({ ...userData, [e.target.name]: e.target.value });
     };
 
     //Profile Photo 
@@ -36,7 +37,7 @@ const AddAdmin = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
         setIsLoading(true)
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/users`, adminData, { withCredentials: true }).catch(function (error) {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/users`, userData, { withCredentials: true }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.data);
                 console.log(error.response.status);
@@ -50,37 +51,49 @@ const AddAdmin = () => {
         if (data) {
             if (selectedImage === null) {
                 setIsLoading(false)
-                setSuccessMessage("Admin Created Successfully")
+                setSuccessMessage("Site User Created Successfully")
                 setTimeout(() => {
                     setSuccessMessage()
-                    navigate('/admins')
+                    navigate('/site-users')
                 }, 2000)
 
             } else {
                 const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/avatarUpload/`, selectedImage, { withCredentials: true })
                 if (addImageResponse) {
                     setIsLoading(false)
-                    setSuccessMessage("Admin Created Successfully")
+                    setSuccessMessage("Site User Created Successfully")
                     setTimeout(() => {
                         setSuccessMessage()
-                        navigate('/admins')
+                        navigate('/site-users')
                     }, 2000)
                 }
             }
         }
     }
 
-
+    const [siteLocations, setSiteLocations] = useState([]);
+    const getSiteLocations = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location`, { withCredentials: true })
+        if (response) {
+            setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+        }
+    }
+    useEffect(() => {
+        getSiteLocations()
+    }, []);
+    useEffect(() => {
+        setUserData({ ...userData, site: siteLocations[0]?._id })
+    }, [siteLocations]);
     return (
         <div className='add-admin'>
             <div className="container-fluid">
                 <div className="row my-5">
                     <div className="col-md-2">
-                        <AdminSidebarNav />
+                        <SiteUserSidebar />
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3">
-                            <h3 className='mb-4'>Add New Admin</h3>
+                            <h3 className='mb-4'>Add New Site User</h3>
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
@@ -92,19 +105,23 @@ const AddAdmin = () => {
                                         <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter full name' required />
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="email" class="form-label">Email Address</label>
-                                        <input type="email" name='email' value={email} onChange={onInputChange} class="form-control" id="email" placeholder='Enter email address' required />
+                                        <label for="site" class="form-label">Assigned Site</label>
+                                        <select class="form-select" id='site' name='site' value={site} onChange={onInputChange} aria-label="Select a site location">
+                                            {siteLocations && siteLocations.length > 0 && siteLocations.map((item, index) => (
+                                                <option value={item._id} key={index}>{item.name}</option>
+                                            ))}
+                                        </select>
                                     </div>
                                 </div>
 
                                 <div class="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="password" class="form-label">Password</label>
-                                        <input type="password" name='password' value={password} onChange={onInputChange} class="form-control" id="password" minlength="6" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <input type="email" name='email' value={email} onChange={onInputChange} class="form-control" id="email" placeholder='Enter email address' required />
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="cname" class="form-label">Company  Name</label>
-                                        <input type="text" name='companyName' value={companyName} onChange={onInputChange} class="form-control" id="cname" placeholder='Enter company name' />
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" name='password' value={password} minlength="6" onChange={onInputChange} class="form-control" id="password" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
                                     </div>
                                 </div>
 
@@ -124,7 +141,7 @@ const AddAdmin = () => {
                                         </div>
                                     </div>
                                 </div>
-                               
+
                                 <div class="mb-3">
                                     <label for="bname" class="form-label">Profile Photo</label>
                                     {imageUrl ? (
@@ -143,8 +160,8 @@ const AddAdmin = () => {
                                     }
                                 </div>
                                 <div className='float-end'>
-                                    <button type="submit" class="btn btn-success me-2">Save</button>
-                                    <Link to="/admins" class="btn btn-secondary">Cancel</Link>
+                                    <button type="submit" class="btn btn-success me-2">Create Site User</button>
+                                    <Link to="/site-users" class="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>
                         </div>
@@ -155,4 +172,4 @@ const AddAdmin = () => {
     );
 }
 
-export default AddAdmin;
+export default AddSiteUser;

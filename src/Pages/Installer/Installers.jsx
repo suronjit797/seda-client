@@ -121,7 +121,6 @@ const Installers = () => {
                     </div>
                 </div>
             </div>
-
         </div>
     );
 }
