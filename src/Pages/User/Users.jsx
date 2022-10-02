@@ -56,6 +56,7 @@ const Users = () => {
             name: 'Status',
             cell: row => <div>{row.isActive ? <span class="badge text-bg-success">Active</span> : <span class="badge text-bg-danger">Deactivated</span>}</div>,
             selector: row => (row.isActive),
+            center: true
 
         },
         {
@@ -153,7 +154,7 @@ const Users = () => {
         })
     }
     return (
-        <div className='installer'>
+        <div className='users'>
             <div className="container-fluid">
                 <div className="row my-5">
                     <div className="col-md-2">

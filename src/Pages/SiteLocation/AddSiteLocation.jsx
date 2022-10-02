@@ -103,7 +103,7 @@ const AddSiteLocation = () => {
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3">
-                            <h3>Add A Site Location</h3>
+                            <h3 className='mb-4'>Add A Site Location</h3>
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>

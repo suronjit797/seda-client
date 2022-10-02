@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { setIsLogged, setUserDetails } from '../../redux/userSlice';
@@ -45,6 +45,11 @@ const SignIn = () => {
 
         }
     }
+
+    useEffect(() => {
+       document.title="SEDA - ONLINE ENERGY MONITORING CLOUD PLATFORM"
+    }, []);
+
     return (
         <div className='content-wrapper'>
             <div className='SignIn-wrapper'>

@@ -42,18 +42,18 @@ const Navbar = ({ handle }) => {
     }
     useEffect(() => {
         const checkIfClickedOutside = e => {
-          // If the menu is open and the clicked target is not within the menu,
-          // then close the menu
-          if (dropdownIsOpen && ref.current && !ref.current.contains(e.target)) {
-            setDropdownIsOpen(false)
-          }
+            // If the menu is open and the clicked target is not within the menu,
+            // then close the menu
+            if (dropdownIsOpen && ref.current && !ref.current.contains(e.target)) {
+                setDropdownIsOpen(false)
+            }
         }
         document.addEventListener("mousedown", checkIfClickedOutside)
         return () => {
-          // Cleanup the event listener
-          document.removeEventListener("mousedown", checkIfClickedOutside)
+            // Cleanup the event listener
+            document.removeEventListener("mousedown", checkIfClickedOutside)
         }
-      }, [dropdownIsOpen])
+    }, [dropdownIsOpen])
     return (
         <nav class="navbar navbar-expand-lg navbar-bg p-0">
             <div class="container-fluid">
@@ -75,7 +75,7 @@ const Navbar = ({ handle }) => {
                                     <Link to='/installers' className='dropdown-item'>Manage Installers</Link>
                                     <Link to="/admins" className='dropdown-item'>Manage Admins</Link>
                                     <Link to="/site-users" className='dropdown-item'>Manage Site Users</Link>
-                                    <Link to="/public-users" className='dropdown-item'>Manage Public</Link>
+                                    <Link to="/public-users" className='dropdown-item'>Manage Public Users</Link>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </li>
@@ -83,7 +83,7 @@ const Navbar = ({ handle }) => {
                             <Link to='/devices' className='nav-link'>Devices</Link>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Analysis &amp; Reporting</a>
+                            <Link to='/analysis-reporting' className='nav-link'>Analysis &amp; Reporting</Link>
                         </li>
                         <li class="nav-item">
                             {handle.active ? <button class="nav-link border-0 bg-transparent" onClick={handle.exit}>Exit</button> : <button class="nav-link border-0 bg-transparent" onClick={handle.enter}>Display</button>}

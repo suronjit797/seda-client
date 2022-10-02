@@ -45,6 +45,9 @@ import SystemComputation from './Pages/Settings/SystemComputation';
 import DashboardSettings from './Pages/Settings/DashboardSettings';
 import AlarmManagement from './Pages/Settings/AlarmManagement';
 import Profile from './Pages/Profile/Profile';
+import AnalysisReporting from './Pages/AnalysisReporting/AnalysisReporting';
+import EditProfile from './Pages/Profile/EditProfile';
+import ResetPassword from './Pages/SignIn/ResetPassword';
 
 function App() {
   const isLogged = useSelector((state) => state.user?.isLogged);
@@ -101,6 +104,9 @@ function App() {
               <Route path="/device/:deviceId" element={<DeviceView />} />
               <Route path="/edit-device/:deviceId" element={<EditDevice />} />
 
+              {/* Analysis &Reporting related routes */}
+              <Route path="/analysis-reporting" element={<AnalysisReporting />} />
+
               {/* Settings related routes */}
               <Route path="/settings" element={<Settings />} />
               <Route path="/electricity-tariff" element={<ElectricityTariff />} />
@@ -111,6 +117,7 @@ function App() {
 
               {/* Profile */}
               <Route path="/profile" element={<Profile />} />
+              <Route path="/edit-profile" element={<EditProfile />} />
 
             </Routes>
             <Footer />
@@ -120,6 +127,7 @@ function App() {
           <Routes>
             <Route path="/" element={<SignIn />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
+            <Route path='/reset-password/:token' element={<ResetPassword />} />
           </Routes>
         }
       </div>

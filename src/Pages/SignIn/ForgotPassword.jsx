@@ -1,16 +1,38 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const ForgotPassword = () => {
-    const [login, setLogin] = useState({
+    const [ErrorMessage, setErrorMessage] = useState();
+    const [SuccessMessage, setSuccessMessage] = useState();
+    const [recoverData, setRecoverData] = useState({
         email: "",
     });
-    const { email } = login
+    const { email } = recoverData
     const onInputChange = e => {
-        setLogin({ ...login, [e.target.name]: e.target.value });
+        setRecoverData({ ...recoverData, [e.target.name]: e.target.value });
     };
     const SubmitHandler = async (e) => {
         e.preventDefault();
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/forgot-password`, recoverData, { withCredentials: true }).catch(function (error) {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                if (error.response.status === 401 || 500) {
+                    setErrorMessage("Email Not Found!")
+                    setTimeout(() => {
+                        setErrorMessage()
+                    }, 2000)
+                }
+                console.log(error.response.headers);
+            }
+        });
+        const data = response.data
+        if (data) {
+            setSuccessMessage("A password reset link sent to your email account")
+        } else {
+
+        }
     }
     return (
         <div className='content-wrapper'>
@@ -30,6 +52,8 @@ const ForgotPassword = () => {
                         </div>
                         <div className="col-md-6 col-lg-7 col-xl-6">
                             <h3 className='mt-sm-3 mb-3'>Forgot Password?</h3>
+                            {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
+                            {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             <form onSubmit={SubmitHandler}>
                                 <div className="row mb-3">
                                     <label for="email" className="col-sm-4 col-md-3 col-form-label">Email</label>

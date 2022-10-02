@@ -124,7 +124,7 @@ const EditSiteLocation = () => {
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3">
-                            <h3>Update Site Location Information</h3>
+                            <h3 className='mb-4'>Update Site Location Information</h3>
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>

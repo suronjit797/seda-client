@@ -91,8 +91,6 @@ const Settings = () => {
                             <h3>Change Password</h3>
                             <div className="row mt-4">
                                 <div className="col-md-6">
-                                    <h4>Add Device Type</h4>
-                                   
                                     <form onSubmit={handleSubmit}>
                                         <div className="mb-3">
                                             <label for="currentPassword" class="form-label">Current Password</label>
