@@ -6,6 +6,7 @@ import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
 import AdminSidebarNav from '../../Components/Admins/AdminSidebarNav';
 import Swal from "sweetalert2";
+import { FiTrash, FiEye, FiEdit, FiHome } from "react-icons/fi"
 
 const Admins = () => {
     const [admins, setAdmins] = useState([]);
@@ -62,10 +63,10 @@ const Admins = () => {
         {
             name: 'Action',
             cell: row => <div>
-                <Link to={`/admin/`+ row._id} className='btn btn-success me-1'>View Profile</Link>
-                <Link to={`/admin-sites/`+ row._id} className='btn btn-warning me-1'>View Site</Link>
-                <Link to={`/edit-admin/`+ row._id} className='btn btn-info me-1'>Edit</Link>
-                <button className='btn btn-danger' onClick={()=>deleteUser(row._id)}>Delete</button>
+                <Link to={`/admin/`+ row._id} className='btn btn-success me-1'><FiEye title="View Profile"/></Link>
+                <Link to={`/admin-sites/`+ row._id} className='btn btn-warning me-1'><FiHome title="View Site"/></Link>
+                <Link to={`/edit-admin/`+ row._id} className='btn btn-info me-1'><FiEdit title="Edit Profile"/></Link>
+                <button className='btn btn-danger' onClick={()=>deleteUser(row._id)}><FiTrash title="Delete"/></button>
             </div>,
             grow:3,
             center:'yes'

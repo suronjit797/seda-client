@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import Swal from "sweetalert2";
 import PublicUserSidebar from '../../Components/Public/PublicUserSidebar';
+import { FiTrash, FiEye, FiEdit, FiHome } from "react-icons/fi"
 
 const PublicUsers = () => {
     const [users, setUsers] = useState([]);
@@ -19,7 +20,7 @@ const PublicUsers = () => {
         }
     }
     useEffect(() => {
-        document.title="SEDA - All Public Users"
+        document.title = "SEDA - All Public Users"
         getUsers()
     }, []);
     const columns = [
@@ -32,43 +33,43 @@ const PublicUsers = () => {
         {
             name: 'Name',
             selector: row => (row.name),
-            
+
         },
         {
             name: 'Email',
             selector: row => (row.email),
-           
+
         },
         {
             name: 'Phone',
-            cell: row=><div>+6{row.phone}</div>,
+            cell: row => <div>+6{row.phone}</div>,
             selector: row => (row.phone),
-           
+
         },
         {
             name: 'Assigned Site',
-            cell: row=><div>{row?.site?.name}</div>,
+            cell: row => <div>{row?.site?.name}</div>,
             selector: row => (row.site),
-           
+
         },
         {
             name: 'Date Created',
             selector: row => (moment(row.createdAt).format("DD/MM/YYYY")),
-            
+
         },
         {
             name: 'Action',
             cell: row => <div>
-                <Link to={`/public-user/`+ row._id} className='btn btn-success me-1'>View</Link>
-                <Link to={`/site-location/`+ row?.site?._id} className='btn btn-warning me-1'>Site Details</Link>
-                <Link to={`/edit-public-user/`+ row._id} className='btn btn-info me-1'>Edit</Link>
-                <button className='btn btn-danger' onClick={()=>deleteUser(row._id)}>Delete</button>
+                <Link to={`/public-user/` + row._id} className='btn btn-success me-1'><FiEye /></Link>
+                <Link to={`/site-location/` + row?.site?._id} className='btn btn-warning me-1'><FiHome /></Link>
+                <Link to={`/edit-public-user/` + row._id} className='btn btn-info me-1'><FiEdit /></Link>
+                <button className='btn btn-danger' onClick={() => deleteUser(row._id)}><FiTrash /></button>
             </div>,
-            grow:2,
-            center:'yes'
+            grow: 2,
+            center: 'yes'
         },
     ];
-    const deleteUser = async(userId)=>{
+    const deleteUser = async (userId) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You want to delete this public user?",
@@ -78,31 +79,31 @@ const PublicUsers = () => {
             confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`${process.env.REACT_APP_API_URL}/users/`+userId, { withCredentials: true })
-                        .then(res => {
-                            getUsers()
-                            Swal.fire({
-                                title: "Done!",
-                                text: "Public User Successfully Deleted",
-                                icon: "success",
-                                timer: 2000,
-                                button: false
-                            })
-                         
-                        });
+                axios.delete(`${process.env.REACT_APP_API_URL}/users/` + userId, { withCredentials: true })
+                    .then(res => {
+                        getUsers()
+                        Swal.fire({
+                            title: "Done!",
+                            text: "Public User Successfully Deleted",
+                            icon: "success",
+                            timer: 2000,
+                            button: false
+                        })
+
+                    });
             } else if (
-              result.dismiss === Swal.DismissReason.cancel
+                result.dismiss === Swal.DismissReason.cancel
             ) {
-                
+
             }
-          })
+        })
     }
     return (
         <div className='installer'>
             <div className="container-fluid">
                 <div className="row my-5 vh60">
                     <div className="col-md-2">
-                        <PublicUserSidebar/>
+                        <PublicUserSidebar />
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3 mb-3">

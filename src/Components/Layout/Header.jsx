@@ -105,7 +105,7 @@ const Header = () => {
                             </Dropdown>
                         }
                     </div>
-                    <div className="col-md-2 d-flex justify-content-end">
+                    <div className="col-md-2 d-flex justify-content-end align-items-center">
                         <img src={userDetails?.avatar} alt="" className='img-fluid rounded-circle' style={{ maxHeight: "80px" }} />
                     </div>
                 </div>

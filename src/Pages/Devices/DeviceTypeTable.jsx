@@ -2,8 +2,8 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
-import EditBTModal from '../../Components/Modals/EditBTModal';
 import EditDTModel from '../../Components/Modals/EditDTModel';
+import { FiTrash, FiEdit, } from "react-icons/fi"
 
 const DeviceTypeTable = ({ data, getDeviceTypes }) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -30,8 +30,8 @@ const DeviceTypeTable = ({ data, getDeviceTypes }) => {
         {
             name: 'Action',
             cell: row => <div>
-                <button className='btn btn-info me-1' onClick={() => editType(row)}>Edit</button>
-                <button className='btn btn-danger' onClick={() => deleteType(row._id)}>Delete</button>
+                <button className='btn btn-info me-1' onClick={() => editType(row)}><FiEdit/></button>
+                <button className='btn btn-danger' onClick={() => deleteType(row._id)}><FiTrash/></button>
             </div>,
             right: 'yes'
         },

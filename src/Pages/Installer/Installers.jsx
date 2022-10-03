@@ -6,7 +6,7 @@ import DataTable from 'react-data-table-component';
 import { Spinner } from 'react-bootstrap';
 import InstallerSidebarNav from '../../Components/Installer/InstallerSidebarNav';
 import Swal from "sweetalert2";
-
+import { FiTrash, FiEye, FiEdit } from "react-icons/fi"
 const Installers = () => {
     const [installers, setInstallers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -59,9 +59,9 @@ const Installers = () => {
         {
             name: 'Action',
             cell: row => <div>
-                <Link to={`/installer/`+ row._id} className='btn btn-success me-1'>View</Link>
-                <Link to={`/edit-installer/`+ row._id} className='btn btn-info me-1'>Edit</Link>
-                <button className='btn btn-danger' onClick={()=>deleteUser(row._id)}>Delete</button>
+                <Link to={`/installer/`+ row._id} className='btn btn-success me-1'><FiEye title="View Profile"/></Link>
+                <Link to={`/edit-installer/`+ row._id} className='btn btn-info me-1'><FiEdit title="Edit Profile"/></Link>
+                <button className='btn btn-danger' onClick={()=>deleteUser(row._id)}><FiTrash title="Delete"/></button>
             </div>,
             grow:2,
             center:'yes'

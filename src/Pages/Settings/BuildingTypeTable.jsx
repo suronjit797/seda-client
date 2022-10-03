@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import EditBTModal from '../../Components/Modals/EditBTModal';
+import { FiTrash, FiEdit, } from "react-icons/fi"
 
 const BuildingTypeTable = ({ data, getBuildingTypes }) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -24,8 +25,8 @@ const BuildingTypeTable = ({ data, getBuildingTypes }) => {
         {
             name: 'Action',
             cell: row => <div>
-                <button className='btn btn-info me-1' onClick={() => editType(row)}>Edit</button>
-                <button className='btn btn-danger' onClick={() => deleteType(row._id)}>Delete</button>
+                <button className='btn btn-info me-1' onClick={() => editType(row)}> <FiEdit/>   </button>
+                <button className='btn btn-danger' onClick={() => deleteType(row._id)}><FiTrash/></button>
             </div>,
             grow: 2,
             center: 'yes'

@@ -2,11 +2,13 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import DevicesSidebar from '../../Components/Devices/DevicesSidebar';
+import DeviceParameters from './DeviceParameters';
 
 const DeviceView = () => {
     const Params = useParams()
     const deviceId = Params.deviceId
     const [deviceDetails, setDeviceDetails] = useState();
+    const [deviceParameters, setDeviceParameters] = useState();
 
     const getDevice = async()=>{
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/`+deviceId, { withCredentials: true })
@@ -14,7 +16,14 @@ const DeviceView = () => {
             setDeviceDetails(response.data)
         }
     }
+    const getDeviceParameters = async()=>{
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/device-parameters/`+deviceId, { withCredentials: true })
+        if(response){
+            setDeviceParameters(response.data.sort((a, b) => a._id > b._id ? 1 : -1))
+        }
+    }
     useEffect(() => {
+        getDeviceParameters()
         getDevice()
     }, []);
     return (
@@ -26,9 +35,10 @@ const DeviceView = () => {
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3 mb-3">
-                            <h3>Device Information</h3>
+                        <h3>Device Information</h3>
                             <div className="row mt-4">
                                 <div className="col-md-6">
+                                <h4 className='mb-4'>General Description</h4>
                                     <div className="row mb-2">
                                         <div className="col-3">Device Name</div>
                                         <div className="col-9">: {deviceDetails?.name}</div>
@@ -55,14 +65,7 @@ const DeviceView = () => {
                                     </div>
                                 </div>
                                 <div className="col-md-6">
-                                    <div className="row mb-2">
-                                        <div className="col-12 text-center"><h5>Available Parameters</h5></div>
-                                    </div>
-                                    <div className="row mb-1">
-                                        <div className="col-md-2"><b>No.</b></div>
-                                        <div className="col-md-6"><b>Parameter Name</b></div>
-                                        <div className="col-md-2"><b>Action</b></div>
-                                    </div>
+                                    <DeviceParameters data={deviceParameters}/>
                                 </div>
                             </div>
                             <div className="row">

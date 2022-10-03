@@ -6,6 +6,7 @@ import SiteUserSidebar from '../../Components/SiteUsers/SiteUserSidebar';
 import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import Swal from "sweetalert2";
+import { FiTrash, FiEye, FiEdit, FiHome } from "react-icons/fi"
 
 const SiteUsers = () => {
     const [users, setUsers] = useState([]);
@@ -59,10 +60,10 @@ const SiteUsers = () => {
         {
             name: 'Action',
             cell: row => <div>
-                <Link to={`/site-user/`+ row._id} className='btn btn-success me-1'>View</Link>
-                <Link to={`/site-location/`+ row?.site?._id} className='btn btn-warning me-1'>Site Details</Link>
-                <Link to={`/edit-site-user/`+ row._id} className='btn btn-info me-1'>Edit</Link>
-                <button className='btn btn-danger' onClick={()=>deleteUser(row._id)}>Delete</button>
+                <Link to={`/site-user/`+ row._id} className='btn btn-success me-1'><FiEye /></Link>
+                <Link to={`/site-location/`+ row?.site?._id} className='btn btn-warning me-1'><FiHome/></Link>
+                <Link to={`/edit-site-user/`+ row._id} className='btn btn-info me-1'><FiEdit/></Link>
+                <button className='btn btn-danger' onClick={()=>deleteUser(row._id)}><FiTrash /></button>
             </div>,
             grow:2,
             center:'yes'

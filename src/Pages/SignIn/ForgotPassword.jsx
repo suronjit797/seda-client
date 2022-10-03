@@ -31,7 +31,10 @@ const ForgotPassword = () => {
         const data = response.data
         if (data) {
             setSuccessMessage("A password reset link sent to your email account")
-            navigate('/')
+            setTimeout(() => {
+                setSuccessMessage()
+                navigate('/')
+            }, 2000)
         } else {
 
         }
