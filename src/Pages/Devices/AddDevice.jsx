@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import DevicesSidebar from '../../Components/Devices/DevicesSidebar';
@@ -8,35 +8,24 @@ const AddDevice = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [SuccessMessage, setSuccessMessage] = useState();
     const navigate = useNavigate()
-    const [buildingTypes, setBuildingTypes] = useState([]);
-    const [adminData, setAdminData] = useState({
+    const [deviceData, setDeviceData] = useState({
         name: "",
-        email: "",
-        password: "",
-        companyName: "",
-        phone: "",
-        fax: "",
-        role: "admin"
+        deviceType: "",
+        serial: "",
+        apiKey: "",
+        site: ""
     });
-    const { name, email, password, phone, fax, companyName } = adminData
+    const { name, deviceType, serial, apiKey, site } = deviceData
+
     const onInputChange = e => {
-        setAdminData({ ...adminData, [e.target.name]: e.target.value });
+        setDeviceData({ ...deviceData, [e.target.name]: e.target.value });
     };
 
-    //Profile Photo 
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [imageUrl, setImageUrl] = useState(null);
-    const handleFileUpload = file => {
-        setImageUrl(URL.createObjectURL(file));
-        let form = new FormData()
-        form.append('avatar', file)
-        setSelectedImage(form);
-    }
 
     const submitHandler = async (e) => {
         e.preventDefault();
         setIsLoading(true)
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/users`, adminData, { withCredentials: true }).catch(function (error) {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/device`, deviceData, { withCredentials: true }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.data);
                 console.log(error.response.status);
@@ -48,27 +37,42 @@ const AddDevice = () => {
         });
         const data = response.data
         if (data) {
-            if (selectedImage === null) {
-                setIsLoading(false)
-                setSuccessMessage("Admin Created Successfully")
-                setTimeout(() => {
-                    setSuccessMessage()
-                    navigate('/admins')
-                }, 2000)
-
-            } else {
-                const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/avatarUpload/`, selectedImage, { withCredentials: true })
-                if (addImageResponse) {
-                    setIsLoading(false)
-                    setSuccessMessage("Admin Created Successfully")
-                    setTimeout(() => {
-                        setSuccessMessage()
-                        navigate('/admins')
-                    }, 2000)
-                }
-            }
+            setIsLoading(false)
+            setSuccessMessage("New device created successfully")
+            setTimeout(() => {
+                setSuccessMessage()
+                navigate('/devices')
+            }, 2000)
         }
     }
+    //for site location dropdown
+    const [siteLocations, setSiteLocations] = useState([]);
+    const getSiteLocations = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location`, { withCredentials: true })
+        if (response) {
+            setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+        }
+    }
+    useEffect(() => {
+        getSiteLocations()
+    }, []);
+    useEffect(() => {
+        setDeviceData({ ...deviceData, site: siteLocations[0]?._id })
+    }, [siteLocations]);
+    //for device type dropdown
+    const [deviceTypes, setDeviceTypes] = useState([]);
+    const getDeviceTypes = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/device-type`, { withCredentials: true })
+        if (response) {
+            setDeviceTypes(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+        }
+    }
+    useEffect(() => {
+        getDeviceTypes()
+    }, []);
+    useEffect(() => {
+        setDeviceData({ ...deviceData, deviceType: deviceTypes[0]?._id })
+    }, [deviceTypes]);
     return (
         <div className='devices'>
             <div className="container-fluid">
@@ -88,12 +92,45 @@ const AddDevice = () => {
                             <form onSubmit={submitHandler}>
                                 <div class="row mb-3">
                                     <div className="col-md-6">
+                                        <label for="site" class="form-label">Site Location</label>
+                                        <select class="form-select" id='site' name='site' value={site} onChange={onInputChange} aria-label="Select a site location">
+                                            {siteLocations && siteLocations.length > 0 && siteLocations.map((item, index) => (
+                                                <option value={item._id} key={index}>{item.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div className="col-md-6">
                                         <label for="name" class="form-label">Device Name</label>
-                                        <input type="text" name='name'  onChange={onInputChange} class="form-control" id="name" placeholder='Enter full name' required />
+                                        <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter full name' required />
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div className="col-md-6">
+                                        <label for="deviceType" class="form-label">Device Type</label>
+                                        <select class="form-select" id='deviceType' name='deviceType' value={deviceType} onChange={onInputChange} aria-label="Select a device type">
+                                            {deviceTypes && deviceTypes.length > 0 && deviceTypes.map((item, index) => (
+                                                <option value={item._id} key={index}>{item.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div className="col-md-6">
+                                        <label for="serial" class="form-label">Serial No</label>
+                                        <input type="text" name='serial' value={serial} onChange={onInputChange} class="form-control" id="serial" placeholder='Enter device serial' />
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div className="col-md-6">
+                                        <label for="apiKey" class="form-label">Device API Key </label>
+                                        <input type="text" name='apiKey' value={apiKey} onChange={onInputChange} class="form-control" id="apiKey" placeholder='Enter device API key' required />
+                                        <div id="emailHelp" class="form-text">API Key is mandatory to get device data from the gateway</div>
                                     </div>
                                 </div>
                                 <div className='float-end'>
-                                    <button type="submit" class="btn btn-success me-2">Save</button>
+                                    <button type="submit" class="btn btn-success me-2">Create Device</button>
                                     <Link to="/devices" class="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>

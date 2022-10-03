@@ -1,43 +1,67 @@
-import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const ResetPassword = () => {
     const Params = useParams()
     const token = Params.token
+    const navigate = useNavigate()
     const [ErrorMessage, setErrorMessage] = useState();
+    const [showPasswordBlock, setShowPasswordBlock] = useState(false);
     const [SuccessMessage, setSuccessMessage] = useState();
     const [resetPasswordData, setResetPasswordData] = useState({
+        token: token,
         password: "",
-        repeatPassword:""
+        repeatPassword: ""
     });
+    const resetPasswordToken = {
+        token: token
+    }
     const { password, repeatPassword } = resetPasswordData
     const onInputChange = e => {
         setResetPasswordData({ ...resetPasswordData, [e.target.name]: e.target.value });
     };
     const SubmitHandler = async (e) => {
         e.preventDefault();
-        // const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/reset-password`, resetPasswordData, { withCredentials: true }).catch(function (error) {
-        //     if (error.response) {
-        //         console.log(error.response.data);
-        //         console.log(error.response.status);
-        //         if (error.response.status === 401 || 500) {
-        //             setErrorMessage("Email Not Found!")
-        //             setTimeout(() => {
-        //                 setErrorMessage()
-        //             }, 2000)
-        //         }
-        //         console.log(error.response.headers);
-        //     }
-        // });
-        // const data = response.data
-        // if (data) {
-        //     setSuccessMessage("A password reset link sent to your email account")
-        // } else {
-
-        // }
+        if (password === repeatPassword) {
+            const response = await axios.put(`${process.env.REACT_APP_API_URL}/users/reset-password`, resetPasswordData, { withCredentials: true }).catch(function (error) {
+                if (error.response) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    if (error.response.status === 401 || 500) {
+                        setErrorMessage("Invalid password reset link!")
+                    }
+                    console.log(error.response.headers);
+                }
+            });
+            if (response.data) {
+                setSuccessMessage("Password reset successfully")
+                setTimeout(() => {
+                    navigate('/')
+                }, 2000)
+            }
+        } else {
+            setErrorMessage("Both Passwords Are Not Matching")
+        }
     }
-
+    const checkTokenValid = async () => {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/reset-password-token`, resetPasswordToken, { withCredentials: true }).catch(function (error) {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                if (error.response.status === 401 || 500) {
+                    setErrorMessage("Invalid password reset link!")
+                }
+                console.log(error.response.headers);
+            }
+        });
+        if (response.data) {
+            setShowPasswordBlock(true)
+        }
+    }
+    useEffect(() => {
+        checkTokenValid()
+    }, [token]);
     return (
         <div className='content-wrapper'>
             <div className='SignIn-wrapper'>
@@ -56,19 +80,19 @@ const ResetPassword = () => {
                         </div>
                         <div className="col-md-6 col-lg-7 col-xl-6">
                             <h3 className='mt-sm-3 mb-3'>Reset Password</h3>
-                            {/* {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
-                            {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>} */}
-                            <form onSubmit={SubmitHandler}>
+                            {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
+                            {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
+                            <form onSubmit={SubmitHandler} className={`${showPasswordBlock ? '' : 'd-none'}`}>
                                 <div className="row mb-3">
                                     <label for="password" className="col-sm-4 col-md-4 col-form-label">New Password</label>
                                     <div className="col-sm-6 col-md-8">
-                                        <input type="password" name='password' value={password} onChange={e => onInputChange(e)} className="form-control" id="password" placeholder="Enter New Password" />
+                                        <input type="password" name='password' value={password} onChange={e => onInputChange(e)} className="form-control" id="password" placeholder="Enter New Password" required />
                                     </div>
                                 </div>
                                 <div className="row mb-3">
                                     <label for="repeatPassword" className="col-sm-4 col-md-4 col-form-label">Repeat Password</label>
                                     <div className="col-sm-6 col-md-8">
-                                        <input type="password" name='repeatPassword' value={repeatPassword} onChange={e => onInputChange(e)} className="form-control" id="repeatPassword" placeholder="Repeat New Password" />
+                                        <input type="password" name='repeatPassword' value={repeatPassword} onChange={e => onInputChange(e)} className="form-control" id="repeatPassword" placeholder="Repeat New Password" required />
                                     </div>
                                 </div>
                                 <div className="mb-3 float-end">

@@ -32,3 +32,6 @@ a:hover {
 .fullscreen-enabled{
   background-color: #fff !important;
 }
+.vh60{
+  min-height: 60vh;
+}

@@ -7,7 +7,7 @@ const AnalysisReporting = () => {
     return (
         <div className='analysis'>
             <div className="container-fluid">
-                <div className="row my-5">
+                <div className="row my-5 vh60">
                     <div className="col-md-2">
                         
                     </div>

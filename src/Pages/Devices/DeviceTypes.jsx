@@ -25,7 +25,7 @@ const DeviceTypes = () => {
             setIsLoading(false)
             setDeviceTypeData({name: "", description:""})
             getDeviceTypes()
-            setSuccessMessage("Device Type Created")
+            setSuccessMessage("Device Type Created Successfully")
             setTimeout(() => {
                 setSuccessMessage()
             }, 2000)
@@ -43,7 +43,7 @@ const DeviceTypes = () => {
     return (
         <div className='settings'>
             <div className="container-fluid">
-                <div className="row my-5">
+                <div className="row my-5 vh60">
                     <div className="col-md-2">
                         <DevicesSidebar />
                     </div>

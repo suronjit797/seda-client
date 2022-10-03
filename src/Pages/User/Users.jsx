@@ -6,6 +6,8 @@ import axios from 'axios';
 import moment from 'moment';
 import Swal from "sweetalert2";
 import { Link } from 'react-router-dom';
+import { AiOutlineEye } from "react-icons/ai"
+import { FiUserCheck, FiUserX, FiTrash } from "react-icons/fi"
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -36,26 +38,38 @@ const Users = () => {
 
         },
         {
+            name: 'Email',
+            cell: row => <div className='text-wrap'>{row.email}</div>,
+            selector: row => (row.email),
+
+        },
+        {
             name: 'User Type',
             cell: row => <div className='text-capitalize'>{row.role}</div>,
             selector: row => (row.role),
+            width: "120px",
+            center: true
 
         },
         {
             name: 'Date Created',
             selector: row => (moment(row.createdAt).format("DD/MM/YYYY")),
+            width: "130px",
+            center: true
 
         },
         {
             name: 'Last Login',
-            cell: row => <div>{row?.lastLogin ? moment(row.lastLogin).format("DD/MM/YYYY hh:mm:ss A") : '-'}</div>,
+            cell: row => <div>{row?.lastLogin ? <div>{moment(row.lastLogin).format("DD/MM/YYYY")}<br />{moment(row.lastLogin).format("hh:mm:ss A")}</div> : '-'}</div>,
             selector: row => (row.lastLogin),
+            width: "120px",
 
         },
         {
             name: 'Status',
             cell: row => <div>{row.isActive ? <span class="badge text-bg-success">Active</span> : <span class="badge text-bg-danger">Deactivated</span>}</div>,
             selector: row => (row.isActive),
+            width: '100px',
             center: true
 
         },
@@ -65,29 +79,28 @@ const Users = () => {
                 {(() => {
                     switch (row.role) {
                         case 'installer':
-                            return <Link to={`/installer/` + row._id} className='btn btn-info me-1'>View</Link>;
+                            return <Link to={`/installer/` + row._id} className='btn btn-info me-1'><AiOutlineEye /></Link>;
                         case 'admin':
-                            return <Link to={`/admin/` + row._id} className='btn btn-info me-1'>View</Link>;
+                            return <Link to={`/admin/` + row._id} className='btn btn-info me-1'><AiOutlineEye /></Link>;
                         case 'user':
-                            return <Link to={`/user/` + row._id} className='btn btn-info me-1'>View</Link>;
+                            return <Link to={`/site-user/` + row._id} className='btn btn-info me-1'><AiOutlineEye /></Link>;
                         case 'public':
-                            return <Link to={`/public/` + row._id} className='btn btn-info me-1'>View</Link>;
+                            return <Link to={`/public-user/` + row._id} className='btn btn-info me-1'><AiOutlineEye /></Link>;
                     }
                 })
                     ()}
                 {(() => {
                     switch (row.isActive) {
                         case true:
-                            return <button className='btn btn-warning  me-1' onClick={() => activeDeactiveUser(row._id, row.isActive)}>Deactivate</button>;
+                            return <button className='btn btn-warning  me-1' onClick={() => activeDeactiveUser(row._id, row.isActive)}><FiUserX/></button>;
                         case false:
-                            return <button className='btn btn-success  me-1' onClick={() => activeDeactiveUser(row._id, row.isActive)}>Activate</button>;
+                            return <button className='btn btn-success  me-1' onClick={() => activeDeactiveUser(row._id, row.isActive)}><FiUserCheck /></button>;
                     }
                 })
                     ()}
-                
-                <button className='btn btn-danger' onClick={() => deleteUser(row._id)}>Delete</button>
+
+                <button className='btn btn-danger' onClick={() => deleteUser(row._id)}><FiTrash/></button>
             </div>,
-            grow: 2,
             center: 'yes'
         },
     ];
@@ -104,7 +117,7 @@ const Users = () => {
             confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.put(`${process.env.REACT_APP_API_URL}/users/` + userId,data, { withCredentials: true })
+                axios.put(`${process.env.REACT_APP_API_URL}/users/` + userId, data, { withCredentials: true })
                     .then(res => {
                         getUsers()
                         Swal.fire({
@@ -156,7 +169,7 @@ const Users = () => {
     return (
         <div className='users'>
             <div className="container-fluid">
-                <div className="row my-5">
+                <div className="row my-5 vh60">
                     <div className="col-md-2">
                         <UsersSidebar />
                     </div>

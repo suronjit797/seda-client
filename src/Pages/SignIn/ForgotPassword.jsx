@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const ForgotPassword = () => {
     const [ErrorMessage, setErrorMessage] = useState();
     const [SuccessMessage, setSuccessMessage] = useState();
+    const navigate= useNavigate()
     const [recoverData, setRecoverData] = useState({
         email: "",
     });
@@ -30,6 +31,7 @@ const ForgotPassword = () => {
         const data = response.data
         if (data) {
             setSuccessMessage("A password reset link sent to your email account")
+            navigate('/')
         } else {
 
         }
@@ -58,7 +60,7 @@ const ForgotPassword = () => {
                                 <div className="row mb-3">
                                     <label for="email" className="col-sm-4 col-md-3 col-form-label">Email</label>
                                     <div className="col-sm-6 col-md-9">
-                                        <input type="email" name='email' value={email} onChange={e => onInputChange(e)} className="form-control" id="email" placeholder="Enter Your Email Address" />
+                                        <input type="email" name='email' value={email} onChange={e => onInputChange(e)} className="form-control" id="email" placeholder="Enter Your Email Address" required/>
                                     </div>
                                 </div>
                                 <div className="mb-3 float-end">

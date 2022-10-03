@@ -4,11 +4,14 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import moment from 'moment';
 import axios from 'axios';
 import { setCurrentSite, setSiteDetails } from '../../redux/userSlice';
+import { useLocation } from 'react-router-dom';
 
 const Header = () => {
     const userDetails = useSelector((state) => state.user.userDetails);
     let userSites = useSelector((state) => state.user.userSites);
     const dispatch = useDispatch()
+    const location = useLocation()
+    console.log(location.pathname, "check current path")
     const getSiteLocations = async (userDetails) => {
         if (userDetails.role === "superAdmin") {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location`, { withCredentials: true })
@@ -59,41 +62,48 @@ const Header = () => {
                     <div className="col-sm-12 col-md-5">
                         <h4>Welcome, {userDetails?.name}</h4>
                         <h6 className='text-capitalize'>{userDetails?.role === "superAdmin" ? "Super Admin" : userDetails?.role}</h6>
-                        <p>{moment(new Date()).format("DD/MM/YYYY hh:MM A")}</p>
+                        <p>{moment(new Date()).format("DD/MM/YYYY hh:mm A")}</p>
+                    </div>
+
+                    <div className="col-md-2">
+                        {location.pathname === "/" &&
+                            <div>
+                                {(() => {
+                                    switch (userDetails.role) {
+                                        case 'user':
+                                            return <div><p>Site: {userDetails?.site?.name}</p></div>;
+                                        case 'public':
+                                            return <div><p>Site: {userDetails?.site?.name}</p></div>;
+                                        default:
+                                            return (
+                                                <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin">
+                                                    <option >Site Selector</option>
+                                                    {userSites && userSites.length > 0 && userSites.map((item, index) => (
+                                                        <option value={item._id} key={index}>{item.name}</option>
+                                                    ))}
+                                                </select>
+                                            )
+
+                                    }
+                                })
+                                    ()}
+                            </div>
+                        }
                     </div>
                     <div className="col-md-2">
-                        {(() => {
-                            switch (userDetails.role) {
-                                case 'user':
-                                    return <div><p>Site: {userDetails?.site?.name}</p></div>;
-                                case 'public':
-                                    return <div><p>Site: {userDetails?.site?.name}</p></div>;
-                                default:
-                                    return (
-                                        <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin">
-                                            <option >Site Selector</option>
-                                            {userSites && userSites.length > 0 && userSites.map((item, index) => (
-                                                <option value={item._id} key={index}>{item.name}</option>
-                                            ))}
-                                        </select>
-                                    )
+                        {location.pathname === "/" &&
+                            <Dropdown className='mt-2 mt-md-0'>
+                                <Dropdown.Toggle variant="success" id="dropdown-basic" className='w-100'>
+                                    Device Selector
+                                </Dropdown.Toggle>
 
-                            }
-                        })
-                            ()}
-                    </div>
-                    <div className="col-md-2">
-                        <Dropdown className='mt-2 mt-md-0'>
-                            <Dropdown.Toggle variant="success" id="dropdown-basic" className='w-100'>
-                                Device Selector
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu>
-                                <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
+                                <Dropdown.Menu>
+                                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                                    <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        }
                     </div>
                     <div className="col-md-2 d-flex justify-content-end">
                         <img src={userDetails?.avatar} alt="" className='img-fluid rounded-circle' style={{ maxHeight: "80px" }} />
