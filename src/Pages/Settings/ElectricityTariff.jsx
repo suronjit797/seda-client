@@ -58,7 +58,7 @@ const ElectricityTariff = () => {
                         <div className="card p-3 mb-3">
                             <h3>Electricity Tariff</h3>
                             <div className="row mt-4">
-                                <div className="col-md-5">
+                                <div className="col-md-4">
                                     <h4 className='mb-3'>Add Tariff Category</h4>
                                     <div className='d-flex justify-content-center'>
                                         {isLoading && <Spinner animation="border" variant="dark" />}
@@ -79,7 +79,7 @@ const ElectricityTariff = () => {
                                         </div>
                                     </form>
                                 </div>
-                                <div className="col-md-7">
+                                <div className="col-md-8">
                                     <ElectricityTariffTable data={eTariff} getElectricityTariff={getElectricityTariff}/>
                                 </div>
                             </div>

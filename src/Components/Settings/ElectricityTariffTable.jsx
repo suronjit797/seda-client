@@ -68,7 +68,7 @@ export default function ElectricityTariffTable({data, getElectricityTariff}) {
                 data={data}
                 pagination
                 striped
-                paginationPerPage={10}
+                paginationPerPage={3}
                 paginationRowsPerPageOptions={[10, 20, 50]}
             />
             <EditETariffModal
