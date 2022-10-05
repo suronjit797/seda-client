@@ -7,11 +7,12 @@ import { setCurrentSite, setSiteDetails } from '../../redux/userSlice';
 import { useLocation } from 'react-router-dom';
 
 const Header = () => {
+    const [devices, setDevices] = useState([]);
     const userDetails = useSelector((state) => state.user.userDetails);
     let userSites = useSelector((state) => state.user.userSites);
+    let currentSite = useSelector((state) => state.user.currentSite);
     const dispatch = useDispatch()
     const location = useLocation()
-    console.log(location.pathname, "check current path")
     const getSiteLocations = async (userDetails) => {
         if (userDetails.role === "superAdmin") {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location`, { withCredentials: true })
@@ -33,6 +34,17 @@ const Header = () => {
         }
 
     }
+    const getDevices = async () => {
+        if (userDetails.role === "superAdmin") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/site/` + currentSite._id, { withCredentials: true })
+            if (response) {
+                setDevices(response.data)
+            }
+        }
+    }
+    useEffect(() => {
+        getDevices()
+    }, [currentSite]);
     useEffect(() => {
         getSiteLocations(userDetails)
     }, [userDetails]);
@@ -49,7 +61,6 @@ const Header = () => {
 
         }
     }, [userDetails]);
-
     return (
         <div className='header'>
             <div className="container-fluid bg-warning py-2 ">
@@ -92,17 +103,13 @@ const Header = () => {
                     </div>
                     <div className="col-md-2">
                         {location.pathname === "/" &&
-                            <Dropdown className='mt-2 mt-md-0'>
-                                <Dropdown.Toggle variant="success" id="dropdown-basic" className='w-100'>
-                                    Device Selector
-                                </Dropdown.Toggle>
-
-                                <Dropdown.Menu>
-                                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                    <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
+                            <select class="form-select bg-success border-0 text-white" name='device'>
+                                {devices && devices.length > 0 ? devices.map((item, index) => (
+                                    <option value={item._id} key={index}>{item.name}</option>
+                                )) :
+                                    <option >Device Selector</option>
+                                }
+                            </select>
                         }
                     </div>
                     <div className="col-md-2 d-flex justify-content-end align-items-center">

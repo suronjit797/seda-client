@@ -50,7 +50,7 @@ const BuildingTypeTable = ({ data, getBuildingTypes }) => {
     }
     return (
         <div>
-            <h3>Building Types</h3>
+            <h4 className='mb-2'>Building Types</h4>
             <div className='d-flex justify-content-center'>
                 {isLoading && <Spinner animation="border" variant="dark" />}
             </div>

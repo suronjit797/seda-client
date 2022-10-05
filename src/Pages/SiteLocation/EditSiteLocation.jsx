@@ -13,6 +13,7 @@ const EditSiteLocation = () => {
     const [buildingTypes, setBuildingTypes] = useState([]);
     const [Admins, setAdmins] = useState([]);
     const [Installers, setInstallers] = useState([]);
+    const [ElectricityTariff, setElectricityTariff] = useState([]);
     const [siteLocationData, setSiteLocationData] = useState({
         name: "",
         admin: "",
@@ -57,7 +58,15 @@ const EditSiteLocation = () => {
 
         }
     }
+    const getElectricityTariff = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/electricity-tariff`, { withCredentials: true })
+        if (response) {
+            setElectricityTariff(response.data)
+            
+        }
+    }
     useEffect(() => {
+        getElectricityTariff()
         getInstaller()
         getAdmins()
         getBuildingTypes()
@@ -82,7 +91,7 @@ const EditSiteLocation = () => {
                 contactPersonPhone: data?.contactPersonPhone,
                 localAuthority: data?.localAuthority,
                 netFloorArea: data?.netFloorArea,
-                tariffElectricity: data?.tariffElectricity,
+                tariffElectricity: data?.tariffElectricity?._id || ElectricityTariff[0]?._id,
                 remark: data?.remark,
                 buildingBackground: data?.buildingBackground?._id
             })
@@ -216,7 +225,11 @@ const EditSiteLocation = () => {
                                     </div>
                                     <div className="col-md-6">
                                         <label for="tariffElectricity" class="form-label">Tariff Electricity (sen/kWh)</label>
-                                        <input type="number" name='tariffElectricity' value={tariffElectricity} onChange={onInputChange} class="form-control" id="tariffElectricity" placeholder='Enter tariff electricity (sen/kWh)' />
+                                        <select class="form-select" id='tariffElectricity' name='tariffElectricity' value={tariffElectricity} onChange={onInputChange}>
+                                            {ElectricityTariff && ElectricityTariff.length > 0 && ElectricityTariff.map((item, index) => (
+                                                tariffElectricity === item._id ? <option value={item._id} key={index} selected>{item.name}</option> : <option value={item._id} key={index}>{item.name}</option>
+                                            ))}
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="row mb-3">

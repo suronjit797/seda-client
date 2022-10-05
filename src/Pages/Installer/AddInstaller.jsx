@@ -40,12 +40,11 @@ const AddInstaller = () => {
             setIsLoading(true)
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/users`, createInstallerData, { withCredentials: true }).catch(function (error) {
                 if (error.response) {
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    if (error.response.status === 400 || 500) {
-                        console.log(error)
-                    }
-                    console.log(error.response.headers);
+                    setIsLoading(false)
+                    setErrorMessage(error.response.data)
+                    setTimeout(() => {
+                        setErrorMessage()
+                    }, 2000)
                 }
             });
             const data = response.data

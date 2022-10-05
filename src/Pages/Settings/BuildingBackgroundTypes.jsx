@@ -52,8 +52,9 @@ const BuildingBackgroundTypes = () => {
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
-                            <div className="row">
+                            <div className="row mt-3">
                                 <div className="col-md-6">
+                                    <h4 className='mb-2'>Add New Building Type</h4>
                                     <form onSubmit={handleSubmit}>
                                         <div className="mb-3">
                                             <label for="name" class="form-label">Name</label>

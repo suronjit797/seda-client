@@ -8,13 +8,7 @@ const Dashboard = ({handle}) => {
     }, []);
     return (
         <div className='dashboard'>
-
             <div className="container-fluid">
-                <div className="row">
-                    <div className="col-md-12 d-flex justify-content-end">
-                    <FiMaximize className='m-2 fs-5' onClick={handle.enter}/>
-                    </div>
-                </div>
             <FullScreen handle={handle}>
                 <div className="row">
                     <div className="col-md-12">

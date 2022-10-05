@@ -3,9 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { setIsLogged, setUserDetails } from '../../redux/userSlice';
+import { BsEye, BsEyeSlash } from "react-icons/bs"
 import './signin.css';
+
 const SignIn = () => {
     const [ErrorMessage, setErrorMessage] = useState();
+    const [PasswordShown, setPasswordShown] = useState(false);
+    const togglePassword = () => { setPasswordShown(!PasswordShown); };
     const [login, setLogin] = useState({
         email: "",
         password: ""
@@ -47,7 +51,7 @@ const SignIn = () => {
     }
 
     useEffect(() => {
-       document.title="SEDA - ONLINE ENERGY MONITORING CLOUD PLATFORM"
+        document.title = "SEDA - ONLINE ENERGY MONITORING CLOUD PLATFORM"
     }, []);
 
     return (
@@ -73,13 +77,16 @@ const SignIn = () => {
                                 <div className="row mb-3">
                                     <label for="email" className="col-sm-4 col-md-3 col-form-label">Email</label>
                                     <div className="col-sm-6 col-md-9">
-                                        <input type="email" name='email' value={email} onChange={e => onInputChange(e)} className="form-control" id="email" placeholder="Enter Your Email Address" required/>
+                                        <input type="email" name='email' value={email} onChange={e => onInputChange(e)} className="form-control" id="email" placeholder="Enter Your Email Address" required />
                                     </div>
                                 </div>
                                 <div className="row mb-3">
                                     <label for="password" className="col-sm-4 col-md-3 col-form-label">Password</label>
                                     <div className="col-sm-6 col-md-9">
-                                        <input type="password" name='password' value={password} onChange={e => onInputChange(e)} className="form-control" id="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" required/>
+                                        <div className="input-group">
+                                            <input type={PasswordShown ? "text" : "password"} name='password' value={password} onChange={e => onInputChange(e)} className="form-control" id="password" placeholder="Enter Your Password" required />
+                                            <span class="input-group-text" id="basic-addon1">{PasswordShown ? <BsEyeSlash onClick={() => togglePassword()} /> : <BsEye onClick={() => togglePassword()} />}</span>
+                                        </div>
                                         <Link to="/forgot-password"><label htmlFor="forgot" className='float-end'><u>Forgot Password?</u></label></Link>
                                     </div>
                                 </div>
@@ -91,7 +98,7 @@ const SignIn = () => {
                     </div>
                     <div className="row bg-light py-2">
                         <div className="col-md-6 col-md-6 d-flex justify-content-center justify-content-md-start">
-                            <h6 className='ms-2 fw-bolder' style={{color:"#00205b"}}>SEDA MALAYSIA</h6>
+                            <h6 className='ms-2 fw-bolder' style={{ color: "#00205b" }}>SEDA MALAYSIA</h6>
                         </div>
                         <div className="col-md-6 d-flex justify-content-center justify-content-md-end">
                             <p className='me-2 mb-0 fw-bolder'>Version 1.0 | {new Date().getFullYear()}</p>

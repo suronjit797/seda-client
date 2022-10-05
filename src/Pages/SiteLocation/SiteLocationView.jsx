@@ -38,7 +38,7 @@ const SiteLocationView = () => {
                                     </div>
                                      <div className="row mb-2">
                                         <div className="col-4">Tariff Electricity (sen/kWh)</div>
-                                        <div className="col-8">: {siteLocationDetails?.tariffElectricity}</div>
+                                        <div className="col-8">: {siteLocationDetails?.tariffElectricity?.name}</div>
                                     </div>
                                     <div className="row mb-2">
                                         <div className="col-4">Building Type</div>
