@@ -41,7 +41,7 @@ const BuildingTypeTable = ({ data, getBuildingTypes }) => {
         const response = await axios.delete(`${process.env.REACT_APP_API_URL}/building-type/` + typeId, { withCredentials: true })
         if (response) {
             setIsLoading(false)
-            setSuccessMessage("Building Type deleted successfully.")
+            setSuccessMessage("Building Type Deleted Successfully")
             getBuildingTypes()
             setTimeout(() => {
                 setSuccessMessage()

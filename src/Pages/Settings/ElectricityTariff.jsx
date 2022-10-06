@@ -75,7 +75,6 @@ const ElectricityTariff = () => {
                                         </div>
                                         <div className='float-end'>
                                             <button type="submit" class="btn btn-success me-2">Create</button>
-                                            <Link to="/settings" className='btn btn-secondary'>Cancel</Link>
                                         </div>
                                     </form>
                                 </div>

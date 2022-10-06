@@ -1,15 +1,55 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const DevicesSidebar = () => {
+    const userDetails = useSelector((state) => state.user.userDetails);
     return (
+
         <div>
             <h3 className='mb-4'>Manage Devices</h3>
-            <ul className="list-group mb-3">
-                <li className='list-group-item'><Link to='/devices' className='text-dark text-decoration-none'>All Devices</Link></li>
-                <li className='list-group-item'><Link to='/add-device' className='text-dark text-decoration-none'>Add New Device</Link></li>
-                <li className='list-group-item'><Link to='/device-types' className='text-dark text-decoration-none'>All Device Types</Link></li>
-            </ul>
+            {(() => {
+                switch (userDetails.role) {
+                    case 'superAdmin':
+                        return (
+                            <ul className="list-group mb-3">
+                                <li className='list-group-item'><Link to='/devices' className='text-dark text-decoration-none'>All Devices</Link></li>
+                                <li className='list-group-item'><Link to='/add-device' className='text-dark text-decoration-none'>Add New Device</Link></li>
+                                <li className='list-group-item'><Link to='/device-types' className='text-dark text-decoration-none'>All Device Types</Link></li>
+                            </ul>
+                        )
+                    case 'installer':
+                        return (
+                            <ul className="list-group mb-3">
+                                <li className='list-group-item'><Link to='/devices' className='text-dark text-decoration-none'>All Devices</Link></li>
+                                <li className='list-group-item'><Link to='/add-device' className='text-dark text-decoration-none'>Add New Device</Link></li>
+                                <li className='list-group-item'><Link to='/device-types' className='text-dark text-decoration-none'>All Device Types</Link></li>
+                            </ul>
+                        )
+                    case 'admin':
+                        return (
+                            <ul className="list-group mb-3">
+                                <li className='list-group-item'><Link to='/devices' className='text-dark text-decoration-none'>All Devices</Link></li>
+                                <li className='list-group-item'><Link to='/device-types' className='text-dark text-decoration-none'>All Device Types</Link></li>
+                            </ul>
+                        )
+                    case 'user':
+                        return (
+                            <ul className="list-group mb-3">
+                                <li className='list-group-item'><Link to='/devices' className='text-dark text-decoration-none'>All Devices</Link></li>
+                                <li className='list-group-item'><Link to='/device-types' className='text-dark text-decoration-none'>All Device Types</Link></li>
+                            </ul>
+                        )
+                    case 'public':
+                        return (
+                            <ul className="list-group mb-3">
+                                <li className='list-group-item'><Link to='/devices' className='text-dark text-decoration-none'>All Devices</Link></li>
+                                <li className='list-group-item'><Link to='/device-types' className='text-dark text-decoration-none'>All Device Types</Link></li>
+                            </ul>
+                        )
+                }
+            })
+                ()}
         </div>
     );
 }

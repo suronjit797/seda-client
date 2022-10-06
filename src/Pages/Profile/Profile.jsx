@@ -20,7 +20,7 @@ const Profile = () => {
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3 mb-3">
-                            <h3>Profile</h3>
+                            <h3 className='mb-4'>Profile</h3>
                             <div className="row">
                                 <div className="col-md-6">
                                     <div className="row mb-2">

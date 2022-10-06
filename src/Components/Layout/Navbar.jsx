@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { setIsLogged, setUserDetails } from '../../redux/userSlice';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -13,7 +13,7 @@ const Navbar = ({ handle }) => {
     const navigate = useNavigate()
     const [ToggleNav, setToggleNav] = useState(false);
     const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
-
+    const userDetails = useSelector((state) => state.user.userDetails);
     const toggleDropdown = () => setDropdownIsOpen(!dropdownIsOpen)
 
     const logOut = async (userId) => {
@@ -61,43 +61,169 @@ const Navbar = ({ handle }) => {
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div className={ToggleNav ? "collapse navbar-collapse show" : "collapse navbar-collapse"} id="navbarNavDropdown">
-                    <ul class="navbar-nav top-nav">
-                        <li class="nav-item">
-                            <Link to='/' className="nav-link active">Main</Link>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <Dropdown show={dropdownIsOpen}>
-                                <Dropdown.Toggle id="dropdown-basic" className='bg-transparent text-dark border-0 fw-semibold' onClick={(e) => toggleDropdown()}>
-                                    Users
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu onClick={(e) => toggleDropdown()} ref={ref}>
-                                    <Link to='/users' className='dropdown-item'>Manage All Users</Link>
-                                    <Link to='/installers' className='dropdown-item'>Manage Installers</Link>
-                                    <Link to="/admins" className='dropdown-item'>Manage Admins</Link>
-                                    <Link to="/site-users" className='dropdown-item'>Manage Site Users</Link>
-                                    <Link to="/public-users" className='dropdown-item'>Manage Public Users</Link>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </li>
-                        <li class="nav-item">
-                            <Link to='/devices' className='nav-link'>Devices</Link>
-                        </li>
-                        <li class="nav-item">
-                            <Link to='/analysis-reporting' className='nav-link'>Analysis &amp; Reporting</Link>
-                        </li>
-                        <li class="nav-item">
-                            {handle.active ? <button class="nav-link border-0 bg-transparent" onClick={handle.exit}>Exit</button> : <button class="nav-link border-0 bg-transparent" onClick={handle.enter}>Display</button>}
-                        </li>
-                        <li class="nav-item">
-                            <Link to="/settings" class="nav-link">Settings</Link>
-                        </li>
-                        <li class="nav-item">
-                            <Link to='/profile' className='nav-link'>Profile</Link>
-                        </li>
-                        <li class="nav-item">
-                            <button className='nav-link border-0 bg-transparent' onClick={() => logOut()}>Logout</button>
-                        </li>
-                    </ul>
+
+                    {(() => {
+                        switch (userDetails.role) {
+                            case 'superAdmin':
+                                return (
+                                    <ul class="navbar-nav top-nav">
+                                        <li class="nav-item">
+                                            <Link to='/' className="nav-link active">Main</Link>
+                                        </li>
+                                        <li class="nav-item dropdown">
+                                            <Dropdown show={dropdownIsOpen}>
+                                                <Dropdown.Toggle id="dropdown-basic" className='bg-transparent text-dark border-0 fw-semibold' onClick={(e) => toggleDropdown()}>
+                                                    Users
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu onClick={(e) => toggleDropdown()} ref={ref}>
+                                                    <Link to='/users' className='dropdown-item'>Manage All Users</Link>
+                                                    <Link to='/installers' className='dropdown-item'>Manage Installers</Link>
+                                                    <Link to="/admins" className='dropdown-item'>Manage Admins</Link>
+                                                    <Link to="/site-users" className='dropdown-item'>Manage Site Users</Link>
+                                                    <Link to="/public-users" className='dropdown-item'>Manage Public Users</Link>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/devices' className='nav-link'>Devices</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/analysis-reporting' className='nav-link'>Analysis &amp; Reporting</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            {handle.active ? <button class="nav-link border-0 bg-transparent" onClick={handle.exit}>Exit</button> : <button class="nav-link border-0 bg-transparent" onClick={handle.enter}>Display</button>}
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to="/settings" class="nav-link">Settings</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/profile' className='nav-link'>Profile</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <button className='nav-link border-0 bg-transparent' onClick={() => logOut()}>Logout</button>
+                                        </li>
+                                    </ul>
+                                )
+                            case 'installer':
+                                return (
+                                    <ul class="navbar-nav top-nav">
+                                        <li class="nav-item">
+                                            <Link to='/' className="nav-link active">Main</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/devices' className='nav-link'>Devices</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/analysis-reporting' className='nav-link'>Analysis &amp; Reporting</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            {handle.active ? <button class="nav-link border-0 bg-transparent" onClick={handle.exit}>Exit</button> : <button class="nav-link border-0 bg-transparent" onClick={handle.enter}>Display</button>}
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to="/settings" class="nav-link">Settings</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/profile' className='nav-link'>Profile</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <button className='nav-link border-0 bg-transparent' onClick={() => logOut()}>Logout</button>
+                                        </li>
+                                    </ul>
+                                )
+                            case 'admin':
+                                return (
+                                    <ul class="navbar-nav top-nav">
+                                        <li class="nav-item">
+                                            <Link to='/' className="nav-link active">Main</Link>
+                                        </li>
+                                        <li class="nav-item dropdown">
+                                            <Dropdown show={dropdownIsOpen}>
+                                                <Dropdown.Toggle id="dropdown-basic" className='bg-transparent text-dark border-0 fw-semibold' onClick={(e) => toggleDropdown()}>
+                                                    Users
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu onClick={(e) => toggleDropdown()} ref={ref}>
+                                                    <Link to='/installers' className='dropdown-item'>Manage Installers</Link>
+                                                    <Link to='/site-locations' className='dropdown-item'>Manage Site Locations</Link>
+                                                    <Link to="/site-users" className='dropdown-item'>Manage Site Users</Link>
+                                                    <Link to="/public-users" className='dropdown-item'>Manage Public Users</Link>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/devices' className='nav-link'>Devices</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/analysis-reporting' className='nav-link'>Analysis &amp; Reporting</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            {handle.active ? <button class="nav-link border-0 bg-transparent" onClick={handle.exit}>Exit</button> : <button class="nav-link border-0 bg-transparent" onClick={handle.enter}>Display</button>}
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to="/settings" class="nav-link">Settings</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/profile' className='nav-link'>Profile</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <button className='nav-link border-0 bg-transparent' onClick={() => logOut()}>Logout</button>
+                                        </li>
+                                    </ul>
+                                );
+                            case 'user':
+                                return (
+                                    <ul class="navbar-nav top-nav">
+                                        <li class="nav-item">
+                                            <Link to='/' className="nav-link active">Main</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/devices' className='nav-link'>Devices</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/analysis-reporting' className='nav-link'>Analysis &amp; Reporting</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            {handle.active ? <button class="nav-link border-0 bg-transparent" onClick={handle.exit}>Exit</button> : <button class="nav-link border-0 bg-transparent" onClick={handle.enter}>Display</button>}
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to="/settings" class="nav-link">Settings</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/profile' className='nav-link'>Profile</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <button className='nav-link border-0 bg-transparent' onClick={() => logOut()}>Logout</button>
+                                        </li>
+                                    </ul>
+                                );
+                            case 'public':
+                                return (
+                                    <ul class="navbar-nav top-nav">
+                                        <li class="nav-item">
+                                            <Link to='/' className="nav-link active">Main</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/devices' className='nav-link'>Devices</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/analysis-reporting' className='nav-link'>Analysis &amp; Reporting</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            {handle.active ? <button class="nav-link border-0 bg-transparent" onClick={handle.exit}>Exit</button> : <button class="nav-link border-0 bg-transparent" onClick={handle.enter}>Display</button>}
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to="/settings" class="nav-link">Settings</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/profile' className='nav-link'>Profile</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <button className='nav-link border-0 bg-transparent' onClick={() => logOut()}>Logout</button>
+                                        </li>
+                                    </ul>
+                                );
+                        }
+                    })
+                        ()}
                 </div>
             </div>
         </nav>

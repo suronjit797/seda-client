@@ -23,7 +23,7 @@ const BuildingBackgroundTypes = () => {
             setIsLoading(false)
             setBuildingTypeData({name: ""})
             getBuildingTypes()
-            setSuccessMessage("New Building Type has been created Successfully")
+            setSuccessMessage("New Building Type created Successfully")
             setTimeout(() => {
                 setSuccessMessage()
             }, 2000)

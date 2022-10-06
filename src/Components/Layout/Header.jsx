@@ -35,12 +35,10 @@ const Header = () => {
 
     }
     const getDevices = async () => {
-        if (userDetails.role === "superAdmin") {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/site/` + currentSite._id, { withCredentials: true })
             if (response) {
                 setDevices(response.data)
             }
-        }
     }
     useEffect(() => {
         getDevices()
@@ -113,7 +111,7 @@ const Header = () => {
                         }
                     </div>
                     <div className="col-md-2 d-flex justify-content-end align-items-center">
-                        <img src={userDetails?.avatar} alt="" className='img-fluid rounded-circle' style={{ maxHeight: "80px" }} />
+                        <img src={userDetails?.avatar} alt="" className='img-fluid rounded-circle' style={{ height: "80px", width: "80px" }} />
                     </div>
                 </div>
             </div>
