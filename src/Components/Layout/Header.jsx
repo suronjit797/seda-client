@@ -27,7 +27,7 @@ const Header = () => {
             }
         }
         if (userDetails.role === "installer") {
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/installer-sites/admin-sites/` + userDetails._id, { withCredentials: true })
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/installer-sites/` + userDetails._id, { withCredentials: true })
             if (response) {
                 dispatch(setSiteDetails(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1)))
             }
@@ -102,11 +102,10 @@ const Header = () => {
                     <div className="col-md-2">
                         {location.pathname === "/" &&
                             <select class="form-select bg-success border-0 text-white" name='device'>
-                                {devices && devices.length > 0 ? devices.map((item, index) => (
+                                <option >Device Selector</option>
+                                {devices && devices.length > 0 && devices.map((item, index) => (
                                     <option value={item._id} key={index}>{item.name}</option>
-                                )) :
-                                    <option >Device Selector</option>
-                                }
+                                ))}
                             </select>
                         }
                     </div>

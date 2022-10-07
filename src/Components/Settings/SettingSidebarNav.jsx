@@ -34,7 +34,6 @@ const SettingSidebarNav = () => {
                                 <li className='list-group-item'><Link to='/system-computation' className='text-dark text-decoration-none'>System Computation</Link></li>
                                 <li className='list-group-item'><Link to='/dashboard-settings' className='text-dark text-decoration-none'>Dashboard Settings</Link></li>
                                 <li className='list-group-item'><Link to='/alarm-management' className='text-dark text-decoration-none'>Alarm Management</Link></li>
-                                <li className='list-group-item'><Link to='/building-background-types' className='text-dark text-decoration-none'>Building Background Types</Link></li>
                             </ul>
                         )
                     case 'user':

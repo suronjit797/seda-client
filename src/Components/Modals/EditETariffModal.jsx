@@ -26,9 +26,12 @@ export default function EditETariffModal(props) {
     const response = await axios.put(`${process.env.REACT_APP_API_URL}/electricity-tariff/`+ ETariffToEdit._id, electricityTariffData, { withCredentials: true })
     if (response) {
       setIsLoading(false)
-      setElectricityTariffData({ name: "", description: "" })
       getElectricityTariff()
-      setModalShow(false)
+      setSuccessMessage("Tariif Rates Updated Successfully")
+      setTimeout(() => {
+        setSuccessMessage()
+        setModalShow(false)
+    }, 2000)
     }
   }
   useEffect(() => {
@@ -58,7 +61,7 @@ export default function EditETariffModal(props) {
           </div>
           <div className='float-end'>
             <button type="submit" class="btn btn-success me-2">Update</button>
-            <Link to="/settings" className='btn btn-secondary'>Cancel</Link>
+            <Link to="/electricity-tariff" className='btn btn-secondary'>Cancel</Link>
           </div>
         </form>
       </Modal.Body>

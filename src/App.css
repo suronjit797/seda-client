@@ -38,3 +38,9 @@ a:hover {
 .description p{
   margin: 0px !important;
 }
+.rdt_Table .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol{
+  font-size: 15px !important;
+}
+.rdt_Table .rdt_TableBody .rdt_TableRow .rdt_TableCell{
+  font-size: 14px !important;
+}

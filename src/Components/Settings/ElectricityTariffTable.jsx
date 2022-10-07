@@ -1,12 +1,14 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { FiTrash, FiEdit, } from "react-icons/fi"
 import { Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import DataTable from 'react-data-table-component';
 import EditETariffModal from '../Modals/EditETariffModal';
+import { useSelector } from 'react-redux';
 
-export default function ElectricityTariffTable({data, getElectricityTariff}) {
+export default function ElectricityTariffTable({ data, getElectricityTariff }) {
     const [isLoading, setIsLoading] = useState(false);
+    const userDetails = useSelector((state) => state.user.userDetails);
     const [SuccessMessage, setSuccessMessage] = useState();
     const [modalShow, setModalShow] = useState(false);
     const [ETariffToEdit, setETariffToEdit] = useState();
@@ -34,13 +36,24 @@ export default function ElectricityTariffTable({data, getElectricityTariff}) {
         {
             name: 'Action',
             cell: row => <div>
-                <button className='btn btn-info me-1' onClick={() => editETariff(row)}><FiEdit/></button>
-                <button className='btn btn-danger' onClick={() => deleteETariff(row._id)}><FiTrash/></button>
+                {(() => {
+                    switch (userDetails.role) {
+                        case 'superAdmin':
+                            return (
+                                <div className="actions">
+                                    <button className='btn btn-info me-1' onClick={() => editETariff(row)}><FiEdit /></button>
+                                    <button className='btn btn-danger' onClick={() => deleteETariff(row._id)}><FiTrash /></button>
+                                </div>
+                            )
+                    }
+                })
+                    ()}
+
             </div>,
             center: true
         },
     ];
-    const editETariff= (data) => {
+    const editETariff = (data) => {
         setETariffToEdit(data)
         setModalShow(true)
     }
@@ -56,8 +69,8 @@ export default function ElectricityTariffTable({data, getElectricityTariff}) {
             }, 2000)
         }
     }
-  return (
-    <div>
+    return (
+        <div>
             <h4 className='mb-3'>Electricity Tariff</h4>
             <div className='d-flex justify-content-center'>
                 {isLoading && <Spinner animation="border" variant="dark" />}
@@ -79,5 +92,5 @@ export default function ElectricityTariffTable({data, getElectricityTariff}) {
                 getElectricityTariff={getElectricityTariff}
             />
         </div>
-  )
+    )
 }

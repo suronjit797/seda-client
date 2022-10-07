@@ -7,17 +7,41 @@ import { Link } from 'react-router-dom';
 import DevicesSidebar from '../../Components/Devices/DevicesSidebar';
 import { FiEye, FiEdit, FiTrash } from "react-icons/fi"
 import Swal from "sweetalert2";
+import { useSelector } from 'react-redux';
 
 const Devices = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const userDetails = useSelector((state) => state.user.userDetails);
     const [devices, setDevices] = useState([]);
     const getDevices = async () => {
         setIsLoading(true)
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/device`, { withCredentials: true })
+        if (userDetails.role === "superAdmin") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/device`, { withCredentials: true })
+            if (response) {
+                setDevices(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+                setIsLoading(false)
+            }
+        }
+        if (userDetails.role === "admin") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/admin`, { withCredentials: true })
+            if (response) {
+                setDevices(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+                setIsLoading(false)
+            }
+        }
+        if (userDetails.role === "installer") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/installer`, { withCredentials: true })
+            if (response) {
+                setDevices(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+                setIsLoading(false)
+            }
+        }
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/site/` + userDetails?.site?._id, { withCredentials: true })
         if (response) {
             setDevices(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
             setIsLoading(false)
         }
+
     }
     const columns = [
         {
@@ -60,9 +84,45 @@ const Devices = () => {
         {
             name: 'Action',
             cell: row => <div>
-                <Link to={`/device/` + row._id} className='btn btn-info me-1'><FiEye /></Link>
-                <Link to={`/edit-device/` + row._id} className='btn btn-success me-1'><FiEdit /></Link>
-                <button className='btn btn-danger' onClick={() => deleteDevice(row._id)}><FiTrash/></button>
+                {(() => {
+                    switch (userDetails.role) {
+                        case 'superAdmin':
+                            return (
+                                <div className="actions">
+                                    <Link to={`/device/` + row._id} className='btn btn-info me-1'><FiEye /></Link>
+                                    <Link to={`/edit-device/` + row._id} className='btn btn-success me-1'><FiEdit /></Link>
+                                    <button className='btn btn-danger' onClick={() => deleteDevice(row._id)}><FiTrash /></button>
+                                </div>
+                            )
+                        case 'installer':
+                            return (
+                                <div className="actions">
+                                    <Link to={`/device/` + row._id} className='btn btn-info me-1'><FiEye /></Link>
+                                    <Link to={`/edit-device/` + row._id} className='btn btn-success me-1'><FiEdit /></Link>
+                                </div>
+                            )
+                        case 'admin':
+                            return (
+                                <div className="actions">
+                                    <Link to={`/device/` + row._id} className='btn btn-info me-1'><FiEye /></Link>
+                                    <Link to={`/edit-device/` + row._id} className='btn btn-success me-1'><FiEdit /></Link>
+                                </div>
+                            )
+                        case 'user':
+                            return (
+                                <div className="actions">
+                                    <Link to={`/device/` + row._id} className='btn btn-info me-1'><FiEye /></Link>
+                                </div>
+                            )
+                        case 'public':
+                            return (
+                                <div className="actions">
+                                    <Link to={`/device/` + row._id} className='btn btn-info me-1'><FiEye /></Link>
+                                </div>
+                            )
+                    }
+                })
+                    ()}
             </div>,
             center: 'yes'
         },

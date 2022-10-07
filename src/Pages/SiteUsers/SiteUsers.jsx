@@ -25,10 +25,10 @@ const SiteUsers = () => {
     }, []);
     const columns = [
         {
-            name: "#",
+            name: "No.",
             cell: (row, index, column, id) => <div>{index + 1}</div>,
             selector: row => (console.log(row)),
-            width: "40px"
+            width: "60px"
         },
         {
             name: 'Name',
@@ -65,7 +65,6 @@ const SiteUsers = () => {
                 <Link to={`/edit-site-user/`+ row._id} className='btn btn-info me-1'><FiEdit/></Link>
                 <button className='btn btn-danger' onClick={()=>deleteUser(row._id)}><FiTrash /></button>
             </div>,
-            grow:2,
             center:'yes'
         },
     ];

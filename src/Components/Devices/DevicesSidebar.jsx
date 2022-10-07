@@ -15,7 +15,7 @@ const DevicesSidebar = () => {
                             <ul className="list-group mb-3">
                                 <li className='list-group-item'><Link to='/devices' className='text-dark text-decoration-none'>All Devices</Link></li>
                                 <li className='list-group-item'><Link to='/add-device' className='text-dark text-decoration-none'>Add New Device</Link></li>
-                                <li className='list-group-item'><Link to='/device-types' className='text-dark text-decoration-none'>All Device Types</Link></li>
+                                <li className='list-group-item'><Link to='/device-types' className='text-dark text-decoration-none'>Manage Device Types</Link></li>
                             </ul>
                         )
                     case 'installer':
@@ -23,28 +23,25 @@ const DevicesSidebar = () => {
                             <ul className="list-group mb-3">
                                 <li className='list-group-item'><Link to='/devices' className='text-dark text-decoration-none'>All Devices</Link></li>
                                 <li className='list-group-item'><Link to='/add-device' className='text-dark text-decoration-none'>Add New Device</Link></li>
-                                <li className='list-group-item'><Link to='/device-types' className='text-dark text-decoration-none'>All Device Types</Link></li>
                             </ul>
                         )
                     case 'admin':
                         return (
                             <ul className="list-group mb-3">
                                 <li className='list-group-item'><Link to='/devices' className='text-dark text-decoration-none'>All Devices</Link></li>
-                                <li className='list-group-item'><Link to='/device-types' className='text-dark text-decoration-none'>All Device Types</Link></li>
+                                <li className='list-group-item'><Link to='/add-device' className='text-dark text-decoration-none'>Add New Device</Link></li>
                             </ul>
                         )
                     case 'user':
                         return (
                             <ul className="list-group mb-3">
                                 <li className='list-group-item'><Link to='/devices' className='text-dark text-decoration-none'>All Devices</Link></li>
-                                <li className='list-group-item'><Link to='/device-types' className='text-dark text-decoration-none'>All Device Types</Link></li>
                             </ul>
                         )
                     case 'public':
                         return (
                             <ul className="list-group mb-3">
                                 <li className='list-group-item'><Link to='/devices' className='text-dark text-decoration-none'>All Devices</Link></li>
-                                <li className='list-group-item'><Link to='/device-types' className='text-dark text-decoration-none'>All Device Types</Link></li>
                             </ul>
                         )
                 }

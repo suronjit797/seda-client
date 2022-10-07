@@ -6,27 +6,43 @@ import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
 import AdminSidebarNav from '../../Components/Admins/AdminSidebarNav';
 import Swal from "sweetalert2";
-import { useDispatch } from 'react-redux';
-import { setSiteDetails } from '../../redux/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { FiTrash, FiEye, FiEdit, FiPaperclip } from "react-icons/fi"
 
 const SiteLocations = () => {
     const [siteLocations, setSiteLocations] = useState([]);
+    const userDetails = useSelector((state) => state.user.userDetails);
     const [isLoading, setIsLoading] = useState(false);
-    const dispatch= useDispatch()
 
-    const getSiteLocations = async () => {
+    const getSiteLocations = async (userDetails) => {
         setIsLoading(true)
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location`, { withCredentials: true })
-        if (response) {
-            setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
-            dispatch(setSiteDetails(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1)))
-            setIsLoading(false)
+        if (userDetails.role === "superAdmin") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location`, { withCredentials: true })
+            if (response) {
+                setIsLoading(false)
+                setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+            }
         }
+        if (userDetails.role === "admin") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/admin-sites/` + userDetails._id, { withCredentials: true })
+            if (response) {
+                setIsLoading(false)
+                setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+            }
+        }
+        if (userDetails.role === "installer") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/installer-sites/` + userDetails._id, { withCredentials: true })
+            if (response) {
+                setIsLoading(false)
+                setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+            }
+        }
+
     }
     useEffect(() => {
-        document.title="SEDA - All Site Locations"
-        getSiteLocations()
-    }, []);
+        document.title = "SEDA - All Site Locations"
+        getSiteLocations(userDetails)
+    }, [userDetails]);
     const columns = [
         {
             name: "#",
@@ -37,49 +53,86 @@ const SiteLocations = () => {
         {
             name: 'Name',
             selector: row => (row.name),
-            
+
         },
         {
             name: 'Building Name',
             selector: row => (row.buildingName),
-            
+
         },
         {
             name: 'Contact Person',
             selector: row => (row.contactPersonName),
-           
+
         },
         {
             name: 'Phone',
             cell: row => <>+6{row.contactPersonPhone}</>,
             selector: row => (row.contactPersonPhone),
-            width:"130px"
-           
+            width: "140px"
+
         },
         {
             name: 'Installer',
             cell: row => <>{row?.installer?.name}</>,
             selector: row => (row.installer),
-           
+
         },
         {
             name: 'Date Created',
             selector: row => (moment(row.createdAt).format("DD/MM/YYYY")),
-            width:"120px"
+            width: "125px"
         },
         {
             name: 'Action',
             cell: row => <div>
-                <Link to={`/site-location/`+ row._id} className='btn btn-success me-1'>View</Link>
-                <Link to={`/edit-site-location/`+ row._id} className='btn btn-info me-1'>Edit</Link>
-                <Link to={`/site-document/`+ row._id} className='btn btn-warning me-1'>Documents</Link>
-                <button className='btn btn-danger' onClick={()=>deleteSiteLocation(row._id)}>Delete</button>
+                {(() => {
+                    switch (userDetails.role) {
+                        case 'superAdmin':
+                            return (
+                                <div className="actions">
+                                    <Link to={`/site-location/` + row._id} className='btn btn-success me-1'><FiEye title="View" /></Link>
+                                    <Link to={`/edit-site-location/` + row._id} className='btn btn-info me-1'><FiEdit title="Edit" /></Link>
+                                    <Link to={`/site-document/` + row._id} className='btn btn-warning me-1'><FiPaperclip title="Documents" /></Link>
+                                    <button className='btn btn-danger' onClick={() => deleteSiteLocation(row._id)}><FiTrash title="Delete" /></button>
+                                </div>
+                            )
+                        case 'installer':
+                            return (
+                                <div className="actions">
+                                    <Link to={`/site-location/` + row._id} className='btn btn-success me-1'><FiEye title="View" /></Link>
+                                </div>
+                            )
+                        case 'admin':
+                            return (
+                                <div className="actions">
+                                    <Link to={`/site-location/` + row._id} className='btn btn-success me-1'><FiEye title="View" /></Link>
+                                    <Link to={`/edit-site-location/` + row._id} className='btn btn-info me-1'><FiEdit title="Edit" /></Link>
+                                    <Link to={`/site-document/` + row._id} className='btn btn-warning me-1'><FiPaperclip title="Documents" /></Link>
+                                    <button className='btn btn-danger' onClick={() => deleteSiteLocation(row._id)}><FiTrash title="Delete" /></button>
+                                </div>
+                            )
+                        case 'user':
+                            return (
+                                <div className="actions">
+                                    
+                                </div>
+                            )
+                        case 'public':
+                            return (
+                                <div className="actions">
+                                    
+                                </div>
+                            )
+                    }
+                })
+                    ()}
             </div>,
-            grow:2,
-            center:'yes'
+            grow: 2,
+            center: 'yes'
         },
     ];
-    const deleteSiteLocation = async(siteLocationId)=>{
+    const deleteSiteLocation = async (siteLocationId) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You want to delete this site location?",
@@ -89,23 +142,23 @@ const SiteLocations = () => {
             confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`${process.env.REACT_APP_API_URL}/site-location/`+siteLocationId, { withCredentials: true })
-                        .then(res => {
-                            getSiteLocations()
-                            Swal.fire({
-                                title: "Done!",
-                                text: "Site location Successfully Deleted",
-                                icon: "success",
-                                timer: 2000,
-                                button: false
-                            })
-                        });
+                axios.delete(`${process.env.REACT_APP_API_URL}/site-location/` + siteLocationId, { withCredentials: true })
+                    .then(res => {
+                        getSiteLocations()
+                        Swal.fire({
+                            title: "Done!",
+                            text: "Site location Successfully Deleted",
+                            icon: "success",
+                            timer: 2000,
+                            button: false
+                        })
+                    });
             } else if (
-              result.dismiss === Swal.DismissReason.cancel
+                result.dismiss === Swal.DismissReason.cancel
             ) {
-               
+
             }
-          })
+        })
     }
     return (
         <div className='site-Locations'>

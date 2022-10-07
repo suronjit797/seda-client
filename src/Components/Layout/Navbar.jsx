@@ -16,7 +16,7 @@ const Navbar = ({ handle }) => {
     const userDetails = useSelector((state) => state.user.userDetails);
     const toggleDropdown = () => setDropdownIsOpen(!dropdownIsOpen)
 
-    const logOut = async (userId) => {
+    const logOut = async () => {
         Swal.fire({
             title: "Are you sure?",
             text: "You want to logout.",
@@ -109,6 +109,9 @@ const Navbar = ({ handle }) => {
                                     <ul class="navbar-nav top-nav">
                                         <li class="nav-item">
                                             <Link to='/' className="nav-link active">Main</Link>
+                                        </li>
+                                        <li class="nav-item">
+                                            <Link to='/site-locations' className='nav-link'>Site Locations</Link>
                                         </li>
                                         <li class="nav-item">
                                             <Link to='/devices' className='nav-link'>Devices</Link>

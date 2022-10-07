@@ -27,38 +27,33 @@ const Admins = () => {
 
     const columns = [
         {
-            name: "#",
+            name: "No.",
             cell: (row, index, column, id) => <div>{index + 1}</div>,
             selector: row => (console.log(row)),
-            width: "40px"
+            width: "60px",
+            center:true
         },
         {
             name: 'Name',
             cell:(row)=><div><img src={row.avatar} width={40} height={40} className="my-2 rounded-circle" alt={`${row.name}`}/>  {row.name}</div>,
             selector: row => (row),
-            
         },
         {
             name: 'Company',
             selector: row => (row.companyName),
-            
         },
         {
             name: 'Email',
             selector: row => (row.email),
-            width:"230px"
-           
         },
         {
             name: 'Phone',
             cell: row => <>+6{row.phone}</>,
             selector: row => (row.phone),
-           
         },
         {
             name: 'Date Created',
             selector: row => (moment(row.createdAt).format("DD/MM/YYYY")),
-            
         },
         {
             name: 'Action',
@@ -68,7 +63,6 @@ const Admins = () => {
                 <Link to={`/edit-admin/`+ row._id} className='btn btn-info me-1'><FiEdit title="Edit Profile"/></Link>
                 <button className='btn btn-danger' onClick={()=>deleteUser(row._id)}><FiTrash title="Delete"/></button>
             </div>,
-            grow:3,
             center:'yes'
         },
     ];

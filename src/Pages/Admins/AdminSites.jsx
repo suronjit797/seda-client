@@ -6,6 +6,7 @@ import DataTable from 'react-data-table-component';
 import { Link, useParams } from 'react-router-dom';
 import AdminSidebarNav from '../../Components/Admins/AdminSidebarNav';
 import Swal from "sweetalert2";
+import { FiTrash, FiEye, FiEdit, FiPaperclip } from "react-icons/fi"
 
 const AdminSites = () => {
     const Params = useParams()
@@ -62,27 +63,24 @@ const AdminSites = () => {
             name: 'Phone',
             cell: row => <>+6{row.contactPersonPhone}</>,
             selector: row => (row.contactPersonPhone),
-            width:"130px"
            
         },
         {
             name: 'Installer',
             cell: row => <>{row?.installer?.name}</>,
             selector: row => (row.installer),
-           
         },
         {
             name: 'Date Created',
             selector: row => (moment(row.createdAt).format("DD/MM/YYYY")),
-            width:"120px"
         },
         {
             name: 'Action',
             cell: row => <div>
-                <Link to={`/site-location/`+ row._id} className='btn btn-success me-1'>View</Link>
-                <Link to={`/edit-site-location/`+ row._id} className='btn btn-info me-1'>Edit</Link>
-                <Link to={`/site-document/`+ row._id} className='btn btn-warning me-1'>Documents</Link>
-                <button className='btn btn-danger' onClick={()=>deleteSiteLocation(row._id)}>Delete</button>
+                <Link to={`/site-location/`+ row._id} className='btn btn-success me-1'><FiEye title="View"/></Link>
+                <Link to={`/edit-site-location/`+ row._id} className='btn btn-info me-1'><FiEdit title="Edit"/></Link>
+                <Link to={`/site-document/`+ row._id} className='btn btn-warning me-1'><FiPaperclip title="Documents"/></Link>
+                <button className='btn btn-danger' onClick={()=>deleteSiteLocation(row._id)}><FiTrash title="Delete"/></button>
             </div>,
             grow:2,
             center:'yes'
