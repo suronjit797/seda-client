@@ -1,21 +1,24 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import AdminSidebarNav from '../../Components/Admins/AdminSidebarNav';
 
 const AddSiteLocation = () => {
     const [SuccessMessage, setSuccessMessage] = useState();
+    const [ErrorMessage, setErrorMessage] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate()
     const [buildingTypes, setBuildingTypes] = useState([]);
+    const userDetails = useSelector((state) => state.user.userDetails);
     const [Admins, setAdmins] = useState([]);
     const [Installers, setInstallers] = useState([]);
     const [ElectricityTariff, setElectricityTariff] = useState([]);
     const [siteLocationData, setSiteLocationData] = useState({
         name: "",
-        admin:"",
-        installer:"",
+        admin: "",
+        installer: "",
         buildingName: "",
         buildingType: "",
         buildingAddress1: "",
@@ -31,7 +34,7 @@ const AddSiteLocation = () => {
         remark: "",
         buildingBackground: "",
     });
-    const { name,admin,installer, buildingName, buildingType, buildingAddress1, buildingAddress2, buildingPostalCode, buildingOwnerName, buildingOwnerEmail, contactPersonName, contactPersonPhone, localAuthority, netFloorArea, tariffElectricity, remark, buildingBackground } = siteLocationData
+    const { name, admin, installer, buildingName, buildingType, buildingAddress1, buildingAddress2, buildingPostalCode, buildingOwnerName, buildingOwnerEmail, contactPersonName, contactPersonPhone, localAuthority, netFloorArea, tariffElectricity, remark, buildingBackground } = siteLocationData
     const onInputChange = e => {
         setSiteLocationData({ ...siteLocationData, [e.target.name]: e.target.value });
     };
@@ -46,21 +49,21 @@ const AddSiteLocation = () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/role/admin`, { withCredentials: true })
         if (response) {
             setAdmins(response.data)
-            
+
         }
     }
     const getInstaller = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/role/installer`, { withCredentials: true })
         if (response) {
             setInstallers(response.data)
-            
+
         }
     }
     const getElectricityTariff = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/electricity-tariff`, { withCredentials: true })
         if (response) {
             setElectricityTariff(response.data)
-            
+
         }
     }
     useEffect(() => {
@@ -70,39 +73,48 @@ const AddSiteLocation = () => {
         getBuildingTypes()
     }, []);
     useEffect(() => {
-        setSiteLocationData({...siteLocationData, tariffElectricity: ElectricityTariff[0]?._id })
+        setSiteLocationData({ ...siteLocationData, tariffElectricity: ElectricityTariff[0]?._id })
     }, [ElectricityTariff]);
     useEffect(() => {
-        setSiteLocationData({...siteLocationData, installer: Installers[0]?._id })
+        setSiteLocationData({ ...siteLocationData, installer: Installers[0]?._id })
     }, [Installers]);
     useEffect(() => {
-        setSiteLocationData({...siteLocationData, buildingBackground: buildingTypes[0]?._id })
+        setSiteLocationData({ ...siteLocationData, buildingBackground: buildingTypes[0]?._id })
     }, [buildingTypes]);
-    
-    useEffect(() => {
-        setSiteLocationData({...siteLocationData, admin: Admins[0]?._id })
-    }, [Admins]);
 
+    useEffect(() => {
+        if (userDetails.role === "admin") {
+            setSiteLocationData({ ...siteLocationData, admin: userDetails?._id })
+        }
+    }, [userDetails]);
     const submitHandler = async (e) => {
         e.preventDefault();
-        setIsLoading(true)
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/site-location`, siteLocationData, { withCredentials: true }).catch(function (error) {
-            if (error.response) {
-                console.log(error.response.data);
-                console.log(error.response.status);
-                if (error.response.status === 400 || 500) {
-                    console.log(error)
+        if (!siteLocationData?.admin ==="") {
+            setIsLoading(true)
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/site-location`, siteLocationData, { withCredentials: true }).catch(function (error) {
+                if (error.response) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    if (error.response.status === 400 || 500) {
+                        console.log(error)
+                    }
+                    console.log(error.response.headers);
                 }
-                console.log(error.response.headers);
+            });
+            const data = response.data
+            if (data) {
+                setIsLoading(false)
+                setSuccessMessage("Site Location Created Successfully")
+                setTimeout(() => {
+                    setSuccessMessage()
+                    navigate('/site-locations')
+                }, 2000)
             }
-        });
-        const data = response.data
-        if (data) {
+        }else{
             setIsLoading(false)
-            setSuccessMessage("Site Location Created Successfully")
+            setErrorMessage("Please select an Admin")
             setTimeout(() => {
-                setSuccessMessage()
-                navigate('/site-locations')
+                setErrorMessage()
             }, 2000)
         }
     }
@@ -120,24 +132,29 @@ const AddSiteLocation = () => {
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
+                            {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
                             <form onSubmit={submitHandler}>
                                 <div class="row mb-3">
                                     <div className="col-md-6">
                                         <label for="name" class="form-label">Site Name</label>
                                         <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter full name' required />
                                     </div>
-                                    <div className="col-md-6">
-                                        <label for="email" class="form-label">Admin</label>
-                                        <select class="form-select" id='admin' name='admin' value={admin} onChange={onInputChange} aria-label="Select an admin">
-                                            {Admins && Admins.length > 0 && Admins.map((item, index) => (
-                                                <option value={item._id} key={index}>{item.name}</option>
-                                            ))}
-                                        </select>
-                                    </div>
+                                    {userDetails.role === "admin" ? '' :
+                                        <div className="col-md-6">
+                                            <label for="email" class="form-label">Admin</label>
+                                            <select class="form-select" id='admin' name='admin' value={admin} onChange={onInputChange} aria-label="Select an admin">
+                                                <option label='Select an admin'></option>
+                                                {Admins && Admins.length > 0 && Admins.map((item, index) => (
+                                                    <option value={item._id} key={index}>{item.name}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    }
+
                                 </div>
                                 <div className="row mb-3">
                                     <div className="col-md-6">
-                                    <label for="installer" class="form-label">Assign Installer</label>
+                                        <label for="installer" class="form-label">Assign Installer</label>
                                         <select class="form-select" id='installer' name='installer' value={installer} onChange={onInputChange} aria-label="Select an admin">
                                             {Installers && Installers.length > 0 && Installers.map((item, index) => (
                                                 <option value={item._id} key={index}>{item.name}</option>
