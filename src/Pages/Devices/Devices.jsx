@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 
 const Devices = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const userDetails = useSelector((state) => state.user.userDetails);
+    const userDetails = useSelector((state) => state?.user?.userDetails);
     const [devices, setDevices] = useState([]);
     const getDevices = async () => {
         setIsLoading(true)
@@ -21,26 +21,26 @@ const Devices = () => {
                 setDevices(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
                 setIsLoading(false)
             }
-        }
-        if (userDetails.role === "admin") {
+        } else if (userDetails.role === "admin") {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/admin`, { withCredentials: true })
             if (response) {
-                setDevices(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+                setDevices(response.data[0].sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
                 setIsLoading(false)
             }
-        }
-        if (userDetails.role === "installer") {
+        } else if (userDetails.role === "installer") {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/installer`, { withCredentials: true })
+            if (response) {
+                setDevices(response.data[0].sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+                setIsLoading(false)
+            }
+        } else {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/site/` + userDetails?.site?._id, { withCredentials: true })
             if (response) {
                 setDevices(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
                 setIsLoading(false)
             }
         }
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/site/` + userDetails?.site?._id, { withCredentials: true })
-        if (response) {
-            setDevices(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
-            setIsLoading(false)
-        }
+
 
     }
     const columns = [

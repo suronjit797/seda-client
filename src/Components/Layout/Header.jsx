@@ -8,9 +8,9 @@ import { useLocation } from 'react-router-dom';
 
 const Header = () => {
     const [devices, setDevices] = useState([]);
-    const userDetails = useSelector((state) => state.user.userDetails);
-    let userSites = useSelector((state) => state.user.userSites);
-    let currentSite = useSelector((state) => state.user.currentSite);
+    const userDetails = useSelector((state) => state?.user?.userDetails);
+    let userSites = useSelector((state) => state?.user?.userSites);
+    let currentSite = useSelector((state) => state?.user?.currentSite);
     const dispatch = useDispatch()
     const location = useLocation()
     const getSiteLocations = async (userDetails) => {
@@ -34,15 +34,13 @@ const Header = () => {
         }
 
     }
-    const getDevices = async () => {
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/site/` + currentSite._id, { withCredentials: true })
+    const getDevices = async (locationId) => {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/site/` + locationId, { withCredentials: true })
             if (response) {
                 setDevices(response.data)
             }
     }
-    useEffect(() => {
-        getDevices()
-    }, [currentSite]);
+   
     useEffect(() => {
         getSiteLocations(userDetails)
     }, [userDetails]);
@@ -52,6 +50,11 @@ const Header = () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/` + locationId, { withCredentials: true })
         if (response) {
             dispatch(setCurrentSite(response.data))
+            if(locationId){
+                getDevices(locationId)
+            }else{
+                setDevices([])
+            }
         }
     }
     useEffect(() => {
@@ -86,7 +89,7 @@ const Header = () => {
                                         default:
                                             return (
                                                 <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin">
-                                                    <option >Site Selector</option>
+                                                    <option label='Site Selector'></option>
                                                     {userSites && userSites.length > 0 && userSites.map((item, index) => (
                                                         <option value={item._id} key={index}>{item.name}</option>
                                                     ))}

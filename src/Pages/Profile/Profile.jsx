@@ -1,9 +1,6 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { Spinner } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setUserDetails } from '../../redux/userSlice';
 
 const Profile = () => {
     const userDetails = useSelector(state => state.user?.userDetails)
