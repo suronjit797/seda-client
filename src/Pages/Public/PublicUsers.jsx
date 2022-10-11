@@ -7,17 +7,28 @@ import DataTable from 'react-data-table-component';
 import Swal from "sweetalert2";
 import PublicUserSidebar from '../../Components/Public/PublicUserSidebar';
 import { FiTrash, FiEye, FiEdit, FiHome } from "react-icons/fi"
+import { useSelector } from 'react-redux';
 
 const PublicUsers = () => {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const userDetails = useSelector((state) => state.user.userDetails);
     const getUsers = async () => {
         setIsLoading(true)
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/role/public`, { withCredentials: true })
-        if (response) {
-            setUsers(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
-            setIsLoading(false)
+        if (userDetails.role === "superAdmin") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/role/public`, { withCredentials: true })
+            if (response) {
+                setUsers(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+                setIsLoading(false)
+            }
+        } else {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/me/public`, { withCredentials: true })
+            if (response) {
+                setUsers(response.data[0].sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+                setIsLoading(false)
+            }
         }
+
     }
     useEffect(() => {
         document.title = "SEDA - All Public Users"

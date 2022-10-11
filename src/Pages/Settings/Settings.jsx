@@ -75,8 +75,6 @@ const Settings = () => {
 
             }
         })
-
-
     }
 
     return (

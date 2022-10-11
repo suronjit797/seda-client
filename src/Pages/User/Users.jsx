@@ -79,27 +79,27 @@ const Users = () => {
                 {(() => {
                     switch (row.role) {
                         case 'installer':
-                            return <Link to={`/installer/` + row._id} className='btn btn-info me-1'><AiOutlineEye /></Link>;
+                            return <Link to={`/installer/` + row._id} className='btn btn-info me-1'><AiOutlineEye title="View Profile"/></Link>;
                         case 'admin':
-                            return <Link to={`/admin/` + row._id} className='btn btn-info me-1'><AiOutlineEye /></Link>;
+                            return <Link to={`/admin/` + row._id} className='btn btn-info me-1'><AiOutlineEye title="View Profile"/></Link>;
                         case 'user':
-                            return <Link to={`/site-user/` + row._id} className='btn btn-info me-1'><AiOutlineEye /></Link>;
+                            return <Link to={`/site-user/` + row._id} className='btn btn-info me-1'><AiOutlineEye title="View Profile"/></Link>;
                         case 'public':
-                            return <Link to={`/public-user/` + row._id} className='btn btn-info me-1'><AiOutlineEye /></Link>;
+                            return <Link to={`/public-user/` + row._id} className='btn btn-info me-1'><AiOutlineEye title="View Profile"/></Link>;
                     }
                 })
                     ()}
                 {(() => {
                     switch (row.isActive) {
                         case true:
-                            return <button className='btn btn-warning  me-1' onClick={() => activeDeactiveUser(row._id, row.isActive)}><FiUserX/></button>;
+                            return <button className='btn btn-warning  me-1' onClick={() => activeDeactiveUser(row._id, row.isActive)}><FiUserX title="Inactive Account"/></button>;
                         case false:
-                            return <button className='btn btn-success  me-1' onClick={() => activeDeactiveUser(row._id, row.isActive)}><FiUserCheck /></button>;
+                            return <button className='btn btn-success  me-1' onClick={() => activeDeactiveUser(row._id, row.isActive)}><FiUserCheck title="Active Account"/></button>;
                     }
                 })
                     ()}
 
-                <button className='btn btn-danger' onClick={() => deleteUser(row._id)}><FiTrash/></button>
+                <button className='btn btn-danger' onClick={() => deleteUser(row._id)}><FiTrash title="Delete User"/></button>
             </div>,
             center: 'yes'
         },
