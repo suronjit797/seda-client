@@ -99,6 +99,7 @@ const Navbar = ({ handle }) => {
                                                     Users
                                                 </Dropdown.Toggle>
                                                 <Dropdown.Menu onClick={(e) => toggleDropdown()} ref={ref}>
+                                                    <Link to='/users' className='dropdown-item'>Manage All Users</Link>
                                                     <Link to='/installers' className='dropdown-item'>Manage Installers</Link>
                                                     <Link to='/site-locations' className='dropdown-item'>Manage Site Locations</Link>
                                                     <Link to="/site-users" className='dropdown-item'>Manage Site Users</Link>

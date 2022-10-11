@@ -8,17 +8,28 @@ import Swal from "sweetalert2";
 import { Link } from 'react-router-dom';
 import { AiOutlineEye } from "react-icons/ai"
 import { FiUserCheck, FiUserX, FiTrash } from "react-icons/fi"
+import { useSelector } from 'react-redux';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const userDetails = useSelector((state) => state.user.userDetails);
     const getUsers = async () => {
         setIsLoading(true)
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/users`, { withCredentials: true })
-        if (response) {
-            setUsers(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
-            setIsLoading(false)
+        if (userDetails.role === "superAdmin") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/users`, { withCredentials: true })
+            if (response) {
+                setUsers(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+                setIsLoading(false)
+            }
+        } else {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/me/allUsers`, { withCredentials: true })
+            if (response) {
+                setUsers(response.data[0].sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+                setIsLoading(false)
+            }
         }
+
     }
     useEffect(() => {
         document.title = "SEDA - Users"
@@ -52,6 +63,12 @@ const Users = () => {
 
         },
         {
+            name: 'Assigned Site',
+            cell: row => <div>{row?.site?.name}</div>,
+            selector: row => (row.site),
+
+        },
+        {
             name: 'Date Created',
             selector: row => (moment(row.createdAt).format("DD/MM/YYYY")),
             width: "130px",
@@ -79,27 +96,27 @@ const Users = () => {
                 {(() => {
                     switch (row.role) {
                         case 'installer':
-                            return <Link to={`/installer/` + row._id} className='btn btn-info me-1'><AiOutlineEye title="View Profile"/></Link>;
+                            return <Link to={`/installer/` + row._id} className='btn btn-info me-1'><AiOutlineEye title="View Profile" /></Link>;
                         case 'admin':
-                            return <Link to={`/admin/` + row._id} className='btn btn-info me-1'><AiOutlineEye title="View Profile"/></Link>;
+                            return <Link to={`/admin/` + row._id} className='btn btn-info me-1'><AiOutlineEye title="View Profile" /></Link>;
                         case 'user':
-                            return <Link to={`/site-user/` + row._id} className='btn btn-info me-1'><AiOutlineEye title="View Profile"/></Link>;
+                            return <Link to={`/site-user/` + row._id} className='btn btn-info me-1'><AiOutlineEye title="View Profile" /></Link>;
                         case 'public':
-                            return <Link to={`/public-user/` + row._id} className='btn btn-info me-1'><AiOutlineEye title="View Profile"/></Link>;
+                            return <Link to={`/public-user/` + row._id} className='btn btn-info me-1'><AiOutlineEye title="View Profile" /></Link>;
                     }
                 })
                     ()}
                 {(() => {
                     switch (row.isActive) {
                         case true:
-                            return <button className='btn btn-warning  me-1' onClick={() => activeDeactiveUser(row._id, row.isActive)}><FiUserX title="Inactive Account"/></button>;
+                            return <button className='btn btn-warning  me-1' onClick={() => activeDeactiveUser(row._id, row.isActive)}><FiUserX title="Inactive Account" /></button>;
                         case false:
-                            return <button className='btn btn-success  me-1' onClick={() => activeDeactiveUser(row._id, row.isActive)}><FiUserCheck title="Active Account"/></button>;
+                            return <button className='btn btn-success  me-1' onClick={() => activeDeactiveUser(row._id, row.isActive)}><FiUserCheck title="Active Account" /></button>;
                     }
                 })
                     ()}
 
-                <button className='btn btn-danger' onClick={() => deleteUser(row._id)}><FiTrash title="Delete User"/></button>
+                <button className='btn btn-danger' onClick={() => deleteUser(row._id)}><FiTrash title="Delete User" /></button>
             </div>,
             center: 'yes'
         },
