@@ -17,8 +17,9 @@ const EditAdmin = () => {
         phone: "",
         fax: "",
         companyName: "",
+        companyAddress:""
     });
-    const { name, email, phone, fax, companyName } = adminData
+    const { name, email, phone, fax, companyName, companyAddress } = adminData
     const onInputChange = e => {
         setAdminData({ ...adminData, [e.target.name]: e.target.value });
     };
@@ -77,6 +78,7 @@ const EditAdmin = () => {
                 phone: data?.phone,
                 fax: data?.fax,
                 companyName: data?.companyName,
+                companyAddress: data?.companyAddress
             })
             setImageUrl(data?.avatar)
         }
@@ -118,11 +120,8 @@ const EditAdmin = () => {
                                         <input type="text" name='companyName' value={companyName} onChange={onInputChange} class="form-control" id="cname" placeholder='Enter company name' />
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="phone" class="form-label">Phone Number</label>
-                                        <div className='input-group'>
-                                            <span class="input-group-text" id="basic-addon1">+6</span>
-                                            <input type="number" name='phone' value={phone} onChange={onInputChange} class="form-control" id="phone" placeholder='Enter phone number' />
-                                        </div>
+                                        <label for="companyAddress" class="form-label">Company Address</label>
+                                        <input type="text" name='companyAddress' value={companyAddress} onChange={onInputChange} class="form-control" id="companyAddress" placeholder='Enter company address' />
                                     </div>
                                 </div>
 
@@ -132,6 +131,13 @@ const EditAdmin = () => {
                                         <div className='input-group'>
                                             <span class="input-group-text" id="basic-addon1">+6</span>
                                             <input type="number" name='fax' value={fax} onChange={onInputChange} class="form-control" id="fax" placeholder='Enter fax number' />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label for="phone" class="form-label">Phone Number</label>
+                                        <div className='input-group'>
+                                            <span class="input-group-text" id="basic-addon1">+6</span>
+                                            <input type="number" name='phone' value={phone} onChange={onInputChange} class="form-control" id="phone" placeholder='Enter phone number' />
                                         </div>
                                     </div>
                                 </div>

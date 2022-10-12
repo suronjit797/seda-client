@@ -50,6 +50,10 @@ const AdminView = () => {
                                         <div className="col-4">Company Name</div>
                                         <div className="col-8">: {adminDetails?.companyName}</div>
                                     </div>
+                                    <div className="row mb-2">
+                                        <div className="col-4">Company Address</div>
+                                        <div className="col-8">: {adminDetails?.companyAddress}</div>
+                                    </div>
                                   
                                  
                                     <div className="row mb-2">

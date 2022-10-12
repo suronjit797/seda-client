@@ -5,10 +5,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { setIsLogged, setUserDetails } from '../../redux/userSlice';
 import { BsEye, BsEyeSlash } from "react-icons/bs"
 import './signin.css';
+import { Spinner } from 'react-bootstrap';
 
 const SignIn = () => {
     const [ErrorMessage, setErrorMessage] = useState();
     const [PasswordShown, setPasswordShown] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const togglePassword = () => { setPasswordShown(!PasswordShown); };
     const [login, setLogin] = useState({
         email: "",
@@ -23,6 +25,7 @@ const SignIn = () => {
 
     const SubmitHandler = async (e) => {
         e.preventDefault();
+        setIsLoading(true)
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/login`, login, { withCredentials: true }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.data);
@@ -72,7 +75,11 @@ const SignIn = () => {
                         </div>
                         <div className="col-md-6 col-lg-7 col-xl-6">
                             <h3 className='mt-sm-3 mb-3'>Welcome Back</h3>
+                            <div className='d-flex justify-content-center'>
+                                {isLoading && <Spinner animation="border" variant="dark" />}
+                            </div>
                             {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
+
                             <form onSubmit={SubmitHandler}>
                                 <div className="row mb-3">
                                     <label for="email" className="col-sm-4 col-md-3 col-form-label">Email</label>

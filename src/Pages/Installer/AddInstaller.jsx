@@ -92,43 +92,52 @@ const AddInstaller = () => {
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
                             <form onSubmit={submitHandler}>
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">Full Name</label>
-                                    <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter full name' required />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email Address</label>
-                                    <input type="email" name='email' value={email} onChange={onInputChange} class="form-control" id="email" placeholder='Enter email address' required />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input type="password" name='password' value={password} minlength="6" onChange={onInputChange} class="form-control" id="password" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="reenterPassword" class="form-label">Reenter Password</label>
-                                    <input type="password" name='reenterPassword' value={reenterPassword} minlength="6" onChange={onInputChange} class="form-control" id="reenterPassword" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">Phone Number</label>
-                                    <div className='input-group'>
-                                        <span class="input-group-text" id="basic-addon1">+6</span>
-                                        <input type="number" name='phone' value={phone} onChange={onInputChange} class="form-control" id="phone" placeholder='Enter phone number' />
+                                <div class="row mb-3">
+                                    <div className="col-md-6">
+                                        <label for="name" class="form-label">Full Name</label>
+                                        <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter full name' required />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <input type="email" name='email' value={email} onChange={onInputChange} class="form-control" id="email" placeholder='Enter email address' required />
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="fax" class="form-label">Fax Number</label>
-                                    <div className='input-group'>
-                                        <span class="input-group-text" id="basic-addon1">+6</span>
-                                        <input type="number" name='fax' value={fax} onChange={onInputChange} class="form-control" id="fax" placeholder='Enter fax number' />
+                                <div class="row mb-3">
+                                    <div className="col-md-6">
+                                        <label for="password" class="form-label">Password</label>
+                                        <input type="password" name='password' value={password} minlength="6" onChange={onInputChange} class="form-control" id="password" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label for="reenterPassword" class="form-label">Reenter Password</label>
+                                        <input type="password" name='reenterPassword' value={reenterPassword} minlength="6" onChange={onInputChange} class="form-control" id="reenterPassword" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="cname" class="form-label">Company  Name</label>
-                                    <input type="text" name='companyName' value={companyName} onChange={onInputChange} class="form-control" id="cname" placeholder='Enter company name' />
+                                <div class="row mb-3">
+                                    <div className="col-md-6">
+                                        <label for="phone" class="form-label">Phone Number</label>
+                                        <div className='input-group'>
+                                            <span class="input-group-text" id="basic-addon1">+6</span>
+                                            <input type="number" name='phone' value={phone} onChange={onInputChange} class="form-control" id="phone" placeholder='Enter phone number' />
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label for="fax" class="form-label">Fax Number</label>
+                                        <div className='input-group'>
+                                            <span class="input-group-text" id="basic-addon1">+6</span>
+                                            <input type="number" name='fax' value={fax} onChange={onInputChange} class="form-control" id="fax" placeholder='Enter fax number' />
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="companyAddress" class="form-label">Company Address</label>
-                                    <input type="text" name='companyAddress' value={companyAddress} onChange={onInputChange} class="form-control" id="companyAddress" placeholder='Enter company address' />
+
+                                <div class="row mb-3">
+                                    <div className="col-md-6">
+                                        <label for="cname" class="form-label">Company  Name</label>
+                                        <input type="text" name='companyName' value={companyName} onChange={onInputChange} class="form-control" id="cname" placeholder='Enter company name' />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label for="companyAddress" class="form-label">Company Address</label>
+                                        <input type="text" name='companyAddress' value={companyAddress} onChange={onInputChange} class="form-control" id="companyAddress" placeholder='Enter company address' />
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="bname" class="form-label">Logo</label>

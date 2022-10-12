@@ -13,12 +13,14 @@ const AddAdmin = () => {
         name: "",
         email: "",
         password: "",
+        reenterPassword: "",
         companyName: "",
+        companyAddress: "",
         phone: "",
         fax: "",
         role: "admin"
     });
-    const { name, email, password, phone, fax, companyName } = adminData
+    const { name, email, password, reenterPassword, phone, fax, companyAddress, companyName } = adminData
     const onInputChange = e => {
         setAdminData({ ...adminData, [e.target.name]: e.target.value });
     };
@@ -35,37 +37,44 @@ const AddAdmin = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        setIsLoading(true)
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/users`, adminData, { withCredentials: true }).catch(function (error) {
-            if (error.response) {
-                setIsLoading(false)
-                setErrorMessage(error.response.data)
-                setTimeout(() => {
-                    setErrorMessage()
-                }, 2000)
-            }
-        });
-        const data = response.data
-        if (data) {
-            if (selectedImage === null) {
-                setIsLoading(false)
-                setSuccessMessage("Admin Created Successfully")
-                setTimeout(() => {
-                    setSuccessMessage()
-                    navigate('/admins')
-                }, 2000)
-
-            } else {
-                const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/avatarUpload/`, selectedImage, { withCredentials: true })
-                if (addImageResponse) {
+        if (password === reenterPassword) {
+            setIsLoading(true)
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/users`, adminData, { withCredentials: true }).catch(function (error) {
+                if (error.response) {
+                    setIsLoading(false)
+                    setErrorMessage(error.response.data)
+                    setTimeout(() => {
+                        setErrorMessage()
+                    }, 2000)
+                }
+            });
+            const data = response.data
+            if (data) {
+                if (selectedImage === null) {
                     setIsLoading(false)
                     setSuccessMessage("Admin Created Successfully")
                     setTimeout(() => {
                         setSuccessMessage()
                         navigate('/admins')
                     }, 2000)
+
+                } else {
+                    const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/avatarUpload/`, selectedImage, { withCredentials: true })
+                    if (addImageResponse) {
+                        setIsLoading(false)
+                        setSuccessMessage("Admin Created Successfully")
+                        setTimeout(() => {
+                            setSuccessMessage()
+                            navigate('/admins')
+                        }, 2000)
+                    }
                 }
             }
+        } else {
+            setErrorMessage("Both Passwords Are Not Matching")
+            setTimeout(() => {
+                setErrorMessage()
+            }, 2000)
         }
     }
 
@@ -103,11 +112,20 @@ const AddAdmin = () => {
                                         <input type="password" name='password' value={password} onChange={onInputChange} class="form-control" id="password" minlength="6" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
                                     </div>
                                     <div className="col-md-6">
+                                        <label for="reenterPassword" class="form-label">Reenter Password</label>
+                                        <input type="password" name='reenterPassword' value={reenterPassword} minlength="6" onChange={onInputChange} class="form-control" id="reenterPassword" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-md-6">
                                         <label for="cname" class="form-label">Company  Name</label>
                                         <input type="text" name='companyName' value={companyName} onChange={onInputChange} class="form-control" id="cname" placeholder='Enter company name' />
                                     </div>
+                                    <div className="col-md-6">
+                                        <label for="companyAddress" class="form-label">Company Address</label>
+                                        <input type="text" name='companyAddress' value={companyAddress} onChange={onInputChange} class="form-control" id="companyAddress" placeholder='Enter company address' />
+                                    </div>
                                 </div>
-
                                 <div class="row mb-3">
                                     <div className="col-md-6">
                                         <label for="phone" class="form-label">Phone Number</label>
@@ -124,7 +142,7 @@ const AddAdmin = () => {
                                         </div>
                                     </div>
                                 </div>
-                               
+
                                 <div class="mb-3">
                                     <label for="bname" class="form-label">Profile Photo</label>
                                     {imageUrl ? (
@@ -143,7 +161,7 @@ const AddAdmin = () => {
                                     }
                                 </div>
                                 <div className='float-end'>
-                                    <button type="submit" class="btn btn-success me-2">Save</button>
+                                    <button type="submit" class="btn btn-success me-2">Create Admin</button>
                                     <Link to="/admins" class="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>
