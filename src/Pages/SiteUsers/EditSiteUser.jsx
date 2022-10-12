@@ -3,10 +3,12 @@ import SiteUserSidebar from '../../Components/SiteUsers/SiteUserSidebar';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const EditSiteUser = () => {
     const [SuccessMessage, setSuccessMessage] = useState();
     const [isLoading, setIsLoading] = useState(false);
+    const userDetails = useSelector((state) => state?.user?.userDetails);
     const Params = useParams()
     const userId = Params.userId
     const navigate = useNavigate()
@@ -17,7 +19,7 @@ const EditSiteUser = () => {
         fax: "",
         site: "",
     });
-    const { name, email,  phone, fax, site } = userData
+    const { name, email, phone, fax, site } = userData
     const onInputChange = e => {
         setUserData({ ...userData, [e.target.name]: e.target.value });
     };
@@ -71,9 +73,16 @@ const EditSiteUser = () => {
 
     const [siteLocations, setSiteLocations] = useState([]);
     const getSiteLocations = async () => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location`, { withCredentials: true })
-        if (response) {
-            setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+        if (userDetails.role === "superAdmin") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location`, { withCredentials: true })
+            if (response) {
+                setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+            }
+        } else if (userDetails.role === "admin") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/admin-sites/` + userDetails._id, { withCredentials: true })
+            if (response) {
+                setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+            }
         }
     }
     useEffect(() => {
@@ -127,7 +136,7 @@ const EditSiteUser = () => {
                                         <label for="site" class="form-label">Assigned Site</label>
                                         <select class="form-select" id='site' name='site' value={site} onChange={onInputChange} aria-label="Select a site location">
                                             {siteLocations && siteLocations.length > 0 && siteLocations.map((item, index) => (
-                                                <option value={item._id} key={index}>{item.name}</option>
+                                                site === item._id ? <option value={item._id} key={index} selected>{item.name}</option> : <option value={item._id} key={index}>{item.name}</option>
                                             ))}
                                         </select>
                                     </div>

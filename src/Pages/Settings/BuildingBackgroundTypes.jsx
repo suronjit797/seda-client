@@ -23,7 +23,7 @@ const BuildingBackgroundTypes = () => {
             setIsLoading(false)
             setBuildingTypeData({name: ""})
             getBuildingTypes()
-            setSuccessMessage("New Building Type created Successfully")
+            setSuccessMessage("Building Type Created Successfully")
             setTimeout(() => {
                 setSuccessMessage()
             }, 2000)
@@ -61,7 +61,7 @@ const BuildingBackgroundTypes = () => {
                                             <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter a name' required />
                                         </div>
                                         <div className='float-end'>
-                                            <button type="submit" class="btn btn-success me-2">Save</button>
+                                            <button type="submit" class="btn btn-success me-2">Create</button>
                                         </div>
                                     </form>
                                 </div>

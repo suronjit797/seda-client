@@ -40,7 +40,7 @@ const EditDevice = () => {
         const data = response.data
         if (data) {
             setIsLoading(false)
-            setSuccessMessage("Device updated successfully")
+            setSuccessMessage("Device Updated Successfully")
             setTimeout(() => {
                 setSuccessMessage()
                 navigate('/devices')

@@ -10,7 +10,6 @@ const Header = () => {
     const [devices, setDevices] = useState([]);
     const userDetails = useSelector((state) => state?.user?.userDetails);
     let userSites = useSelector((state) => state?.user?.userSites);
-    let currentSite = useSelector((state) => state?.user?.currentSite);
     const dispatch = useDispatch()
     const location = useLocation()
     const getSiteLocations = async (userDetails) => {
@@ -19,14 +18,12 @@ const Header = () => {
             if (response) {
                 dispatch(setSiteDetails(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1)))
             }
-        }
-        if (userDetails.role === "admin") {
+        } else if (userDetails.role === "admin") {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/admin-sites/` + userDetails._id, { withCredentials: true })
             if (response) {
                 dispatch(setSiteDetails(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1)))
             }
-        }
-        if (userDetails.role === "installer") {
+        } else if (userDetails.role === "installer") {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/installer-sites/` + userDetails._id, { withCredentials: true })
             if (response) {
                 dispatch(setSiteDetails(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1)))
@@ -35,14 +32,21 @@ const Header = () => {
 
     }
     const getDevices = async (locationId) => {
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/site/` + locationId, { withCredentials: true })
-            if (response) {
-                setDevices(response.data)
-            }
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/site/` + locationId, { withCredentials: true })
+        if (response) {
+            setDevices(response.data)
+        }
     }
-   
+
     useEffect(() => {
         getSiteLocations(userDetails)
+    }, [userDetails]);
+
+    useEffect(() => {
+        if (userDetails?.site) {
+            dispatch(setCurrentSite(userDetails?.site))
+            getDevices(userDetails?.site?._id)
+        }
     }, [userDetails]);
 
     const handleSiteChange = async (e) => {
@@ -50,18 +54,13 @@ const Header = () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/` + locationId, { withCredentials: true })
         if (response) {
             dispatch(setCurrentSite(response.data))
-            if(locationId){
+            if (locationId) {
                 getDevices(locationId)
-            }else{
+            } else {
                 setDevices([])
             }
         }
     }
-    useEffect(() => {
-        if (userDetails.role === "admin") {
-
-        }
-    }, [userDetails]);
     return (
         <div className='header'>
             <div className="container-fluid bg-warning py-2 ">
@@ -83,9 +82,17 @@ const Header = () => {
                                 {(() => {
                                     switch (userDetails.role) {
                                         case 'user':
-                                            return <div><p>Site: {userDetails?.site?.name}</p></div>;
+                                            return (
+                                                <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin" disabled>
+                                                    <option value={userDetails?.site?._id}>{userDetails?.site?.name}</option>
+                                                </select>
+                                            )
                                         case 'public':
-                                            return <div><p>Site: {userDetails?.site?.name}</p></div>;
+                                            return (
+                                                <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin" disabled>
+                                                    <option value={userDetails?.site?._id}>{userDetails?.site?.name}</option>
+                                                </select>
+                                            )
                                         default:
                                             return (
                                                 <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin">

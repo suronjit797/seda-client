@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FiTrash, FiEdit, } from "react-icons/fi"
 import { Spinner } from 'react-bootstrap';
 import axios from 'axios';
@@ -10,8 +10,9 @@ export default function ElectricityTariffTable({ data, getElectricityTariff }) {
     const [isLoading, setIsLoading] = useState(false);
     const userDetails = useSelector((state) => state.user.userDetails);
     const [SuccessMessage, setSuccessMessage] = useState();
+    const [colShow, setColShow] = useState(false);
     const [modalShow, setModalShow] = useState(false);
-    const [ETariffToEdit, setETariffToEdit] = useState();
+    const [ETariffToEdit, setETariffToEdit] = useState({});
     const columns = [
         {
             name: "No.",
@@ -48,13 +49,13 @@ export default function ElectricityTariffTable({ data, getElectricityTariff }) {
                     }
                 })
                     ()}
-
             </div>,
-            center: true
+            center: true,
+            omit: colShow
         },
     ];
-    const editETariff = (data) => {
-        setETariffToEdit(data)
+    const editETariff = (etData) => {
+        setETariffToEdit(etData)
         setModalShow(true)
     }
     const deleteETariff = async (etId) => {
@@ -69,9 +70,18 @@ export default function ElectricityTariffTable({ data, getElectricityTariff }) {
             }, 2000)
         }
     }
+    useEffect(() => {
+        if(userDetails?.role === "superAdmin"){
+            
+        }else{
+            setColShow(true)
+        }
+    }, [userDetails]);
+
+
     return (
         <div>
-            <h4 className='mb-3'>Electricity Tariff</h4>
+            <h4 className='mb-3'>Tariff Categories</h4>
             <div className='d-flex justify-content-center'>
                 {isLoading && <Spinner animation="border" variant="dark" />}
             </div>
@@ -86,7 +96,7 @@ export default function ElectricityTariffTable({ data, getElectricityTariff }) {
             />
             <EditETariffModal
                 show={modalShow}
-                onHide={() => setModalShow(false)}
+                onHide={() => { setModalShow(false); setETariffToEdit({}) }}
                 ETariffToEdit={ETariffToEdit}
                 setModalShow={setModalShow}
                 getElectricityTariff={getElectricityTariff}

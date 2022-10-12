@@ -25,6 +25,9 @@ const ElectricityTariff = () => {
             [bodyContent]: value
         });
     }
+    const onInputChange = e => {
+        setElectricityTariffData({ ...electricityTariffData, [e.target.name]: e.target.value });
+    };
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true)
@@ -73,7 +76,7 @@ const ElectricityTariff = () => {
                                                     <form onSubmit={handleSubmit}>
                                                         <div className="mb-3">
                                                             <label for="name" class="form-label">Tariff Category</label>
-                                                            <input type="text" name='name' value={name} onChange={(event) => handleChange(event.target.value, 'name')} class="form-control" id="name" placeholder='Enter a tariff category' required />
+                                                            <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter a tariff category' required />
                                                         </div>
                                                         <div className="mb-3">
                                                             <label for="description" class="form-label">Description</label>

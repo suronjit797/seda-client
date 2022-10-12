@@ -34,7 +34,6 @@ const AdminSidebarNav = () => {
                         return (
                             <ul className="list-group mb-3">
                                 <li className='list-group-item'><Link to='/site-locations' className='text-dark text-decoration-none'>All Site Locations</Link></li>
-                                <li className='list-group-item'><Link to='/add-location' className='text-dark text-decoration-none'>Add A Site Location</Link></li>
                             </ul>
                         )
                     case 'user':

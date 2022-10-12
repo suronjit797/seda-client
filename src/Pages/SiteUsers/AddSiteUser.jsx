@@ -3,24 +3,27 @@ import SiteUserSidebar from '../../Components/SiteUsers/SiteUserSidebar';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 
 const AddSiteUser = () => {
     const [SuccessMessage, setSuccessMessage] = useState();
     const [ErrorMessage, setErrorMessage] = useState();
+    const userDetails = useSelector((state) => state?.user?.userDetails);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate()
     const [userData, setUserData] = useState({
         name: "",
         email: "",
         password: "",
+        reenterPassword: "",
         phone: "",
         fax: "",
         site: "",
         parent: "",
         role: "user"
     });
-    const { name, email, password, phone, fax, site } = userData
+    const { name, email, password, reenterPassword, phone, fax, site } = userData
     const onInputChange = e => {
         setUserData({ ...userData, [e.target.name]: e.target.value });
     };
@@ -37,45 +40,60 @@ const AddSiteUser = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        setIsLoading(true)
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/users`, userData, { withCredentials: true }).catch(function (error) {
-            if (error.response) {
-                setIsLoading(false)
-                setErrorMessage(error.response.data)
-                setTimeout(() => {
-                    setErrorMessage()
-                }, 2000)
-            }
-        });
-        const data = response.data
-        if (data) {
-            if (selectedImage === null) {
-                setIsLoading(false)
-                setSuccessMessage("Site User Created Successfully")
-                setTimeout(() => {
-                    setSuccessMessage()
-                    navigate('/site-users')
-                }, 2000)
-
-            } else {
-                const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/avatarUpload/`, selectedImage, { withCredentials: true })
-                if (addImageResponse) {
+        if (password === reenterPassword) {
+            setIsLoading(true)
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/users`, userData, { withCredentials: true }).catch(function (error) {
+                if (error.response) {
+                    setIsLoading(false)
+                    setErrorMessage(error.response.data)
+                    setTimeout(() => {
+                        setErrorMessage()
+                    }, 2000)
+                }
+            });
+            const data = response.data
+            if (data) {
+                if (selectedImage === null) {
                     setIsLoading(false)
                     setSuccessMessage("Site User Created Successfully")
                     setTimeout(() => {
                         setSuccessMessage()
                         navigate('/site-users')
                     }, 2000)
+
+                } else {
+                    const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/users/${data._id}/avatarUpload/`, selectedImage, { withCredentials: true })
+                    if (addImageResponse) {
+                        setIsLoading(false)
+                        setSuccessMessage("Site User Created Successfully")
+                        setTimeout(() => {
+                            setSuccessMessage()
+                            navigate('/site-users')
+                        }, 2000)
+                    }
                 }
             }
+        } else {
+            setErrorMessage("Both Passwords Are Not Matching")
+            setTimeout(() => {
+                setErrorMessage()
+            }, 2000)
         }
+
     }
 
     const [siteLocations, setSiteLocations] = useState([]);
     const getSiteLocations = async () => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location`, { withCredentials: true })
-        if (response) {
-            setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+        if (userDetails.role === "superAdmin") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location`, { withCredentials: true })
+            if (response) {
+                setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+            }
+        } else if (userDetails.role === "admin") {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/admin-sites/` + userDetails._id, { withCredentials: true })
+            if (response) {
+                setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
+            }
         }
     }
     useEffect(() => {
@@ -120,10 +138,17 @@ const AddSiteUser = () => {
                                         <label for="email" class="form-label">Email Address</label>
                                         <input type="email" name='email' value={email} onChange={onInputChange} class="form-control" id="email" placeholder='Enter email address' required />
                                     </div>
+                                </div>
+                                <div class="row mb-3">
                                     <div className="col-md-6">
                                         <label for="password" class="form-label">Password</label>
                                         <input type="password" name='password' value={password} minlength="6" onChange={onInputChange} class="form-control" id="password" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
                                     </div>
+                                    <div className="col-md-6">
+                                        <label for="reenterPassword" class="form-label">Reenter Password</label>
+                                        <input type="password" name='reenterPassword' value={reenterPassword} minlength="6" onChange={onInputChange} class="form-control" id="reenterPassword" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
+                                    </div>
+
                                 </div>
 
                                 <div class="row mb-3">
