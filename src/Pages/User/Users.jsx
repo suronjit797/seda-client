@@ -45,8 +45,8 @@ const Users = () => {
         },
         {
             name: 'User Name',
-            selector: row => (row.name),
-
+            cell:(row)=><div><img src={row.avatar} width={40} height={40} className="my-2 rounded-circle" alt={`${row.name}`}/>  {row.name}</div>,
+            selector: row => (row),
         },
         {
             name: 'Email',
@@ -66,6 +66,7 @@ const Users = () => {
             name: 'Assigned Site',
             cell: row => <div>{row?.site?.name}</div>,
             selector: row => (row.site),
+            center:true
 
         },
         {

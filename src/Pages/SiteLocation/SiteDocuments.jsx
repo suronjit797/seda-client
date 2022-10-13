@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import AdminSidebarNav from '../../Components/Admins/AdminSidebarNav';
 import axios from 'axios';
 import { GrDownload } from 'react-icons/gr';
-import { FaRegEye } from 'react-icons/fa';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import { Spinner } from 'react-bootstrap';
 import moment from 'moment';

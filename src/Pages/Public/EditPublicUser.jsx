@@ -1,5 +1,4 @@
 import { Spinner } from 'react-bootstrap';
-import SiteUserSidebar from '../../Components/SiteUsers/SiteUserSidebar';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -92,9 +91,6 @@ const EditPublicUser = () => {
     useEffect(() => {
         setUserData({ ...userData, site: siteLocations[0]?._id })
     }, [siteLocations]);
-
-
-
 
     const getUser = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/` + userId, { withCredentials: true })

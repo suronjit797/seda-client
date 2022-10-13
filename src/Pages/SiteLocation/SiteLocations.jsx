@@ -144,7 +144,7 @@ const SiteLocations = () => {
             if (result.isConfirmed) {
                 axios.delete(`${process.env.REACT_APP_API_URL}/site-location/` + siteLocationId, { withCredentials: true })
                     .then(res => {
-                        getSiteLocations()
+                        getSiteLocations(userDetails)
                         Swal.fire({
                             title: "Done!",
                             text: "Site location Successfully Deleted",

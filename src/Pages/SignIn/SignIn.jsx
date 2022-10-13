@@ -56,9 +56,9 @@ const SignIn = () => {
     useEffect(() => {
         document.title = "SEDA - ONLINE ENERGY MONITORING CLOUD PLATFORM"
     }, []);
-
+    let background = '/images/bg-3.jpg'
     return (
-        <div className='content-wrapper'>
+        <div className='content-wrapper' style={{backgroundImage: `url(${background})`}}>
             <div className='SignIn-wrapper'>
                 <div className="card-signIn">
                     <div className="row signIn-top">
