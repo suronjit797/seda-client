@@ -89,7 +89,7 @@ const AddSiteLocation = () => {
     }, [userDetails]);
     const submitHandler = async (e) => {
         e.preventDefault();
-        if (!siteLocationData?.admin ==="") {
+        if (!siteLocationData?.admin === "") {
             setIsLoading(true)
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/site-location`, siteLocationData, { withCredentials: true }).catch(function (error) {
                 if (error.response) {
@@ -110,7 +110,7 @@ const AddSiteLocation = () => {
                     navigate('/site-locations')
                 }, 2000)
             }
-        }else{
+        } else {
             setIsLoading(false)
             setErrorMessage("Please select an Admin")
             setTimeout(() => {
@@ -203,20 +203,6 @@ const AddSiteLocation = () => {
                                         <input type="email" name='buildingOwnerEmail' value={buildingOwnerEmail} onChange={onInputChange} class="form-control" id="buildingOwnerEmail" placeholder='Enter building owner email' />
                                     </div>
                                 </div>
-                                <h5 className='mt-4'>Contact Person Information</h5>
-                                <div class="row mb-3">
-                                    <div className="col-md-6">
-                                        <label for="contactPersonName" class="form-label">Contact Person Name</label>
-                                        <input type="text" name='contactPersonName' value={contactPersonName} onChange={onInputChange} class="form-control" id="contactPersonName" placeholder='Enter contact person name' />
-                                    </div>
-                                    <div className="col-md-6">
-                                        <label for="contactPersonPhone" class="form-label">Contact Person Phone</label>
-                                        <div className='input-group'>
-                                            <span class="input-group-text" id="basic-addon1">+6</span>
-                                            <input type="number" name='contactPersonPhone' value={contactPersonPhone} onChange={onInputChange} class="form-control" id="contactPersonPhone" placeholder='Enter contact person phone' />
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="row mb-3">
                                     <div className="col-md-6">
                                         <label for="netFloorArea" class="form-label">Nett Floor Area (sq ft)</label>
@@ -243,6 +229,20 @@ const AddSiteLocation = () => {
                                                 <option value={item._id} key={index}>{item.name}</option>
                                             ))}
                                         </select>
+                                    </div>
+                                </div>
+                                <h5 className='mt-4'>Contact Person Information</h5>
+                                <div class="row mb-3">
+                                    <div className="col-md-6">
+                                        <label for="contactPersonName" class="form-label">Contact Person Name</label>
+                                        <input type="text" name='contactPersonName' value={contactPersonName} onChange={onInputChange} class="form-control" id="contactPersonName" placeholder='Enter contact person name' />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label for="contactPersonPhone" class="form-label">Contact Person Phone</label>
+                                        <div className='input-group'>
+                                            <span class="input-group-text" id="basic-addon1">+6</span>
+                                            <input type="number" name='contactPersonPhone' value={contactPersonPhone} onChange={onInputChange} class="form-control" id="contactPersonPhone" placeholder='Enter contact person phone' />
+                                        </div>
                                     </div>
                                 </div>
                                 <div className='float-end'>
