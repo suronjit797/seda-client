@@ -3,51 +3,48 @@ import React, { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import SettingSidebarNav from '../../../Components/Settings/SettingSidebarNav';
+import ParametersTable from './ParametersTable';
 
 const Parameters = () => {
     const [SuccessMessage, setSuccessMessage] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const userDetails = useSelector((state) => state.user.userDetails);
     const [parameters, setParameters] = useState([]);
-    const [parameterData, setParameter] = useState({
+    const [parameterData, setParameterData] = useState({
         name: "",
-        description: ""
+        type: "",
+        value: ""
     });
-    const { name, description } = parameterData;
+    const { name, type, value } = parameterData;
 
-    const handleChange = (value, bodyContent) => {
-        setParameter({
-            ...parameterData,
-            [bodyContent]: value
-        });
-    }
     const onInputChange = e => {
-        setParameter({ ...parameterData, [e.target.name]: e.target.value });
+        setParameterData({ ...parameterData, [e.target.name]: e.target.value });
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true)
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/electricity-tariff`, parameterData, { withCredentials: true })
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/parameters`, parameterData, { withCredentials: true })
         if (response) {
             setIsLoading(false)
-            setParameter({ name: "", description: "" })
-            // getElectricityTariff()
-            setSuccessMessage("Electricity Tariff Created Successfully")
+            setParameterData({ name: "", type: "", value: "" })
+            getParameters()
+            setSuccessMessage("Parameter Created Successfully")
             setTimeout(() => {
                 setSuccessMessage()
             }, 2000)
         }
         e.target.reset();
     }
-    // const getElectricityTariff = async () => {
-    //     const response = await axios.get(`${process.env.REACT_APP_API_URL}/electricity-tariff`, { withCredentials: true })
-    //     if (response) {
-    //         setParameters(response.data)
-    //     }
-    // }
-    // useEffect(() => {
-    //     getElectricityTariff()
-    // }, []);
+
+    const getParameters = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/parameters`, { withCredentials: true })
+        if (response) {
+            setParameters(response.data)
+        }
+    }
+    useEffect(() => {
+        getParameters()
+    }, []);
     return (
         <div className='settings'>
             <div className="container-fluid">
@@ -72,16 +69,20 @@ const Parameters = () => {
                                                     <form onSubmit={handleSubmit}>
                                                         <div className="mb-3">
                                                             <label for="name" class="form-label">Parameter Name</label>
-                                                            <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter a Parameter Name' required />
+                                                            <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter a parameter name' required />
                                                         </div>
                                                         <div className="mb-3">
-                                                            <label for="name" class="form-label">Parameter Type</label>
-                                                            <select name="" id="" className='form-select'>
+                                                            <label for="type" class="form-label">Parameter Type</label>
+                                                            <select name="type" id="type" className='form-select' value={type} onChange={onInputChange}>
                                                                 <option >Select parameter type</option>
-                                                                <option >Measured Value</option>
-                                                                <option >Computation Action</option>
+                                                                <option value="Measured Value">Measured Value</option>
+                                                                <option value="Computation Action">Computation Action</option>
                                                                 <option >Default Value</option>
                                                             </select>
+                                                        </div>
+                                                        <div className="mb-3">
+                                                            <label for="value" class="form-label">Unit / Value</label>
+                                                            <input type="text" name='value' value={value} onChange={onInputChange} class="form-control" id="value" placeholder='Enter a unite/ value' required />
                                                         </div>
                                                         <div className='float-end'>
                                                             <button type="submit" class="btn btn-success me-2">Create</button>
@@ -89,7 +90,7 @@ const Parameters = () => {
                                                     </form>
                                                 </div>
                                                 <div className="col-md-8">
-                                                    {/* <ElectricityTariffTable data={parameters} getElectricityTariff={getElectricityTariff} /> */}
+                                                    <ParametersTable data={parameters} getParameters={getParameters} />
                                                 </div>
                                             </div>
                                         );
@@ -97,7 +98,7 @@ const Parameters = () => {
                                         return (
                                             <div className="row mt-4">
                                                 <div className="col-md-12">
-                                                    {/* <ElectricityTariffTable data={parameters} getElectricityTariff={getElectricityTariff} /> */}
+                                                    {/* <ElectricityTariffTable data={parameters} getParameters={getParameters} /> */}
                                                 </div>
                                             </div>
                                         )

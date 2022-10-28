@@ -50,6 +50,7 @@ import EditProfile from './Pages/Profile/EditProfile';
 import ResetPassword from './Pages/SignIn/ResetPassword';
 import Parameters from './Pages/Settings/Parameters/Parameters';
 import DeviceData from './Pages/Devices/DeviceData';
+import ManageFormulas from './Pages/Settings/Formula/ManageFormulas';
 
 function App() {
   const isLogged = useSelector((state) => state.user?.isLogged);
@@ -119,6 +120,7 @@ function App() {
               <Route path="/alarm-management" element={<AlarmManagement />} />
               <Route path="/building-background-types" element={<BuildingBackgroundTypes />} />
               <Route path="/parameters" element={<Parameters />} />
+              <Route path="/formulas" element={<ManageFormulas />} />
 
               {/* Profile */}
               <Route path="/profile" element={<Profile />} />

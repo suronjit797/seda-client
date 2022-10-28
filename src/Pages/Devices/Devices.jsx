@@ -99,6 +99,7 @@ const Devices = () => {
                             return (
                                 <div className="actions">
                                     <Link to={`/device/` + row._id} className='btn btn-info me-1'><FiEye /></Link>
+                                    <Link to={`/device-data/` + row._id} className='btn btn-warning me-1'><AiOutlineFundView /></Link>
                                     <Link to={`/edit-device/` + row._id} className='btn btn-success me-1'><FiEdit /></Link>
                                 </div>
                             )
@@ -106,6 +107,7 @@ const Devices = () => {
                             return (
                                 <div className="actions">
                                     <Link to={`/device/` + row._id} className='btn btn-info me-1'><FiEye /></Link>
+                                    <Link to={`/device-data/` + row._id} className='btn btn-warning me-1'><AiOutlineFundView /></Link>
                                     <Link to={`/edit-device/` + row._id} className='btn btn-success me-1'><FiEdit /></Link>
                                 </div>
                             )
@@ -113,19 +115,21 @@ const Devices = () => {
                             return (
                                 <div className="actions">
                                     <Link to={`/device/` + row._id} className='btn btn-info me-1'><FiEye /></Link>
+                                    <Link to={`/device-data/` + row._id} className='btn btn-warning me-1'><AiOutlineFundView /></Link>
                                 </div>
                             )
                         case 'public':
                             return (
                                 <div className="actions">
                                     <Link to={`/device/` + row._id} className='btn btn-info me-1'><FiEye /></Link>
+                                    <Link to={`/device-data/` + row._id} className='btn btn-warning me-1'><AiOutlineFundView /></Link>
                                 </div>
                             )
                     }
                 })
                     ()}
             </div>,
-            grow:2,
+            grow: 2,
             center: 'yes'
         },
     ];
