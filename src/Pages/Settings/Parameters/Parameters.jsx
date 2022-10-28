@@ -1,40 +1,37 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
-import ElectricityTariffTable from '../../Components/Settings/ElectricityTariffTable';
-import SettingSidebarNav from '../../Components/Settings/SettingSidebarNav';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import { useSelector } from 'react-redux';
+import SettingSidebarNav from '../../../Components/Settings/SettingSidebarNav';
 
-const ElectricityTariff = () => {
+const Parameters = () => {
     const [SuccessMessage, setSuccessMessage] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const userDetails = useSelector((state) => state.user.userDetails);
-    const [eTariff, setETariff] = useState([]);
-    const [electricityTariffData, setElectricityTariffData] = useState({
+    const [parameters, setParameters] = useState([]);
+    const [parameterData, setParameter] = useState({
         name: "",
         description: ""
     });
-    const { name, description } = electricityTariffData;
+    const { name, description } = parameterData;
 
     const handleChange = (value, bodyContent) => {
-        setElectricityTariffData({
-            ...electricityTariffData,
+        setParameter({
+            ...parameterData,
             [bodyContent]: value
         });
     }
     const onInputChange = e => {
-        setElectricityTariffData({ ...electricityTariffData, [e.target.name]: e.target.value });
+        setParameter({ ...parameterData, [e.target.name]: e.target.value });
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true)
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/electricity-tariff`, electricityTariffData, { withCredentials: true })
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/electricity-tariff`, parameterData, { withCredentials: true })
         if (response) {
             setIsLoading(false)
-            setElectricityTariffData({ name: "", description: "" })
-            getElectricityTariff()
+            setParameter({ name: "", description: "" })
+            // getElectricityTariff()
             setSuccessMessage("Electricity Tariff Created Successfully")
             setTimeout(() => {
                 setSuccessMessage()
@@ -42,15 +39,15 @@ const ElectricityTariff = () => {
         }
         e.target.reset();
     }
-    const getElectricityTariff = async () => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/electricity-tariff`, { withCredentials: true })
-        if (response) {
-            setETariff(response.data)
-        }
-    }
-    useEffect(() => {
-        getElectricityTariff()
-    }, []);
+    // const getElectricityTariff = async () => {
+    //     const response = await axios.get(`${process.env.REACT_APP_API_URL}/electricity-tariff`, { withCredentials: true })
+    //     if (response) {
+    //         setParameters(response.data)
+    //     }
+    // }
+    // useEffect(() => {
+    //     getElectricityTariff()
+    // }, []);
     return (
         <div className='settings'>
             <div className="container-fluid">
@@ -60,26 +57,31 @@ const ElectricityTariff = () => {
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3 mb-3">
-                            <h3>Electricity Tariff</h3>
+                            <h3>Manage Parameter</h3>
                             {(() => {
                                 switch (userDetails.role) {
                                     case 'superAdmin':
                                         return (
                                             <div className="row mt-4">
                                                 <div className="col-md-4">
-                                                    <h4 className='mb-3'>Add Tariff Category</h4>
+                                                    <h4 className='mb-3'>Add New Parameter</h4>
                                                     <div className='d-flex justify-content-center'>
                                                         {isLoading && <Spinner animation="border" variant="dark" />}
                                                     </div>
                                                     {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                                                     <form onSubmit={handleSubmit}>
                                                         <div className="mb-3">
-                                                            <label for="name" class="form-label">Tariff Category</label>
-                                                            <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter a tariff category' required />
+                                                            <label for="name" class="form-label">Parameter Name</label>
+                                                            <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter a Parameter Name' required />
                                                         </div>
                                                         <div className="mb-3">
-                                                            <label for="description" class="form-label">Description</label>
-                                                            <ReactQuill theme="snow" className='mb-5' id="description" name='description' value={description} onChange={(value) => handleChange(value, 'description')} style={{ height: "200px" }} />
+                                                            <label for="name" class="form-label">Parameter Type</label>
+                                                            <select name="" id="" className='form-select'>
+                                                                <option >Select parameter type</option>
+                                                                <option >Measured Value</option>
+                                                                <option >Computation Action</option>
+                                                                <option >Default Value</option>
+                                                            </select>
                                                         </div>
                                                         <div className='float-end'>
                                                             <button type="submit" class="btn btn-success me-2">Create</button>
@@ -87,7 +89,7 @@ const ElectricityTariff = () => {
                                                     </form>
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <ElectricityTariffTable data={eTariff} getElectricityTariff={getElectricityTariff} />
+                                                    {/* <ElectricityTariffTable data={parameters} getElectricityTariff={getElectricityTariff} /> */}
                                                 </div>
                                             </div>
                                         );
@@ -95,7 +97,7 @@ const ElectricityTariff = () => {
                                         return (
                                             <div className="row mt-4">
                                                 <div className="col-md-12">
-                                                    <ElectricityTariffTable data={eTariff} getElectricityTariff={getElectricityTariff} />
+                                                    {/* <ElectricityTariffTable data={parameters} getElectricityTariff={getElectricityTariff} /> */}
                                                 </div>
                                             </div>
                                         )
@@ -110,4 +112,4 @@ const ElectricityTariff = () => {
     );
 }
 
-export default ElectricityTariff;
+export default Parameters;

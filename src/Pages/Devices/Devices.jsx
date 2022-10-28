@@ -6,6 +6,7 @@ import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
 import DevicesSidebar from '../../Components/Devices/DevicesSidebar';
 import { FiEye, FiEdit, FiTrash } from "react-icons/fi"
+import { AiOutlineFundView } from "react-icons/ai"
 import Swal from "sweetalert2";
 import { useSelector } from 'react-redux';
 
@@ -78,7 +79,6 @@ const Devices = () => {
         {
             name: 'Date Installed',
             selector: row => (moment(row.createdAt).format("DD/MM/YYYY")),
-            width: "130px",
             center: true
         },
         {
@@ -90,6 +90,7 @@ const Devices = () => {
                             return (
                                 <div className="actions">
                                     <Link to={`/device/` + row._id} className='btn btn-info me-1'><FiEye /></Link>
+                                    <Link to={`/device-data/` + row._id} className='btn btn-warning me-1'><AiOutlineFundView /></Link>
                                     <Link to={`/edit-device/` + row._id} className='btn btn-success me-1'><FiEdit /></Link>
                                     <button className='btn btn-danger' onClick={() => deleteDevice(row._id)}><FiTrash /></button>
                                 </div>
@@ -124,6 +125,7 @@ const Devices = () => {
                 })
                     ()}
             </div>,
+            grow:2,
             center: 'yes'
         },
     ];

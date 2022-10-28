@@ -48,6 +48,8 @@ import Profile from './Pages/Profile/Profile';
 import AnalysisReporting from './Pages/AnalysisReporting/AnalysisReporting';
 import EditProfile from './Pages/Profile/EditProfile';
 import ResetPassword from './Pages/SignIn/ResetPassword';
+import Parameters from './Pages/Settings/Parameters/Parameters';
+import DeviceData from './Pages/Devices/DeviceData';
 
 function App() {
   const isLogged = useSelector((state) => state.user?.isLogged);
@@ -103,6 +105,8 @@ function App() {
               <Route path="/device-types" element={<DeviceTypes />} />
               <Route path="/device/:deviceId" element={<DeviceView />} />
               <Route path="/edit-device/:deviceId" element={<EditDevice />} />
+              <Route path="/device-data/:deviceId" element={<DeviceData />} />
+              
 
               {/* Analysis &Reporting related routes */}
               <Route path="/analysis-reporting" element={<AnalysisReporting />} />
@@ -114,6 +118,7 @@ function App() {
               <Route path="/dashboard-settings" element={<DashboardSettings />} />
               <Route path="/alarm-management" element={<AlarmManagement />} />
               <Route path="/building-background-types" element={<BuildingBackgroundTypes />} />
+              <Route path="/parameters" element={<Parameters />} />
 
               {/* Profile */}
               <Route path="/profile" element={<Profile />} />
