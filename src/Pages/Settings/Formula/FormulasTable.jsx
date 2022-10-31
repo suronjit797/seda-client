@@ -33,7 +33,6 @@ const FormulasTable = ({formulas, getFormulas}) => {
             cell: row => <div>
                 <button className='btn btn-danger' onClick={()=>deleteFormula(row._id)}><FiTrash/></button>
             </div>,
-            grow: 2,
             center: 'yes'
         },
     ];

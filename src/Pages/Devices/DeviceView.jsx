@@ -9,22 +9,30 @@ const DeviceView = () => {
     const deviceId = Params.deviceId
     const [deviceDetails, setDeviceDetails] = useState();
     const [deviceParameters, setDeviceParameters] = useState();
-
-    const getDevice = async()=>{
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/`+deviceId, { withCredentials: true })
-        if(response){
+    const [formulas, setFormulas] = useState([]);
+    const getDevice = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/` + deviceId, { withCredentials: true })
+        if (response) {
             setDeviceDetails(response.data)
         }
     }
-    const getDeviceParameters = async()=>{
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/device-parameters/`+deviceId, { withCredentials: true })
-        if(response){
+    const getDeviceParameters = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/device-parameters/` + deviceId, { withCredentials: true })
+        if (response) {
             setDeviceParameters(response.data.sort((a, b) => a._id > b._id ? 1 : -1))
+        }
+    }
+
+    const getFormulas = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/formula`, { withCredentials: true })
+        if (response) {
+            setFormulas(response.data)
         }
     }
     useEffect(() => {
         getDeviceParameters()
         getDevice()
+        getFormulas()
     }, []);
     return (
         <div className='installer-view'>
@@ -35,10 +43,10 @@ const DeviceView = () => {
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3 mb-3">
-                        <h3>Device Information</h3>
+                            <h3>Device Information</h3>
                             <div className="row mt-4">
                                 <div className="col-md-6">
-                                <h4 className='mb-4'>General Description</h4>
+                                    <h4 className='mb-4'>General Description</h4>
                                     <div className="row mb-2">
                                         <div className="col-3">Device Name</div>
                                         <div className="col-9">: {deviceDetails?.name}</div>
@@ -63,9 +71,12 @@ const DeviceView = () => {
                                         <div className="col-3">Installer</div>
                                         <div className="col-9">: {deviceDetails?.site?.installer?.name}</div>
                                     </div>
+                                    <div className="row mb-2">
+                                        <div className="">Assign Formula</div>
+                                    </div>
                                 </div>
                                 <div className="col-md-6">
-                                    <DeviceParameters data={deviceParameters}/>
+                                    <DeviceParameters data={deviceParameters} />
                                 </div>
                             </div>
                             <div className="row">

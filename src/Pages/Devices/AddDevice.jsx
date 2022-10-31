@@ -7,6 +7,7 @@ import axios from 'axios';
 const AddDevice = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [SuccessMessage, setSuccessMessage] = useState();
+    const [ErrorMessage, setErrorMessage] = useState();
     const navigate = useNavigate()
     const [deviceData, setDeviceData] = useState({
         name: "",
@@ -27,12 +28,11 @@ const AddDevice = () => {
         setIsLoading(true)
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/device`, deviceData, { withCredentials: true }).catch(function (error) {
             if (error.response) {
-                console.log(error.response.data);
-                console.log(error.response.status);
-                if (error.response.status === 400 || 500) {
-                    console.log(error)
-                }
-                console.log(error.response.headers);
+                setIsLoading(false)
+                setErrorMessage(error.response.data)
+                setTimeout(() => {
+                    setErrorMessage()
+                }, 2000)
             }
         });
         const data = response.data
@@ -89,6 +89,7 @@ const AddDevice = () => {
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
+                            {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
                             <form onSubmit={submitHandler}>
                                 <div class="row mb-3">
                                     <div className="col-md-6">
