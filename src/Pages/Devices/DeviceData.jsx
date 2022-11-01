@@ -39,7 +39,7 @@ const DeviceData = () => {
         },
         {
             name: 'Date',
-            selector: row => (moment(row.createdAt).format("DD/MM/YYYY mm:hh:ss a")),
+            selector: row => (moment(row.createdAt).format("DD/MM/YYYY hh:mm:ss a")),
             center: true
         }
     ];
