@@ -47,7 +47,7 @@ const ManageFormulas = () => {
     }, []);
     useEffect(() => {
         setFormulaData({ ...formulaData, formula: `${p1} ${p2} ${p3} ${p4} ${p5} ${p6}` });
-    }, [p1, p2, p3, p4, p5, p6]);
+    }, [p1, p2, p3, p4, p5, p6, formulaData]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -98,13 +98,13 @@ const ManageFormulas = () => {
                                     <div className="row mb-3">
                                         <div className="col-md-6">
                                             <label htmlFor="name">Formula Name</label>
-                                            <input type="text" id='name' name='name' value={name} onChange={onInputChange1} className='form-control' placeholder='Enter a formula Name' required />
+                                            <input type="text" id='name' name='name' value={name} onChange={onInputChange1} className='form-control' placeholder='Enter formula name' required />
                                         </div>
                                     </div>
                                     <div className="row mb-3">
                                         <div className="col-md-6">
-                                            <label htmlFor="unit">Formula Unit</label>
-                                            <input type="text" id='unit' name='unit' value={unit} onChange={onInputChange1} className='form-control' placeholder='Enter a formula Name' />
+                                            <label htmlFor="unit">Formula Unit / Value</label>
+                                            <input type="text" id='unit' name='unit' value={unit} onChange={onInputChange1} className='form-control' placeholder='Enter formula Unit' />
                                         </div>
                                     </div>
                                     <div className="row mb-3">

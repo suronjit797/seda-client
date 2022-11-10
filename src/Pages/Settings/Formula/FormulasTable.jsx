@@ -1,14 +1,10 @@
 import axios from 'axios';
-import React, {useState} from 'react';
-import { Spinner } from 'react-bootstrap';
+import React from 'react';
 import DataTable from 'react-data-table-component';
-import { FiTrash, FiEdit, } from "react-icons/fi"
+import { FiTrash } from "react-icons/fi"
+import Swal from "sweetalert2";
 
-const FormulasTable = ({formulas, getFormulas}) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [SuccessMessage, setSuccessMessage] = useState();
-    const [modalShow, setModalShow] = useState(false);
-    const [parameterToEdit, setParameterToEdit] = useState();
+const FormulasTable = ({ formulas, getFormulas }) => {
     const columns = [
         {
             name: "No",
@@ -17,11 +13,11 @@ const FormulasTable = ({formulas, getFormulas}) => {
             width: "60px"
         },
         {
-            name: 'Name',
+            name: 'Formula Name',
             selector: row => (row?.name),
         },
         {
-            name: 'Unit',
+            name: 'Unit / Value',
             selector: row => (row?.unit),
         },
         {
@@ -31,31 +27,44 @@ const FormulasTable = ({formulas, getFormulas}) => {
         {
             name: 'Action',
             cell: row => <div>
-                <button className='btn btn-danger' onClick={()=>deleteFormula(row._id)}><FiTrash/></button>
+                <button className='btn btn-danger' onClick={() => deleteFormula(row._id)}><FiTrash /></button>
             </div>,
             center: 'yes'
         },
     ];
 
-    const deleteFormula= async (formulaId) => {
-        setIsLoading(true)
-        const response = await axios.delete(`${process.env.REACT_APP_API_URL}/formula/` + formulaId, { withCredentials: true })
-        if (response) {
-            setIsLoading(false)
-            setSuccessMessage("Formula Deleted Successfully")
-            getFormulas()
-            setTimeout(() => {
-                setSuccessMessage()
-            }, 2000)
-        }
+    const deleteFormula = async (formulaId) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to delete formula?",
+            //icon: "warning",
+            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonText: 'Confirm'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`${process.env.REACT_APP_API_URL}/formula/` + formulaId, { withCredentials: true })
+                    .then(res => {
+                        getFormulas()
+                        Swal.fire({
+                            title: "Done!",
+                            text: "Formula Deleted Successfully",
+                            icon: "success",
+                            timer: 2000,
+                            button: false
+                        })
+
+                    });
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+
+            }
+        })
     }
     return (
         <div>
-            <h4 className='mb-2'>Formula list</h4>
-            <div className='d-flex justify-content-center'>
-                {isLoading && <Spinner animation="border" variant="dark" />}
-            </div>
-            {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
+            <h4 className='mb-2'>List of All Formulas</h4>
             <DataTable
                 columns={columns}
                 data={formulas}
@@ -64,13 +73,6 @@ const FormulasTable = ({formulas, getFormulas}) => {
                 paginationPerPage={10}
                 paginationRowsPerPageOptions={[10, 20, 50]}
             />
-            {/* <EditParameterModal
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-                parameterToEdit={parameterToEdit}
-                setModalShow={setModalShow}
-                getParameters={getParameters}
-            /> */}
         </div>
     );
 }

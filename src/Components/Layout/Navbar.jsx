@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { setIsLogged, setUserDetails } from '../../redux/userSlice';
+import { setCurrentDevice, setCurrentSite, setIsLogged, setUserDetails } from '../../redux/userSlice';
 import Dropdown from 'react-bootstrap/Dropdown';
 import "./Layout.css"
 import Swal from "sweetalert2";
@@ -30,6 +30,8 @@ const Navbar = ({ handle }) => {
                     .then(res => {
                         dispatch(setIsLogged(false))
                         dispatch(setUserDetails({}))
+                        dispatch(setCurrentSite({}))
+                        dispatch(setCurrentDevice({}))
                         window.localStorage.clear()
                         navigate("/")
                     });
@@ -112,6 +114,8 @@ const Navbar = ({ handle }) => {
                                     return
                                 case 'public':
                                     return
+                                default:
+                                        return
                             }
                         })
                             ()}

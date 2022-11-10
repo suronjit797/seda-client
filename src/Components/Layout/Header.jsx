@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Dropdown from 'react-bootstrap/Dropdown';
 import moment from 'moment';
 import axios from 'axios';
-import { setCurrentSite, setSiteDetails } from '../../redux/userSlice';
+import { setCurrentSite, setSiteDetails, setCurrentDevice } from '../../redux/userSlice';
 import { useLocation } from 'react-router-dom';
 
 const Header = () => {
@@ -61,6 +60,19 @@ const Header = () => {
             }
         }
     }
+    const handleDeviceChange = async (e) => {
+        const deviceId = e.target.value
+        dispatch(setCurrentDevice(deviceId))
+        // const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/` + locationId, { withCredentials: true })
+        // if (response) {
+        //     dispatch(setCurrentSite(response.data))
+        //     if (locationId) {
+        //         getDevices(locationId)
+        //     } else {
+        //         setDevices([])
+        //     }
+        // }
+    }
     return (
         <div className='header'>
             <div className="container-fluid bg-warning py-2 ">
@@ -111,7 +123,7 @@ const Header = () => {
                     </div>
                     <div className="col-md-2">
                         {location.pathname === "/" &&
-                            <select class="form-select bg-success border-0 text-white" name='device'>
+                            <select class="form-select bg-success border-0 text-white" name='device' onChange={handleDeviceChange}>
                                 <option >Device Selector</option>
                                 {devices && devices.length > 0 && devices.map((item, index) => (
                                     <option value={item._id} key={index}>{item.name}</option>

@@ -12,13 +12,16 @@ const DeviceData = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([]);
     const getDeviceData = async () => {
+        setIsLoading(true)
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/device-data/` + deviceId, { withCredentials: true })
         if (response) {
             setData(response.data)
+            setIsLoading(false)
         }
     }
     useEffect(() => {
         getDeviceData()
+        // eslint-disable-next-line
     }, []);
     const columns = [
         {
