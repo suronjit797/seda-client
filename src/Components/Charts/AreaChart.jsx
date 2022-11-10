@@ -2,7 +2,7 @@ import React from 'react';
 import Chart from 'react-apexcharts'
 
 const AreaChart = ({ name, title, data }) => {
-    console.log(data)
+    var date = new Date();
     const series = [{
         name: name,
         data: data
@@ -302,7 +302,8 @@ const AreaChart = ({ name, title, data }) => {
         },
         xaxis: {
             type: 'datetime',
-            min: new Date('01 Nov 2022').getTime(),
+            min: new Date(date.getFullYear(), date.getMonth(), 1).getTime(),
+            max: new Date(date.getFullYear(), date.getMonth() + 1, 0).getTime(),
             tickAmount: 6,
         },
         tooltip: {
