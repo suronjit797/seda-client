@@ -2,8 +2,8 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
-import EditBTModal from '../../Components/Modals/EditBTModal';
 import { FiTrash, FiEdit, } from "react-icons/fi"
+import EditBTModal from '../../../Components/Modals/EditBTModal';
 
 const BuildingTypeTable = ({ data, getBuildingTypes }) => {
     const [isLoading, setIsLoading] = useState(false);

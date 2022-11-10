@@ -6,7 +6,8 @@ export const userSlice = createSlice({
         isLogged: false,
         userDetails: {},
         userSites: {},
-        currentSite: {}
+        currentSite: {},
+        currentDevice: {}
     },
     reducers: {
         setIsLogged: (state, action) => {
@@ -21,8 +22,11 @@ export const userSlice = createSlice({
         setCurrentSite: (state, action) => {
             state.currentSite = action.payload
         },
+        setCurrentDevice: (state, action) => {
+            state.currentDevice = action.payload
+        }
     }
 })
-export const { setIsLogged, setUserDetails, setSiteDetails, setCurrentSite } = userSlice.actions
+export const { setIsLogged, setUserDetails, setSiteDetails, setCurrentSite, setCurrentDevice } = userSlice.actions
 
 export default userSlice.reducer

@@ -12,7 +12,6 @@ import AddInstaller from './Pages/Installer/AddInstaller';
 import InstallerView from './Pages/Installer/InstallerView';
 import EditInstaller from './Pages/Installer/EditInstaller';
 import Settings from './Pages/Settings/Settings';
-import BuildingBackgroundTypes from './Pages/Settings/BuildingBackgroundTypes';
 import EditAdmin from './Pages/Admins/EditAdmin';
 import AdminView from './Pages/Admins/AdminView';
 import Admins from './Pages/Admins/Admins';
@@ -26,7 +25,7 @@ import "react-awesome-lightbox/build/style.css";
 import ForgotPassword from './Pages/SignIn/ForgotPassword';
 import Users from './Pages/User/Users';
 import AdminSites from './Pages/Admins/AdminSites';
-import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import { useFullScreenHandle } from "react-full-screen";
 import SiteUsers from './Pages/SiteUsers/SiteUsers';
 import AddSiteUser from './Pages/SiteUsers/AddSiteUser';
 import SiteUserView from './Pages/SiteUsers/SiteUserView';
@@ -51,6 +50,7 @@ import ResetPassword from './Pages/SignIn/ResetPassword';
 import Parameters from './Pages/Settings/Parameters/Parameters';
 import DeviceData from './Pages/Devices/DeviceData';
 import ManageFormulas from './Pages/Settings/Formula/ManageFormulas';
+import BuildingBackgroundTypes from './Pages/Settings/BuildingTypes/BuildingBackgroundTypes';
 
 function App() {
   const isLogged = useSelector((state) => state.user?.isLogged);

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState,useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
-import SettingSidebarNav from '../../Components/Settings/SettingSidebarNav';
+import SettingSidebarNav from '../../../Components/Settings/SettingSidebarNav';
 import BuildingTypeTable from './BuildingTypeTable';
 
 const BuildingBackgroundTypes = () => {
