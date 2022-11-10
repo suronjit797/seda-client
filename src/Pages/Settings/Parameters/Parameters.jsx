@@ -69,7 +69,7 @@ const Parameters = () => {
                                                     <form onSubmit={handleSubmit}>
                                                         <div className="mb-3">
                                                             <label for="name" class="form-label">Parameter Name</label>
-                                                            <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter a parameter name' required />
+                                                            <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter parameter name' required />
                                                         </div>
                                                         <div className="mb-3">
                                                             <label for="type" class="form-label">Parameter Type</label>
@@ -82,10 +82,10 @@ const Parameters = () => {
                                                         </div>
                                                         <div className="mb-3">
                                                             <label for="value" class="form-label">Unit / Value</label>
-                                                            <input type="text" name='value' value={value} onChange={onInputChange} class="form-control" id="value" placeholder='Enter a unite/ value' required />
+                                                            <input type="text" name='value' value={value} onChange={onInputChange} class="form-control" id="value" placeholder='Enter Parameter Value' required />
                                                         </div>
                                                         <div className='float-end'>
-                                                            <button type="submit" class="btn btn-success me-2">Create</button>
+                                                            <button type="submit" class="btn btn-success me-2">Create New Parameter</button>
                                                         </div>
                                                     </form>
                                                 </div>

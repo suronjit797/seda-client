@@ -1,13 +1,11 @@
 import axios from 'axios';
 import React, {useState} from 'react';
-import { Spinner } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { FiTrash, FiEdit, } from "react-icons/fi"
 import EditParameterModal from '../../../Components/Modals/EditParameterModal';
+import Swal from "sweetalert2";
 
 const ParametersTable = ({data, getParameters}) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [SuccessMessage, setSuccessMessage] = useState();
     const [modalShow, setModalShow] = useState(false);
     const [parameterToEdit, setParameterToEdit] = useState();
     const columns = [
@@ -18,15 +16,15 @@ const ParametersTable = ({data, getParameters}) => {
             width: "60px"
         },
         {
-            name: 'Name',
+            name: 'Parameter Name',
             selector: row => (row?.name),
         },
         {
-            name: 'Type',
+            name: 'Parameter Type',
             selector: row => (row?.type),
         },
         {
-            name: 'Value',
+            name: 'Unit / Value',
             selector: row => (row?.value),
         },
         {
@@ -45,24 +43,37 @@ const ParametersTable = ({data, getParameters}) => {
     }
 
     const deleteParameter = async (parameterId) => {
-        setIsLoading(true)
-        const response = await axios.delete(`${process.env.REACT_APP_API_URL}/parameters/` + parameterId, { withCredentials: true })
-        if (response) {
-            setIsLoading(false)
-            setSuccessMessage("Parameter Deleted Successfully")
-            getParameters()
-            setTimeout(() => {
-                setSuccessMessage()
-            }, 2000)
-        }
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want delete this parameter?",
+            //icon: "warning",
+            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonText: 'Confirm'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`${process.env.REACT_APP_API_URL}/parameters/` + parameterId, { withCredentials: true })
+                    .then(res => {
+                        getParameters()
+                        Swal.fire({
+                            title: "Done!",
+                            text: "Parameter Deleted Successfully",
+                            icon: "success",
+                            timer: 2000,
+                            button: false
+                        })
+
+                    });
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+
+            }
+        })
     }
     return (
         <div>
-            <h4 className='mb-2'>Parameters list</h4>
-            <div className='d-flex justify-content-center'>
-                {isLoading && <Spinner animation="border" variant="dark" />}
-            </div>
-            {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
+            <h4 className='mb-2'>List of All Parameters</h4>
             <DataTable
                 columns={columns}
                 data={data}
