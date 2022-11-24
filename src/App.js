@@ -79,8 +79,8 @@ function App() {
 
             <Navbar handle={handle} />
             <Routes>
-              {/* <Route path="/" element={<Dashboard handle={handle} />} /> */}
-              <Route path="/" element={<DashboardTwo handle={handle} />} />
+              <Route path="/" element={<Dashboard handle={handle} />} />
+              {/* <Route path="/" element={<DashboardTwo handle={handle} />} /> */}
               {/* users related routes */}
               <Route path="/users" element={<Users />} />
 
