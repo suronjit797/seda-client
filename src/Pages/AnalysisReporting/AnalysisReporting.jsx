@@ -153,7 +153,7 @@ const AnalysisReporting = () => {
                                 <div className="col-md-12">
                                     <div className='mt-3'>
                                         {deviceData.length > 0 && reportTypeGraph && <SplineChart title="Parameter Comparison" data={deviceData} from={from} to={to} />}
-                                        {deviceData.length > 0 && !reportTypeGraph && <ReportTable data={deviceTableData} />}
+                                        {deviceData.length > 0 && !reportTypeGraph && <ReportTable title="Parameter Comparison" data={deviceTableData} />}
                                     </div>
                                 </div>
                             </div>

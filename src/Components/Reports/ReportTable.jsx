@@ -3,7 +3,7 @@ import $ from 'jquery';
 import JSZip from 'jszip';
 import moment from 'moment/moment';
 
-const ReportTable = ({data}) => {
+const ReportTable = ({data, title}) => {
     useEffect(() => {
         setTimeout(function () {
             window.JSZip = JSZip;
@@ -22,7 +22,7 @@ const ReportTable = ({data}) => {
                         // 'csv',
                         {
                             extend: "csv",
-                            title: 'Device Report by Parameter',
+                            title: title,
                             className: "btn btn-sm btn-success"
                         },
                         {
@@ -31,14 +31,14 @@ const ReportTable = ({data}) => {
                         },
                         {
                             extend: "excel",
-                            title: 'Device Report by Parameter',
+                            title: title,
                             className: "btn btn-sm btn-primary"
                         },
                         {
                             extend: 'pdfHtml5',
                             orientation: 'landscape',
                             pageSize: 'LEGAL',
-                            title: 'Device Report by Parameter',
+                            title: title,
                             className: "btn btn-sm btn-danger"
                         }
                     ],

@@ -62,6 +62,7 @@ import "datatables.net-dt/css/jquery.dataTables.min.css"
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import DeviceComparison from './Pages/AnalysisReporting/DeviceComparison';
+import DashboardTwo from './Pages/Dashboard/DashboardTwo';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 
@@ -78,7 +79,8 @@ function App() {
 
             <Navbar handle={handle} />
             <Routes>
-              <Route path="/" element={<Dashboard handle={handle} />} />
+              {/* <Route path="/" element={<Dashboard handle={handle} />} /> */}
+              <Route path="/" element={<DashboardTwo handle={handle} />} />
               {/* users related routes */}
               <Route path="/users" element={<Users />} />
 

@@ -1,8 +1,11 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { Spinner } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import AnalysisReportingSidebar from '../../Components/AnalysisReporting/AnalysisReportingSidebar';
+import SplineChart from '../../Components/Charts/SplineChart';
+import ReportTable from '../../Components/Reports/ReportTable';
 
 const DeviceComparison = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -83,7 +86,7 @@ const DeviceComparison = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true)
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/report/ParameterComparison`, queryData, { withCredentials: true })
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/report/DeviceComparison`, queryData, { withCredentials: true })
         if (response) {
             setDeviceData(response.data?.result)
             setDeviceTableData(response.data?.data)
@@ -114,7 +117,7 @@ const DeviceComparison = () => {
                                     <button className='btn btn-info' onClick={() => setReportTypeGraph(false)}>Table</button>
                                 </div>
                             </div>
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 <div className="row d-flex align-items-center">
                                     <div className="col-md-2">
                                         <select className="form-select" name='interval' defaultValue={interval} onChange={onInputChange}>
@@ -138,7 +141,7 @@ const DeviceComparison = () => {
                                         </select>
                                         <select className="form-select" name='device2' defaultValue={device2} onChange={onInputChange}>
                                             <option >Select Device 2</option>
-                                            {devices && devices.length > 0 && devices.filter((device) => {return !device._id.includes(device1)}).map((item, index) => (
+                                            {devices && devices.length > 0 && devices.filter((device) => { return !device._id.includes(device1) }).map((item, index) => (
                                                 <option value={item._id} key={index}>{item.name}</option>
                                             ))}
                                         </select>
@@ -162,8 +165,16 @@ const DeviceComparison = () => {
                                     </div>
                                 </div>
                             </form>
+                            <div className='d-flex justify-content-center'>
+                                {isLoading && <Spinner animation="border" variant="dark" />}
+                            </div>
                             <div className="row" style={{ minHeight: "350px" }}>
-                            
+                                <div className="col-md-12">
+                                    <div className='mt-3'>
+                                        {deviceData.length > 0 && reportTypeGraph && <SplineChart title="Device Comparison" data={deviceData} from={from} to={to} />}
+                                        {deviceData.length > 0 && !reportTypeGraph && <ReportTable title="Device Comparison" data={deviceTableData} />}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
