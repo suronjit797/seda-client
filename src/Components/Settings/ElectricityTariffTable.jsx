@@ -46,6 +46,8 @@ export default function ElectricityTariffTable({ data, getElectricityTariff }) {
                                     <button className='btn btn-danger' onClick={() => deleteETariff(row._id)}><FiTrash /></button>
                                 </div>
                             )
+                        default:
+                            return
                     }
                 })
                     ()}
@@ -71,9 +73,9 @@ export default function ElectricityTariffTable({ data, getElectricityTariff }) {
         }
     }
     useEffect(() => {
-        if(userDetails?.role === "superAdmin"){
-            
-        }else{
+        if (userDetails?.role === "superAdmin") {
+
+        } else {
             setColShow(true)
         }
     }, [userDetails]);

@@ -17,6 +17,7 @@ const SiteUserView = () => {
     }
     useEffect(() => {
         getUser()
+        // eslint-disable-next-line
     }, []);
 
     return (

@@ -51,6 +51,20 @@ import Parameters from './Pages/Settings/Parameters/Parameters';
 import DeviceData from './Pages/Devices/DeviceData';
 import ManageFormulas from './Pages/Settings/Formula/ManageFormulas';
 import BuildingBackgroundTypes from './Pages/Settings/BuildingTypes/BuildingBackgroundTypes';
+import 'jquery/dist/jquery.min.js';
+import "datatables.net-dt/js/dataTables.dataTables"
+import "datatables.net-buttons/js/dataTables.buttons.js"
+import "datatables.net-buttons/js/buttons.colVis.js"
+import "datatables.net-buttons/js/buttons.flash.js"
+import "datatables.net-buttons/js/buttons.html5.js"
+import "datatables.net-buttons/js/buttons.print.js"
+import "datatables.net-dt/css/jquery.dataTables.min.css"
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+import DeviceComparison from './Pages/AnalysisReporting/DeviceComparison';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+
 
 function App() {
   const isLogged = useSelector((state) => state.user?.isLogged);
@@ -111,6 +125,8 @@ function App() {
 
               {/* Analysis &Reporting related routes */}
               <Route path="/analysis-reporting" element={<AnalysisReporting />} />
+              <Route path="/device-comparison" element={<DeviceComparison />} />
+              
 
               {/* Settings related routes */}
               <Route path="/settings" element={<Settings />} />

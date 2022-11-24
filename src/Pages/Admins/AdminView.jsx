@@ -17,6 +17,7 @@ const AdminView = () => {
     }
     useEffect(() => {
         getAdmin()
+        // eslint-disable-next-line
     }, []);
     return (
         <div className='installer-view'>

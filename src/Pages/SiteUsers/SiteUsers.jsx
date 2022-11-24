@@ -32,6 +32,7 @@ const SiteUsers = () => {
     useEffect(() => {
         document.title = "SEDA - All Site Users"
         getUsers()
+        // eslint-disable-next-line
     }, []);
     const columns = [
         {

@@ -17,6 +17,7 @@ const Dashboard = ({ handle }) => {
         if (currentDevice) {
             getDeviceData()
         }
+        // eslint-disable-next-line
     }, [currentDevice]);
     useEffect(() => {
         document.title = "SEDA - Dashboard"

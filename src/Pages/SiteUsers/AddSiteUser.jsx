@@ -98,9 +98,11 @@ const AddSiteUser = () => {
     }
     useEffect(() => {
         getSiteLocations()
+        // eslint-disable-next-line
     }, []);
     useEffect(() => {
         setUserData({ ...userData, site: siteLocations[0]?._id })
+        // eslint-disable-next-line
     }, [siteLocations]);
     return (
         <div className='add-admin'>

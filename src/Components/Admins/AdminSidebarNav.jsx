@@ -48,6 +48,8 @@ const AdminSidebarNav = () => {
 
                             </ul>
                         )
+                    default:
+                        return
                 }
             })
                 ()}

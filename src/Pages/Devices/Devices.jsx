@@ -125,6 +125,8 @@ const Devices = () => {
                                     <Link to={`/device-data/` + row._id} className='btn btn-warning me-1'><AiOutlineFundView /></Link>
                                 </div>
                             )
+                        default:
+                            return
                     }
                 })
                     ()}
@@ -136,6 +138,7 @@ const Devices = () => {
     useEffect(() => {
         document.title = "SEDA - Devices"
         getDevices()
+        // eslint-disable-next-line
     }, []);
 
     const deleteDevice = async (deviceId) => {

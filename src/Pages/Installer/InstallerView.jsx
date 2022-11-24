@@ -16,6 +16,7 @@ const InstallerView = () => {
     }
     useEffect(() => {
         getInstaller()
+        // eslint-disable-next-line
     }, []);
 
     return (

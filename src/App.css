@@ -44,3 +44,18 @@ a:hover {
 .rdt_Table .rdt_TableBody .rdt_TableRow .rdt_TableCell{
   font-size: 14px !important;
 }
+.table {
+  color: #000000 !important;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+  color: #000000 !important;
+}
+.dt-buttons{
+  margin-bottom: 10px;
+}
+table.dataTable thead th,
+table.dataTable thead td {
+  font-size: 16px;
+  font-weight: 600;
+}

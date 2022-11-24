@@ -70,6 +70,7 @@ const EditSiteLocation = () => {
         getInstaller()
         getAdmins()
         getBuildingTypes()
+        // eslint-disable-next-line
     }, []);
 
     const getSiteLocation = async () => {
@@ -99,6 +100,7 @@ const EditSiteLocation = () => {
     }
     useEffect(() => {
         getSiteLocation()
+        // eslint-disable-next-line
     }, []);
 
     const submitHandler = async (e) => {

@@ -87,9 +87,11 @@ const EditPublicUser = () => {
     }
     useEffect(() => {
         getSiteLocations()
+        // eslint-disable-next-line
     }, []);
     useEffect(() => {
         setUserData({ ...userData, site: siteLocations[0]?._id })
+        // eslint-disable-next-line
     }, [siteLocations]);
 
     const getUser = async () => {
@@ -108,6 +110,7 @@ const EditPublicUser = () => {
     }
     useEffect(() => {
         getUser()
+        // eslint-disable-next-line
     }, []);
     return (
         <div className='add-admin'>

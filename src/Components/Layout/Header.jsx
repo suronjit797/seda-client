@@ -39,6 +39,7 @@ const Header = () => {
 
     useEffect(() => {
         getSiteLocations(userDetails)
+        // eslint-disable-next-line
     }, [userDetails]);
 
     useEffect(() => {
@@ -46,6 +47,7 @@ const Header = () => {
             dispatch(setCurrentSite(userDetails?.site))
             getDevices(userDetails?.site?._id)
         }
+        // eslint-disable-next-line
     }, [userDetails]);
 
     const handleSiteChange = async (e) => {
@@ -63,15 +65,6 @@ const Header = () => {
     const handleDeviceChange = async (e) => {
         const deviceId = e.target.value
         dispatch(setCurrentDevice(deviceId))
-        // const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/` + locationId, { withCredentials: true })
-        // if (response) {
-        //     dispatch(setCurrentSite(response.data))
-        //     if (locationId) {
-        //         getDevices(locationId)
-        //     } else {
-        //         setDevices([])
-        //     }
-        // }
     }
     return (
         <div className='header'>
@@ -89,37 +82,35 @@ const Header = () => {
                     </div>
 
                     <div className="col-md-2">
-                        {location.pathname === "/" &&
-                            <div>
-                                {(() => {
-                                    switch (userDetails.role) {
-                                        case 'user':
-                                            return (
-                                                <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin" disabled>
-                                                    <option value={userDetails?.site?._id}>{userDetails?.site?.name}</option>
-                                                </select>
-                                            )
-                                        case 'public':
-                                            return (
-                                                <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin" disabled>
-                                                    <option value={userDetails?.site?._id}>{userDetails?.site?.name}</option>
-                                                </select>
-                                            )
-                                        default:
-                                            return (
-                                                <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin">
-                                                    <option label='Site Selector'></option>
-                                                    {userSites && userSites.length > 0 && userSites.map((item, index) => (
-                                                        <option value={item._id} key={index}>{item.name}</option>
-                                                    ))}
-                                                </select>
-                                            )
+                        <div>
+                            {(() => {
+                                switch (userDetails.role) {
+                                    case 'user':
+                                        return (
+                                            <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin" disabled>
+                                                <option value={userDetails?.site?._id}>{userDetails?.site?.name}</option>
+                                            </select>
+                                        )
+                                    case 'public':
+                                        return (
+                                            <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin" disabled>
+                                                <option value={userDetails?.site?._id}>{userDetails?.site?.name}</option>
+                                            </select>
+                                        )
+                                    default:
+                                        return (
+                                            <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin">
+                                                <option label='Site Selector'></option>
+                                                {userSites && userSites.length > 0 && userSites.map((item, index) => (
+                                                    <option value={item._id} key={index}>{item.name}</option>
+                                                ))}
+                                            </select>
+                                        )
 
-                                    }
-                                })
-                                    ()}
-                            </div>
-                        }
+                                }
+                            })
+                                ()}
+                        </div>
                     </div>
                     <div className="col-md-2">
                         {location.pathname === "/" &&

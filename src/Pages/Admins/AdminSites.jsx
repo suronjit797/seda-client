@@ -14,7 +14,6 @@ const AdminSites = () => {
     const [siteLocations, setSiteLocations] = useState([]);
     const [adminDetails, setAdminDetails] = useState();
     const [isLoading, setIsLoading] = useState(false);
-    const [SuccessMessage, setSuccessMessage] = useState();
     const getSiteLocations = async () => {
         setIsLoading(true)
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/admin-sites/`+adminId, { withCredentials: true })
@@ -36,6 +35,7 @@ const AdminSites = () => {
         document.title="SEDA - All Site Locations"
         getAdmin()
         getSiteLocations()
+        // eslint-disable-next-line
     }, []);
     const columns = [
         {
@@ -127,7 +127,6 @@ const AdminSites = () => {
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
-                            {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             <DataTable
                                 columns={columns}
                                 data={siteLocations}

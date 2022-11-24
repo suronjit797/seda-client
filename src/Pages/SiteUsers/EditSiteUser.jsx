@@ -87,13 +87,12 @@ const EditSiteUser = () => {
     }
     useEffect(() => {
         getSiteLocations()
+        // eslint-disable-next-line
     }, []);
     useEffect(() => {
         setUserData({ ...userData, site: siteLocations[0]?._id })
+        // eslint-disable-next-line
     }, [siteLocations]);
-
-
-
 
     const getUser = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/` + userId, { withCredentials: true })
@@ -111,6 +110,7 @@ const EditSiteUser = () => {
     }
     useEffect(() => {
         getUser()
+        // eslint-disable-next-line
     }, []);
     return (
         <div className='add-admin'>

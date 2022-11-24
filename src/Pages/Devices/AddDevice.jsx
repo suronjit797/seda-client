@@ -22,7 +22,6 @@ const AddDevice = () => {
         setDeviceData({ ...deviceData, [e.target.name]: e.target.value });
     };
 
-
     const submitHandler = async (e) => {
         e.preventDefault();
         setIsLoading(true)
@@ -55,9 +54,11 @@ const AddDevice = () => {
     }
     useEffect(() => {
         getSiteLocations()
+        // eslint-disable-next-line
     }, []);
     useEffect(() => {
         setDeviceData({ ...deviceData, site: siteLocations[0]?._id })
+        // eslint-disable-next-line
     }, [siteLocations]);
     //for device type dropdown
     const [deviceTypes, setDeviceTypes] = useState([]);
@@ -69,9 +70,11 @@ const AddDevice = () => {
     }
     useEffect(() => {
         getDeviceTypes()
+        // eslint-disable-next-line
     }, []);
     useEffect(() => {
         setDeviceData({ ...deviceData, deviceType: deviceTypes[0]?._id })
+        // eslint-disable-next-line
     }, [deviceTypes]);
     return (
         <div className='devices'>

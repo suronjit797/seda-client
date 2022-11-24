@@ -44,6 +44,8 @@ const DevicesSidebar = () => {
                                 <li className='list-group-item'><Link to='/devices' className='text-dark text-decoration-none'>All Devices</Link></li>
                             </ul>
                         )
+                    default:
+                        return
                 }
             })
                 ()}

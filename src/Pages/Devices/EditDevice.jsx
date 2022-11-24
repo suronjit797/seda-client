@@ -67,6 +67,7 @@ const EditDevice = () => {
         getDevice()
         getDeviceTypes()
         getSiteLocations()
+        // eslint-disable-next-line
     }, []);
 
 

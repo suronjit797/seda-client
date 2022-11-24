@@ -31,6 +31,7 @@ const Installers = () => {
     useEffect(() => {
         document.title = "SEDA - Installers"
         getInstaller()
+        // eslint-disable-next-line
     }, []);
     const columns = [
         {
@@ -85,6 +86,8 @@ const Installers = () => {
                                     <Link to={`/installer/` + row._id} className='btn btn-success me-1'><FiEye title="View Profile" /></Link>
                                 </div>
                             )
+                        default:
+                            return
                     }
                 })
                     ()}

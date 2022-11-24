@@ -23,6 +23,7 @@ const SiteDocuments = () => {
     }
     useEffect(() => {
         getSiteLocation()
+        // eslint-disable-next-line
     }, []);
 
     //EB related 
@@ -146,6 +147,7 @@ const SiteDocuments = () => {
     useEffect(() => {
         getEBDocuments()
         getSDDocuments()
+        // eslint-disable-next-line
     }, []);
     
     const download = (file, name) => {

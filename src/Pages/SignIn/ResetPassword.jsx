@@ -61,6 +61,7 @@ const ResetPassword = () => {
     }
     useEffect(() => {
         checkTokenValid()
+        // eslint-disable-next-line
     }, [token]);
     return (
         <div className='content-wrapper'>

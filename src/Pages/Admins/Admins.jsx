@@ -11,7 +11,6 @@ import { FiTrash, FiEye, FiEdit, FiHome } from "react-icons/fi"
 const Admins = () => {
     const [admins, setAdmins] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [SuccessMessage, setSuccessMessage] = useState();
     const getAdmins = async () => {
         setIsLoading(true)
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/role/admin`, { withCredentials: true })
@@ -109,7 +108,6 @@ const Admins = () => {
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
-                            {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             <DataTable
                                 columns={columns}
                                 data={admins}

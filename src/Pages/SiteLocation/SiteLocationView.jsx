@@ -15,6 +15,7 @@ const SiteLocationView = () => {
     }
     useEffect(() => {
         getSiteLocation()
+        // eslint-disable-next-line
     }, []);
     return (
         <div className='installer-view'>

@@ -17,6 +17,7 @@ const PublicUserView = () => {
     }
     useEffect(() => {
         getUser()
+        // eslint-disable-next-line
     }, []);
     return (
         <div className='installer'>

@@ -1,10 +1,7 @@
-import React, {useState} from 'react';
-import { Spinner } from 'react-bootstrap';
+import React from 'react';
 import DataTable from 'react-data-table-component';
 import { FiEdit } from "react-icons/fi"
 const DeviceParameters = ({data}) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [SuccessMessage, setSuccessMessage] = useState();
     const columns = [
         {
             name: "No.",
@@ -35,10 +32,6 @@ const DeviceParameters = ({data}) => {
     return (
         <div>
             <h4 className='mb-3'>Available Parameters</h4>
-            <div className='d-flex justify-content-center'>
-                {isLoading && <Spinner animation="border" variant="dark" />}
-            </div>
-            {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
             <DataTable
                 columns={columns}
                 data={data}

@@ -71,21 +71,26 @@ const AddSiteLocation = () => {
         getInstaller()
         getAdmins()
         getBuildingTypes()
+        // eslint-disable-next-line
     }, []);
     useEffect(() => {
         setSiteLocationData({ ...siteLocationData, tariffElectricity: ElectricityTariff[0]?._id })
+        // eslint-disable-next-line
     }, [ElectricityTariff]);
     useEffect(() => {
         setSiteLocationData({ ...siteLocationData, installer: Installers[0]?._id })
+        // eslint-disable-next-line
     }, [Installers]);
     useEffect(() => {
         setSiteLocationData({ ...siteLocationData, buildingBackground: buildingTypes[0]?._id })
+        // eslint-disable-next-line
     }, [buildingTypes]);
 
     useEffect(() => {
         if (userDetails.role === "admin") {
             setSiteLocationData({ ...siteLocationData, admin: userDetails?._id })
         }
+        // eslint-disable-next-line
     }, [userDetails]);
     const submitHandler = async (e) => {
         e.preventDefault();

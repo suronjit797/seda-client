@@ -34,6 +34,7 @@ const Users = () => {
     useEffect(() => {
         document.title = "SEDA - Users"
         getUsers()
+        // eslint-disable-next-line
     }, []);
 
     const columns = [
@@ -45,7 +46,7 @@ const Users = () => {
         },
         {
             name: 'User Name',
-            cell:(row)=><div><img src={row.avatar} width={40} height={40} className="my-2 rounded-circle" alt={`${row.name}`}/>  {row.name}</div>,
+            cell: (row) => <div><img src={row.avatar} width={40} height={40} className="my-2 rounded-circle" alt={`${row.name}`} />  {row.name}</div>,
             selector: row => (row),
         },
         {
@@ -66,7 +67,7 @@ const Users = () => {
             name: 'Assigned Site',
             cell: row => <div>{row?.site?.name}</div>,
             selector: row => (row.site),
-            center:true
+            center: true
 
         },
         {
@@ -104,6 +105,8 @@ const Users = () => {
                             return <Link to={`/site-user/` + row._id} className='btn btn-info me-1'><AiOutlineEye title="View Profile" /></Link>;
                         case 'public':
                             return <Link to={`/public-user/` + row._id} className='btn btn-info me-1'><AiOutlineEye title="View Profile" /></Link>;
+                        default:
+                            return
                     }
                 })
                     ()}
@@ -113,6 +116,8 @@ const Users = () => {
                             return <button className='btn btn-warning  me-1' onClick={() => activeDeactiveUser(row._id, row.isActive)}><FiUserX title="Inactive Account" /></button>;
                         case false:
                             return <button className='btn btn-success  me-1' onClick={() => activeDeactiveUser(row._id, row.isActive)}><FiUserCheck title="Active Account" /></button>;
+                        default:
+                            return
                     }
                 })
                     ()}

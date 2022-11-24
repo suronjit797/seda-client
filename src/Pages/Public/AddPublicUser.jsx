@@ -97,9 +97,11 @@ const AddPublicUser = () => {
     }
     useEffect(() => {
         getSiteLocations()
+        // eslint-disable-next-line
     }, []);
     useEffect(() => {
         setPublicData({ ...publicData, site: siteLocations[0]?._id })
+        // eslint-disable-next-line
     }, [siteLocations]);
     return (
         <div className='add-admin'>

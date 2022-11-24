@@ -33,6 +33,7 @@ const PublicUsers = () => {
     useEffect(() => {
         document.title = "SEDA - All Public Users"
         getUsers()
+        // eslint-disable-next-line
     }, []);
     const columns = [
         {

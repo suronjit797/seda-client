@@ -10,7 +10,6 @@ const EditAdmin = () => {
     const [SuccessMessage, setSuccessMessage] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate()
-    const [buildingTypes, setBuildingTypes] = useState([]);
     const [adminData, setAdminData] = useState({
         name: "",
         email: "",
@@ -85,6 +84,7 @@ const EditAdmin = () => {
     }
     useEffect(() => {
         getAdmin()
+        // eslint-disable-next-line
     }, []);
     
 

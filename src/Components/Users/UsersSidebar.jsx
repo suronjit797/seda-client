@@ -37,15 +37,17 @@ const UsersSidebar = () => {
                     case 'user':
                         return (
                             <ul className="list-group mb-3">
-                             
+
                             </ul>
                         )
                     case 'public':
                         return (
                             <ul className="list-group mb-3">
-                              
+
                             </ul>
                         )
+                    default:
+                        return
                 }
             })
                 ()}

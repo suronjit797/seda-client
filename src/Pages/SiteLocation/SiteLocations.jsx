@@ -6,7 +6,7 @@ import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
 import AdminSidebarNav from '../../Components/Admins/AdminSidebarNav';
 import Swal from "sweetalert2";
-import { useDispatch, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
 import { FiTrash, FiEye, FiEdit, FiPaperclip } from "react-icons/fi"
 
 const SiteLocations = () => {
@@ -124,6 +124,8 @@ const SiteLocations = () => {
                                     
                                 </div>
                             )
+                        default:
+                            return
                     }
                 })
                     ()}

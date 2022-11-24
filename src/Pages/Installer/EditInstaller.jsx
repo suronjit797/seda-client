@@ -84,10 +84,8 @@ const EditInstaller = () => {
     }
     useEffect(() => {
         getInstaller()
+        // eslint-disable-next-line
     }, []);
-
-
-
 
     return (
         <div className='add-installer'>
