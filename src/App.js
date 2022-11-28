@@ -94,7 +94,7 @@ function App() {
                     case 4:
                         return <Route path="/" element={<DashboardFour handle={handle} />} />
                     default:
-                        return
+                        return <Route path="/" element={<Dashboard handle={handle} />} />
                 }
             })
                 ()}
