@@ -31,7 +31,8 @@ const SignIn = () => {
                 console.log(error.response.data);
                 console.log(error.response.status);
                 if (error.response.status === 401 || 500) {
-                    setErrorMessage("Credentials information wrong!")
+                    setIsLoading(false)
+                    setErrorMessage(error.response.data)
                     setTimeout(() => {
                         setErrorMessage()
                     }, 2000)
@@ -100,6 +101,7 @@ const SignIn = () => {
                                 <div className=" mb-3">
                                     <button className='btn btn-primary px-5' type='submit'>Login</button>
                                 </div>
+                                <Link to="/installer-signup"><label htmlFor="forgot" className='float-end'><u>Register As Installer</u></label></Link>
                             </form>
                         </div>
                     </div>
