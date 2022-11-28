@@ -66,9 +66,10 @@ const Header = () => {
         const deviceId = e.target.value
         dispatch(setCurrentDevice(deviceId))
     }
+    let background = '/images/bg-3.jpg'
     return (
-        <div className='header'>
-            <div className="container-fluid bg-warning py-2 ">
+        <div className='header' style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover' }}>
+            <div className="container-fluid py-2 text-white">
                 <div className="row d-flex align-items-center">
                     <div className="col-sm-12 col-md-1">
                         <div className='d-flex justify-content-center justify-content-lg-end  py-0 py-sm-3'>
@@ -76,7 +77,7 @@ const Header = () => {
                         </div>
                     </div>
                     <div className="col-sm-12 col-md-5">
-                        <h4>Welcome, {userDetails?.name}</h4>
+                        <h5 className='mt-3'>Welcome, {userDetails?.name}</h5>
                         <h6 className='text-capitalize'>{userDetails?.role === "superAdmin" ? "Super Admin" : userDetails?.role}</h6>
                         <p>{moment(new Date()).format("DD/MM/YYYY hh:mm A")}</p>
                     </div>

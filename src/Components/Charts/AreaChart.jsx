@@ -27,8 +27,8 @@ const AreaChart = ({ name, title, data, from, to }) => {
         },
         xaxis: {
             type: 'datetime',
-            min: new Date(from.getFullYear(), from.getMonth(), 1).getTime() || new Date(date.getFullYear(), date.getMonth(), 1).getTime(),
-            max: new Date(to.getFullYear(), to.getMonth() + 1, 0).getTime() || new Date(date.getFullYear(), date.getMonth() + 1, 0).getTime(),
+            min: new Date(from).getTime() || new Date(date.getFullYear(), date.getMonth(), 1).getTime(),
+            max: new Date(to).getTime() || new Date(date.getFullYear(), date.getMonth() + 1, 0).getTime(),
             tickAmount: 6,
         },
         tooltip: {
