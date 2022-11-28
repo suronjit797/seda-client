@@ -63,12 +63,16 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import DeviceComparison from './Pages/AnalysisReporting/DeviceComparison';
 import DashboardTwo from './Pages/Dashboard/DashboardTwo';
+import DashboardThree from './Pages/Dashboard/DashboardThree';
+import DashboardFour from './Pages/Dashboard/DashboardFour';
+import InstallerSignUp from './Pages/SignIn/InstallerSignUp';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 
 
 function App() {
   const isLogged = useSelector((state) => state.user?.isLogged);
+  const userDetails = useSelector(state => state.user?.userDetails)
   const handle = useFullScreenHandle();
   return (
     <BrowserRouter>
@@ -79,8 +83,21 @@ function App() {
 
             <Navbar handle={handle} />
             <Routes>
-              <Route path="/" element={<Dashboard handle={handle} />} />
-              {/* <Route path="/" element={<DashboardTwo handle={handle} />} /> */}
+            {(() => {
+                switch (userDetails?.dashboard) {
+                    case 1:
+                        return <Route path="/" element={<Dashboard handle={handle} />} />
+                    case 2:
+                        return <Route path="/" element={<DashboardTwo handle={handle} />} />
+                    case 3:
+                        return  <Route path="/" element={<DashboardThree handle={handle} />} />
+                    case 4:
+                        return <Route path="/" element={<DashboardFour handle={handle} />} />
+                    default:
+                        return
+                }
+            })
+                ()}
               {/* users related routes */}
               <Route path="/users" element={<Users />} />
 
@@ -153,6 +170,7 @@ function App() {
             <Route path="/" element={<SignIn />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
+            <Route path='/installer-signup' element={<InstallerSignUp />} />
           </Routes>
         }
       </div>
