@@ -7,8 +7,9 @@ import axios from 'axios';
 import { BsFilterLeft } from "react-icons/bs"
 import PieChart from '../../Components/Charts/PieChart';
 const Dashboard = ({ handle }) => {
-    const [deviceData, setDeviceData] = useState();
+    const [deviceData, setDeviceData] = useState([]);
     const [showFilter, setShowFilter] = useState(false);
+    const [showFilterData, setShowFilterData] = useState(false);
     const [from, setFrom] = useState();
     const [to, setTo] = useState();
     let data = [10, 41, 35, 51, 49, 62, 69, 91, 130, 20, 44, 80]
@@ -28,6 +29,12 @@ const Dashboard = ({ handle }) => {
     useEffect(() => {
         document.title = "SEDA - Dashboard"
     }, []);
+
+    const handleFilter = async(e)=>{
+        e.preventDefault();
+        setShowFilterData(true)
+    }
+
     return (
         <div className='dashboard'>
             <div className="container-fluid">
@@ -54,18 +61,18 @@ const Dashboard = ({ handle }) => {
                                 <div className="col-md-8">
                                     <div className="row mb-2">
                                         <div className="col-md-9">
-                                            <form className={`${!showFilter && 'd-none'}`}>
+                                            <form onSubmit={handleFilter} className={`${!showFilter && 'd-none'}`}>
                                                 <div className="row d-flex align-items-end">
                                                     <div className="col-md-5">
                                                         <label for="from" class="form-label">From</label>
-                                                        <input type="datetime-local" value={from} className='form-control' id="from" name="from" />
+                                                        <input type="datetime-local" value={from} onChange={(e)=>setFrom(e.target.value)} className='form-control' id="from" name="from" required/>
                                                     </div>
                                                     <div className="col-md-5">
                                                         <label for="from" class="form-label">To</label>
-                                                        <input type="datetime-local" value={to} className='form-control' id="from" name="to" />
+                                                        <input type="datetime-local" value={to} onChange={(e)=>setTo(e.target.value)} className='form-control' id="from" name="to" required/>
                                                     </div>
                                                     <div className="col-md-2">
-                                                        <button className='btn btn-warning'>View</button>
+                                                        <button className='btn btn-warning' type='submit'>View</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -77,7 +84,7 @@ const Dashboard = ({ handle }) => {
                                         </div>
                                     </div>
                                     {/* <LineChart type="line" name="Power (kW)" title="Monthly (kW)"/> */}
-                                    {currentDevice ? <AreaChart name="Power (kWh)" title="Monthly (kWh)" data={deviceData} /> : <AreaChart name="Power (kWh)" title="Monthly (kWh)" />}
+                                    {deviceData.length>0 && showFilterData ? <AreaChart name="Power (kWh)" title="Monthly (kWh)" data={deviceData} from={from} to={to} /> : <AreaChart name="Power (kWh)" title="Monthly (kWh)" />}
                                 </div>
                                 <div className="col-md-2">
                                     <div className="consumption text-center">
