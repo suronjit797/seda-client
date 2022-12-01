@@ -4,11 +4,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import ChangePasswordModal from '../../Components/Modals/ChangePasswordModal';
 
 const EditSiteUser = () => {
     const [SuccessMessage, setSuccessMessage] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const userDetails = useSelector((state) => state?.user?.userDetails);
+    const [modalShow, setModalShow] = useState(false);
     const Params = useParams()
     const userId = Params.userId
     const navigate = useNavigate()
@@ -184,6 +186,7 @@ const EditSiteUser = () => {
                                 </div>
                                 <div className='float-end'>
                                     <button type="submit" class="btn btn-success me-2">Update</button>
+                                    {userDetails?.role === "superAdmin" && <button type='button' className='btn btn-info me-2' onClick={() => setModalShow(true)}>Change Password</button>}
                                     <Link to="/site-users" class="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>
@@ -191,6 +194,12 @@ const EditSiteUser = () => {
                     </div>
                 </div>
             </div>
+            <ChangePasswordModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                setModalShow={setModalShow}
+                userId={userId}
+            />
         </div>
     );
 }

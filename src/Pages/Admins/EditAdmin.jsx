@@ -3,11 +3,15 @@ import { Spinner } from 'react-bootstrap';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import AdminSidebarNav from '../../Components/Admins/AdminSidebarNav';
+import { useSelector } from 'react-redux';
+import ChangePasswordModal from '../../Components/Modals/ChangePasswordModal';
 
 const EditAdmin = () => {
     const Params = useParams()
     const adminId = Params.adminId
+    const userDetails = useSelector((state) => state.user.userDetails);
     const [SuccessMessage, setSuccessMessage] = useState();
+    const [modalShow, setModalShow] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate()
     const [adminData, setAdminData] = useState({
@@ -16,7 +20,7 @@ const EditAdmin = () => {
         phone: "",
         fax: "",
         companyName: "",
-        companyAddress:""
+        companyAddress: ""
     });
     const { name, email, phone, fax, companyName, companyAddress } = adminData
     const onInputChange = e => {
@@ -86,7 +90,7 @@ const EditAdmin = () => {
         getAdmin()
         // eslint-disable-next-line
     }, []);
-    
+
 
     return (
         <div className='add-admin'>
@@ -143,7 +147,7 @@ const EditAdmin = () => {
                                 </div>
                                 <div class="mb-3">
                                     <label for="bname" class="form-label">Profile Photo</label>
-                                    {imageUrl && selectedImage? (
+                                    {imageUrl && selectedImage ? (
                                         <div mt={2} textAlign="center">
                                             <img src={imageUrl} alt="avatar" height="100px" />
                                         </div>
@@ -159,6 +163,7 @@ const EditAdmin = () => {
                                 </div>
                                 <div className='float-end'>
                                     <button type="submit" class="btn btn-success me-2">Update</button>
+                                    {userDetails?.role === "superAdmin" && <button type='button' className='btn btn-info me-2' onClick={() => setModalShow(true)}>Change Password</button>}
                                     <Link to="/admins" class="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>
@@ -166,6 +171,12 @@ const EditAdmin = () => {
                     </div>
                 </div>
             </div>
+            <ChangePasswordModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                setModalShow={setModalShow}
+                userId={adminId}
+            />
         </div>
     );
 }
