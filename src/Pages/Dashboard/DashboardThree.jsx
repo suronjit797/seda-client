@@ -363,7 +363,7 @@ const DashboardThree = ({ handle }) => {
                         <aside className='col-md-2'>
                             <div className="consumption text-center">
                                 <div className="card text-center mb-2 p-2">
-                                    <h4 className='text-success'>This month <br />consumptionYes</h4>
+                                    <h4 className='text-success'>This month <br />consumption</h4>
                                     <h2>215</h2>
                                     <p>kWh</p>
                                 </div>
