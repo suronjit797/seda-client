@@ -126,10 +126,10 @@ const AnalysisReporting = () => {
                                         </select>
                                     </div>
                                     <div className="col-md-2">
-                                        <input type="text" name='from' value={from} className='form-control' placeholder='Select start time' onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} onChange={onInputChange} />
+                                        <input type="text" name='from' value={from} className='form-control' placeholder='Select Start Date' onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} onChange={onInputChange} />
                                     </div>
                                     <div className="col-md-2">
-                                        <input type="text" name='to' value={to} min={from} className='form-control' placeholder='Select end time' onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} onChange={onInputChange} />
+                                        <input type="text" name='to' value={to} min={from} className='form-control' placeholder='Select End Date' onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} onChange={onInputChange} />
                                     </div>
                                     <div className="col-md-3">
                                         <Select
@@ -143,7 +143,7 @@ const AnalysisReporting = () => {
                                             placeholder="Select Parameters"
                                         />
                                     </div>
-                                    <div className="col-md-1"> <button className='btn btn-warning' type='submit'>View</button></div>
+                                    <div className="col-md-1"> <button className='btn btn-success' type='submit'>Generate</button></div>
                                 </div>
                             </form>
                             <div className='d-flex justify-content-center'>

@@ -294,7 +294,7 @@ const DashboardThree = ({ handle }) => {
                         <aside className='col-md-2'>
                             <div className="consumption text-center">
                                 <div className="card text-center mb-2 p-2">
-                                    <h4 className='text-success'>This month <br />consumptions</h4>
+                                    <h4 className='text-success'>Consumption<br /> this month</h4>
                                     <h2>215</h2>
                                     <p>kWh</p>
                                 </div>
@@ -345,13 +345,13 @@ const DashboardThree = ({ handle }) => {
                                     <AreaChart name="Power (kW)" title="" data={data} from="03-03-2012" to="03-03-2013" />
                                 </div>
                                 <div className="col-md-6">
-                                    <h6 className='text-center'>Energy Consumptions per day <br />(kWh/day)</h6>
+                                    <h6 className='text-center'>Energy Consumption per day<br />(kWh/day)</h6>
                                     <LineChart type="bar" name="kWh" data={data2} color="#198754" title="" />
                                 </div>
                             </div>
                             <div className="row mt-3">
                                 <div className="col-md-6">
-                                    <h6 className='text-center'>Energy Consumptions per <br />months (kWh/months)</h6>
+                                    <h6 className='text-center'>Energy Consumption per <br />months (kWh/months)</h6>
                                     <LineChart type="bar" name="kWh" data={data3} color="#00205b" title="" />
                                 </div>
                                 <div className="col-md-6">
@@ -363,7 +363,7 @@ const DashboardThree = ({ handle }) => {
                         <aside className='col-md-2'>
                             <div className="consumption text-center">
                                 <div className="card text-center mb-2 p-2">
-                                    <h4 className='text-success'>This month <br />consumptions</h4>
+                                    <h4 className='text-success'>This month <br />consumptionYes</h4>
                                     <h2>215</h2>
                                     <p>kWh</p>
                                 </div>

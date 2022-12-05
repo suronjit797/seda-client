@@ -96,7 +96,7 @@ const InstallerSignUp = () => {
                                 <div className="row mb-3">
                                     <label for="phone" className="col-sm-5 col-md-4 col-form-label">Phone</label>
                                     <div className="col-sm-7 col-md-8">
-                                        <input type="text" name='phone' value={phone} onChange={e => onInputChange(e)} className="form-control" id="phone" placeholder="Enter Your Phone Number" required />
+                                        <input type="number" name='phone' value={phone} onChange={e => onInputChange(e)} className="form-control" id="phone" placeholder="Enter Your Phone Number" required />
                                     </div>
                                 </div>
                                 <div className="row mb-3">

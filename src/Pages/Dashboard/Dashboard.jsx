@@ -22,6 +22,7 @@ const Dashboard = ({ handle }) => {
     }
     useEffect(() => {
         if (currentDevice) {
+            console.log(currentDevice)
             getDeviceData()
         }
         // eslint-disable-next-line
@@ -30,7 +31,7 @@ const Dashboard = ({ handle }) => {
         document.title = "SEDA - Dashboard"
     }, []);
 
-    const handleFilter = async(e)=>{
+    const handleFilter = async (e) => {
         e.preventDefault();
         setShowFilterData(true)
     }
@@ -45,17 +46,17 @@ const Dashboard = ({ handle }) => {
                                 <div className="col-md-2">
                                     <div className="consumption text-center">
                                         <div className="card text-center mb-2 p-2">
-                                            <h3 className='text-success'>215</h3>
+                                            <h4 className='text-success'>Today <br />Consumption</h4>
+                                            <h2>215</h2>
                                             <p>kWh</p>
                                         </div>
-                                        <p>This Month Consumption</p>
                                     </div>
-                                    <div className="emission text-center">
-                                        <div className="card text-center p-2">
-                                            <h3 className='text-success'>21</h3>
-                                            <p>Kg CO<sub>2</sub></p>
+                                    <div className="consumption text-center">
+                                        <div className="card text-center mb-2 p-2">
+                                            <h4 className='text-success'>Today <br />CO<sub>2</sub> emissions </h4>
+                                            <h2>215</h2>
+                                            <p>kgCO<sub>2</sub></p>
                                         </div>
-                                        <p>This Month <br />CO<sub>2</sub> <br />Emission </p>
                                     </div>
                                 </div>
                                 <div className="col-md-8">
@@ -65,11 +66,11 @@ const Dashboard = ({ handle }) => {
                                                 <div className="row d-flex align-items-end">
                                                     <div className="col-md-5">
                                                         <label for="from" class="form-label">From</label>
-                                                        <input type="datetime-local" value={from} onChange={(e)=>setFrom(e.target.value)} className='form-control' id="from" name="from" required/>
+                                                        <input type="datetime-local" value={from} onChange={(e) => setFrom(e.target.value)} className='form-control' id="from" name="from" required />
                                                     </div>
                                                     <div className="col-md-5">
                                                         <label for="from" class="form-label">To</label>
-                                                        <input type="datetime-local" value={to} onChange={(e)=>setTo(e.target.value)} className='form-control' id="from" name="to" required/>
+                                                        <input type="datetime-local" value={to} onChange={(e) => setTo(e.target.value)} className='form-control' id="from" name="to" required />
                                                     </div>
                                                     <div className="col-md-2">
                                                         <button className='btn btn-warning' type='submit'>View</button>
@@ -84,22 +85,22 @@ const Dashboard = ({ handle }) => {
                                         </div>
                                     </div>
                                     {/* <LineChart type="line" name="Power (kW)" title="Monthly (kW)"/> */}
-                                    {deviceData.length>0 && showFilterData ? <AreaChart name="Power (kWh)" title="Monthly (kWh)" data={deviceData} from={from} to={to} /> : <AreaChart name="Power (kWh)" title="Monthly (kWh)" />}
+                                    {deviceData.length > 0 && showFilterData ? <AreaChart name="Power (kWh)" title="Monthly (kWh)" data={deviceData} from={from} to={to} /> : <AreaChart name="Power (kWh)" title="Monthly (kWh)" />}
                                 </div>
                                 <div className="col-md-2">
                                     <div className="consumption text-center">
                                         <div className="card text-center mb-2 p-2">
-                                            <h3 className='text-success'>215</h3>
+                                            <h4 className='text-success'>This month <br />Consumption</h4>
+                                            <h2>215</h2>
                                             <p>kWh</p>
                                         </div>
-                                        <p>Today Consumption</p>
                                     </div>
-                                    <div className="emission text-center">
-                                        <div className="card text-center p-2">
-                                            <h3 className='text-success'>21</h3>
-                                            <p>Kg CO<sub>2</sub></p>
+                                    <div className="consumption text-center">
+                                        <div className="card text-center mb-2 p-2">
+                                            <h4 className='text-success'>This month <br />CO<sub>2</sub> emissions </h4>
+                                            <h2>215</h2>
+                                            <p>kgCO<sub>2</sub></p>
                                         </div>
-                                        <p>Today <br />CO<sub>2</sub> <br />Emission </p>
                                     </div>
                                 </div>
                             </div>

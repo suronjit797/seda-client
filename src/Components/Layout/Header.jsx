@@ -84,7 +84,7 @@ const Header = () => {
 
                     <div className="col-md-2">
                         <div>
-                            {(() => {
+                            {(location.pathname === "/" || location.pathname === "/analysis-reporting") && (() => {
                                 switch (userDetails.role) {
                                     case 'user':
                                         return (

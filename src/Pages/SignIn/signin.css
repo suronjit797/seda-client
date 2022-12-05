@@ -11,7 +11,7 @@
 }
 
 .card-signIn{
-    height: 470px;
+    height: auto;
     width: 60%;
     padding: 0px 12px;
     display: flex;

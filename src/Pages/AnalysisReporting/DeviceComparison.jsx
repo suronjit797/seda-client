@@ -129,8 +129,8 @@ const DeviceComparison = () => {
                                         </select>
                                     </div>
                                     <div className="col-md-3">
-                                        <input type="text" name='from' value={from} className='form-control mb-2' placeholder='Select start time' onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} onChange={onInputChange} />
-                                        <input type="text" name='to' value={to} min={from} className='form-control' placeholder='Select end time' onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} onChange={onInputChange} />
+                                        <input type="text" name='from' value={from} className='form-control mb-2' placeholder='Select Start Date' onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} onChange={onInputChange} />
+                                        <input type="text" name='to' value={to} min={from} className='form-control' placeholder='Select End Date' onFocus={(e) => e.target.type = 'date'} onBlur={(e) => e.target.type = 'text'} onChange={onInputChange} />
                                     </div>
                                     <div className="col-md-3">
                                         <select className="form-select mb-2" name='device1' defaultValue={device1} onChange={onInputChange}>
@@ -161,7 +161,7 @@ const DeviceComparison = () => {
                                         </select>
                                     </div>
                                     <div className="col-md-1">
-                                        <button className='btn btn-warning' type='submit'>View</button>
+                                        <button className='btn btn-success' type='submit'>Generate</button>
                                     </div>
                                 </div>
                             </form>
