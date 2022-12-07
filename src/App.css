@@ -1,27 +1,33 @@
 a {
   color: #000000;
 }
+
 a:hover {
   color: #000000;
 }
+
 .btn-primary {
   background-color: #00205c;
   border-color: #00205c;
 }
+
 .btn-info {
   background: #00205b;
   border-color: #00205b;
   color: #fff;
 }
+
 .btn-info:hover {
   background: #033ba2 !important;
   border-color: #033ba2 !important;
   color: #fff !important;
 }
-.swal2-styled.swal2-confirm{
-  background-color:#dc3545 !important;
-  border:#dc3545 !important;
+
+.swal2-styled.swal2-confirm {
+  background-color: #dc3545 !important;
+  border: #dc3545 !important;
 }
+
 .swal2-styled.swal2-confirm:focus {
   box-shadow: none !important;
 }
@@ -29,21 +35,27 @@ a:hover {
 .eUeqdG {
   font-size: 15px;
 }
-.fullscreen-enabled{
+
+.fullscreen-enabled {
   background-color: #fff !important;
 }
-.vh60{
+
+.vh60 {
   min-height: 60vh;
 }
-.description p{
+
+.description p {
   margin: 0px !important;
 }
-.rdt_Table .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol{
+
+.rdt_Table .rdt_TableHead .rdt_TableHeadRow .rdt_TableCol {
   font-size: 15px !important;
 }
-.rdt_Table .rdt_TableBody .rdt_TableRow .rdt_TableCell{
+
+.rdt_Table .rdt_TableBody .rdt_TableRow .rdt_TableCell {
   font-size: 14px !important;
 }
+
 .table {
   color: #000000 !important;
 }
@@ -51,11 +63,18 @@ a:hover {
 .table-striped>tbody>tr:nth-of-type(odd)>* {
   color: #000000 !important;
 }
-.dt-buttons{
+
+.dt-buttons {
   margin-bottom: 10px;
 }
+
 table.dataTable thead th,
 table.dataTable thead td {
   font-size: 16px;
   font-weight: 600;
+}
+
+.minmax {
+  width: 150px;
+  padding: 10px;
 }

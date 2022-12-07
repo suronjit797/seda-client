@@ -84,8 +84,29 @@ const Dashboard = ({ handle }) => {
                                             </button>
                                         </div>
                                     </div>
-                                    {/* <LineChart type="line" name="Power (kW)" title="Monthly (kW)"/> */}
-                                    {deviceData.length > 0 && showFilterData ? <AreaChart name="Power (kWh)" title="Monthly (kWh)" data={deviceData} from={from} to={to} /> : <AreaChart name="Power (kWh)" title="Monthly (kWh)" />}
+                                    <div className="row">
+                                        <div className="col-md-10">
+                                        {deviceData.length > 0 && showFilterData ? <AreaChart name="Power (kWh)" title="Monthly (kWh)" data={deviceData} from={from} to={to} /> : <AreaChart name="Power (kWh)" title="Monthly (kWh)" />}
+                                        </div>
+                                        <div className="col-md-2">
+                                            <div className="minmax bg-success bg-opacity-50">
+                                        <div className="row">
+                                            <div className="col-6">Min</div>
+                                            <div className="col-6 d-flex justify-content-end">xx</div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">Max</div>
+                                            <div className="col-6 d-flex justify-content-end">xx</div>
+                                        </div>
+                                        <div className="row">
+                                            <div className="col-6">Average</div>
+                                            <div className="col-6 d-flex justify-content-end">xx</div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    
+                                    
                                 </div>
                                 <div className="col-md-2">
                                     <div className="consumption text-center">

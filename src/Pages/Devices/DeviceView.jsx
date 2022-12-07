@@ -15,18 +15,23 @@ const DeviceView = () => {
     const [deviceDetails, setDeviceDetails] = useState();
     const [deviceParameters, setDeviceParameters] = useState();
     const [formulas, setFormulas] = useState([]);
+    const [selectedFormula, setSelectedFormula] = useState();
     const [assignedFormulas, setAssignedFormulas] = useState([]);
     const [assignFormula, setAssignFormula] = useState({
         device: deviceId,
         formula: ""
     });
+    const {formula} = assignFormula
     const [SuccessMessage, setSuccessMessage] = useState();
     const [ErrorMessage, setErrorMessage] = useState();
     const onInputChange = e => {
         setAssignFormula({ ...assignFormula, [e.target.name]: e.target.value });
     };
-
-
+    useEffect(() => {
+      let filter = formulas.filter(item=> formula === item._id) 
+      setSelectedFormula(filter[0])
+    }, [formula, formulas]);
+    console.log(selectedFormula, "selectedFormula")
     const getDevice = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/` + deviceId, { withCredentials: true })
         if (response) {
@@ -170,6 +175,11 @@ const DeviceView = () => {
                                                 </div>
                                                 <div className="col-md-2">
                                                     <button type='submit' className='btn btn-warning'>Assign</button>
+                                                </div>
+                                            </div>
+                                            <div className="row mt-1">
+                                                <div className="col">
+                                                   <b> Preview: {selectedFormula && selectedFormula.formula}</b>
                                                 </div>
                                             </div>
                                         </form>
