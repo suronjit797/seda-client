@@ -65,11 +65,11 @@ const Dashboard = ({ handle }) => {
                                             <form onSubmit={handleFilter} className={`${!showFilter && 'd-none'}`}>
                                                 <div className="row d-flex align-items-end">
                                                     <div className="col-md-5">
-                                                        <label for="from" class="form-label">From</label>
+                                                        <label htmlFor="from" className="form-label">From</label>
                                                         <input type="datetime-local" value={from} onChange={(e) => setFrom(e.target.value)} className='form-control' id="from" name="from" required />
                                                     </div>
                                                     <div className="col-md-5">
-                                                        <label for="from" class="form-label">To</label>
+                                                        <label htmlFor="from" className="form-label">To</label>
                                                         <input type="datetime-local" value={to} onChange={(e) => setTo(e.target.value)} className='form-control' id="from" name="to" required />
                                                     </div>
                                                     <div className="col-md-2">

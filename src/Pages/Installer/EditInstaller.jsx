@@ -105,45 +105,45 @@ const EditInstaller = () => {
                             </div>
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             <form onSubmit={submitHandler}>
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="name" class="form-label">Full Name</label>
-                                        <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter full name' required />
+                                        <label htmlFor="name" className="form-label">Full Name</label>
+                                        <input type="text" name='name' value={name} onChange={onInputChange} className="form-control" id="name" placeholder='Enter full name' required />
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="email" class="form-label">Email Address</label>
-                                        <input type="email" name='email' value={email} onChange={onInputChange} class="form-control" id="email" placeholder='Enter email address' required />
+                                        <label htmlFor="email" className="form-label">Email Address</label>
+                                        <input type="email" name='email' value={email} onChange={onInputChange} className="form-control" id="email" placeholder='Enter email address' required />
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="phone" class="form-label">Phone Number</label>
+                                        <label htmlFor="phone" className="form-label">Phone Number</label>
                                         <div className='input-group'>
-                                            <span class="input-group-text" id="basic-addon1">+6</span>
-                                            <input type="number" name='phone' value={phone} onChange={onInputChange} class="form-control" id="phone" placeholder='Enter phone number' />
+                                            <span className="input-group-text" id="basic-addon1">+6</span>
+                                            <input type="number" name='phone' value={phone} onChange={onInputChange} className="form-control" id="phone" placeholder='Enter phone number' />
                                         </div>
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="fax" class="form-label">Fax Number</label>
+                                        <label htmlFor="fax" className="form-label">Fax Number</label>
                                         <div className='input-group'>
-                                            <span class="input-group-text" id="basic-addon1">+6</span>
-                                            <input type="number" name='fax' value={fax} onChange={onInputChange} class="form-control" id="fax" placeholder='Enter fax number' />
+                                            <span className="input-group-text" id="basic-addon1">+6</span>
+                                            <input type="number" name='fax' value={fax} onChange={onInputChange} className="form-control" id="fax" placeholder='Enter fax number' />
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="cname" class="form-label">Company  Name</label>
-                                        <input type="text" name='companyName' value={companyName} onChange={onInputChange} class="form-control" id="cname" placeholder='Enter company name' />
+                                        <label htmlFor="cname" className="form-label">Company  Name</label>
+                                        <input type="text" name='companyName' value={companyName} onChange={onInputChange} className="form-control" id="cname" placeholder='Enter company name' />
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="companyAddress" class="form-label">Company Address</label>
-                                        <input type="text" name='companyAddress' value={companyAddress} onChange={onInputChange} class="form-control" id="companyAddress" placeholder='Enter company address' />
+                                        <label htmlFor="companyAddress" className="form-label">Company Address</label>
+                                        <input type="text" name='companyAddress' value={companyAddress} onChange={onInputChange} className="form-control" id="companyAddress" placeholder='Enter company address' />
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="logo" class="form-label">Logo</label>
+                                <div className="mb-3">
+                                    <label htmlFor="logo" className="form-label">Logo</label>
                                     {imageUrl && selectedImage ? (
                                         <div mt={2} textAlign="center">
                                             <img src={imageUrl} alt="logo" height="100px" />
@@ -152,16 +152,16 @@ const EditInstaller = () => {
                                         :
                                         <>
                                             <input className='form-control' accept="image/*" type="file" id="select-image" style={{ display: 'none' }} onChange={e => handleFileUpload(e.target.files[0])} />
-                                            <label for="select-image">
+                                            <label htmlFor="select-image">
                                                 <img src={imageUrl || '/images/upload.png'} alt="" height="100px" className='rounded-3 border p-2 ms-2' />
                                             </label>
                                         </>
                                     }
                                 </div>
                                 <div className='float-end'>
-                                    <button type="submit" class="btn btn-success me-2">Update</button>
+                                    <button type="submit" className="btn btn-success me-2">Update</button>
                                     {userDetails?.role === "superAdmin" && <button type='button' className='btn btn-info me-2' onClick={() => setModalShow(true)}>Change Password</button>}
-                                    <Link to="/installers" class="btn btn-secondary">Cancel</Link>
+                                    <Link to="/installers" className="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>
                         </div>

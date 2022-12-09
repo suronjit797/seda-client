@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import SettingSidebarNav from '../../../Components/Settings/SettingSidebarNav';
 import FormulasTable from './FormulasTable';
 
@@ -10,31 +11,38 @@ const ManageFormulas = () => {
     const [formulaData, setFormulaData] = useState({
         name: "",
         unit: "",
-        formula: ""
+        formula: "",
+        type: "system",
+        formulaParts: {
+            selectOne: "",
+            valueOne: "",
+            selectTwo: "",
+            valueTwo: "",
+            selectThree: "",
+            valueThree: "",
+            selectFour: "",
+            valueFour: "",
+            selectFive: "",
+            valueFive: "",
+        }
     });
     const { name, unit, formula } = formulaData
+    const { selectOne, valueOne, selectTwo, valueTwo, selectThree, valueThree, selectFour, valueFour, selectFive, valueFive } = formulaData.formulaParts
 
-    const onInputChange1 = e => {
-        setFormulaData({ ...formulaData, [e.target.name]: e.target.value });
-    };
-    const [c1, setC1] = useState();
-    const [c2, setC2] = useState();
-    const [c3, setC3] = useState();
-    const [c4, setC4] = useState();
-    const [c5, setC5] = useState();
-    const [c6, setC6] = useState();
-    const [formulaPart, setFormulaPart] = useState({
-        p1: "",
-        p2: "",
-        p3: "",
-        p4: "",
-        p5: "",
-        p6: ""
-    });
-    const { p1, p2, p3, p4, p5, p6 } = formulaPart
     const onInputChange = e => {
-        setFormulaPart({ ...formulaPart, [e.target.name]: e.target.value });
+        if (Object.keys(formulaData.formulaParts).includes(e.target.name)) {
+            setFormulaData({
+                ...formulaData,
+                formulaParts: { ...formulaData.formulaParts, [e.target.name]: e.target.value },
+            });
+        } else {
+            setFormulaData({
+                ...formulaData,
+                [e.target.name]: e.target.value,
+            });
+        }
     };
+
     const [parameters, setParameters] = useState([]);
     const getParameters = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/parameters`, { withCredentials: true })
@@ -45,26 +53,47 @@ const ManageFormulas = () => {
     useEffect(() => {
         getParameters()
     }, []);
+
+    
+
+
     useEffect(() => {
-        setFormulaData({ ...formulaData, formula: `${p1} ${p2} ${p3} ${p4} ${p5} ${p6}` });
-    }, [p1, p2, p3, p4, p5, p6, formulaData]);
+        const changeFormula=async()=>{
+            setFormulaData({ ...formulaData, formula: `${valueOne} ${valueTwo} ${valueThree} ${valueFour} ${valueFive}` });
+        }
+        changeFormula()
+    }, [formulaData, valueOne, valueTwo, valueThree, valueFour, valueFive]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true)
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/formula`, formulaData, { withCredentials: true })
         if (response) {
-            setIsLoading(false)
-            setFormulaData({ name: "", unit: "", formula: "" })
-            setC1(); setC2(); setC3(); setC4(); setC5(); setC6();
-            setFormulaPart({ p1: "", p2: "", p3: "", p4: "", p5: "", p6: "" })
-            getFormulas()
-            setSuccessMessage("Formula Created Successfully")
+            setIsLoading(false);
+            setFormulaData({
+                name: "",
+                unit: "",
+                formula: "",
+                type: "system",
+                formulaParts: {
+                    selectOne: "",
+                    valueOne: "",
+                    selectTwo: "",
+                    valueTwo: "",
+                    selectThree: "",
+                    valueThree: "",
+                    selectFour: "",
+                    valueFour: "",
+                    selectFive: "",
+                    valueFive: "",
+                }
+            });
+            getFormulas();
+            setSuccessMessage("Formula Created Successfully");
             setTimeout(() => {
-                setSuccessMessage()
+                setSuccessMessage();
             }, 2000)
         }
-        e.target.reset();
     }
     const [formulas, setFormulas] = useState([]);
     const getFormulas = async () => {
@@ -98,13 +127,13 @@ const ManageFormulas = () => {
                                     <div className="row mb-3">
                                         <div className="col-md-6">
                                             <label htmlFor="name">Formula Name</label>
-                                            <input type="text" id='name' name='name' value={name} onChange={onInputChange1} className='form-control' placeholder='Enter formula name' required />
+                                            <input type="text" id='name' name='name' value={name} onChange={onInputChange} className='form-control' placeholder='Enter formula name' required />
                                         </div>
                                     </div>
                                     <div className="row mb-3">
                                         <div className="col-md-6">
                                             <label htmlFor="unit">Formula Unit / Value</label>
-                                            <input type="text" id='unit' name='unit' value={unit} onChange={onInputChange1} className='form-control' placeholder='Enter formula Unit' />
+                                            <input type="text" id='unit' name='unit' value={unit} onChange={onInputChange} className='form-control' placeholder='Enter formula Unit' />
                                         </div>
                                     </div>
                                     <div className="row mb-3">
@@ -112,7 +141,7 @@ const ManageFormulas = () => {
                                             <label htmlFor="name">Set Formula</label>
                                             <div className="row">
                                                 <div className="col-md-2">
-                                                    <select name="col-1" id="" className='form-select' onChange={(e) => setC1(e.target.value)}>
+                                                    <select name="selectOne" id="" className='form-select' onChange={onInputChange}>
                                                         <option>Select Type</option>
                                                         <option value="parameter">Parameter</option>
                                                         <option value="operator">Operator</option>
@@ -121,7 +150,7 @@ const ManageFormulas = () => {
                                                     </select>
                                                 </div>
                                                 <div className="col-md-2">
-                                                    <select name="col-2" id="" className='form-select' onChange={(e) => setC2(e.target.value)}>
+                                                    <select name="selectTwo" id="" className='form-select' onChange={onInputChange}>
                                                         <option>Select Type</option>
                                                         <option value="parameter">Parameter</option>
                                                         <option value="operator">Operator</option>
@@ -130,7 +159,7 @@ const ManageFormulas = () => {
                                                     </select>
                                                 </div>
                                                 <div className="col-md-2">
-                                                    <select name="col-3" id="" className='form-select' onChange={(e) => setC3(e.target.value)}>
+                                                    <select name="selectThree" id="" className='form-select' onChange={onInputChange}>
                                                         <option>Select Type</option>
                                                         <option value="parameter">Parameter</option>
                                                         <option value="operator">Operator</option>
@@ -139,7 +168,7 @@ const ManageFormulas = () => {
                                                     </select>
                                                 </div>
                                                 <div className="col-md-2">
-                                                    <select name="col-4" id="" className='form-select' onChange={(e) => setC4(e.target.value)}>
+                                                    <select name="selectFour" id="" className='form-select' onChange={onInputChange}>
                                                         <option>Select Type</option>
                                                         <option value="parameter">Parameter</option>
                                                         <option value="operator">Operator</option>
@@ -148,16 +177,7 @@ const ManageFormulas = () => {
                                                     </select>
                                                 </div>
                                                 <div className="col-md-2">
-                                                    <select name="col-5" id="" className='form-select' onChange={(e) => setC5(e.target.value)}>
-                                                        <option>Select Type</option>
-                                                        <option value="parameter">Parameter</option>
-                                                        <option value="operator">Operator</option>
-                                                        <option value="formula">Formula</option>
-                                                        <option value="text">Text</option>
-                                                    </select>
-                                                </div>
-                                                <div className="col-md-2">
-                                                    <select name="col-6" id="" className='form-select' onChange={(e) => setC6(e.target.value)}>
+                                                    <select name="selectFive" id="" className='form-select' onChange={onInputChange}>
                                                         <option>Select Type</option>
                                                         <option value="parameter">Parameter</option>
                                                         <option value="operator">Operator</option>
@@ -173,10 +193,10 @@ const ManageFormulas = () => {
                                             <div className="row">
                                                 <div className="col-md-2">
                                                     {(() => {
-                                                        switch (c1) {
+                                                        switch (selectOne) {
                                                             case 'parameter':
                                                                 return (
-                                                                    <select name="p1" id="" value={p1} onChange={onInputChange} className='form-select'>
+                                                                    <select name="valueOne" id="valueOne" value={valueOne} onChange={onInputChange} className='form-select'>
                                                                         <option>Select Parameter</option>
                                                                         {parameters && parameters.length > 0 && parameters.map((item, index) => (
                                                                             <option value={item.name} key={index}>{item.name}</option>
@@ -185,7 +205,7 @@ const ManageFormulas = () => {
                                                                 );
                                                             case 'operator':
                                                                 return (
-                                                                    <select name="p1" id="" value={p1} onChange={onInputChange} className='form-select'>
+                                                                    <select name="valueOne" id="valueOne" value={valueOne} onChange={onInputChange} className='form-select'>
                                                                         <option>Select Operator</option>
                                                                         <option value="+">+</option>
                                                                         <option value="-">-</option>
@@ -196,7 +216,7 @@ const ManageFormulas = () => {
                                                                 );
                                                             case 'formula':
                                                                 return (
-                                                                    <select name="p1" id="" value={p1} onChange={onInputChange} className='form-select'>
+                                                                    <select name="valueOne" id="valueOne" value={valueOne} onChange={onInputChange} className='form-select'>
                                                                         <option>Select Formula</option>
                                                                         {formulas && formulas.length > 0 && formulas.map((item, index) => (
                                                                             <option value={item.name} key={index}>{item.name}</option>
@@ -205,7 +225,7 @@ const ManageFormulas = () => {
                                                                 );
                                                             default:
                                                                 return (
-                                                                    <input type="text" name='p1' value={p1} onChange={onInputChange} className='form-control' placeholder='Enter a value' />
+                                                                    <input type="text" name="valueOne" id="valueOne" value={valueOne} onChange={onInputChange} className='form-control' placeholder='Enter a value' />
                                                                 )
                                                         }
                                                     })
@@ -213,10 +233,10 @@ const ManageFormulas = () => {
                                                 </div>
                                                 <div className="col-md-2">
                                                     {(() => {
-                                                        switch (c2) {
+                                                        switch (selectTwo) {
                                                             case 'parameter':
                                                                 return (
-                                                                    <select name="p2" id="" value={p2} onChange={onInputChange} className='form-select'>
+                                                                    <select name="valueTwo" id="valueTwo" value={valueTwo} onChange={onInputChange} className='form-select'>
                                                                         <option>Select Parameter</option>
                                                                         {parameters && parameters.length > 0 && parameters.map((item, index) => (
                                                                             <option value={item.name} key={index}>{item.name}</option>
@@ -225,7 +245,7 @@ const ManageFormulas = () => {
                                                                 );
                                                             case 'operator':
                                                                 return (
-                                                                    <select name="p2" id="" value={p2} onChange={onInputChange} className='form-select'>
+                                                                    <select name="valueTwo" id="valueTwo" value={valueTwo} onChange={onInputChange} className='form-select'>
                                                                         <option>Select Operator</option>
                                                                         <option value="+">+</option>
                                                                         <option value="-">-</option>
@@ -236,7 +256,7 @@ const ManageFormulas = () => {
                                                                 );
                                                             case 'formula':
                                                                 return (
-                                                                    <select name="p2" id="" value={p2} onChange={onInputChange} className='form-select'>
+                                                                    <select name="valueTwo" id="valueTwo" value={valueTwo} onChange={onInputChange} className='form-select'>
                                                                         <option>Select Formula</option>
                                                                         {formulas && formulas.length > 0 && formulas.map((item, index) => (
                                                                             <option value={item.name} key={index}>{item.name}</option>
@@ -245,7 +265,7 @@ const ManageFormulas = () => {
                                                                 );
                                                             default:
                                                                 return (
-                                                                    <input type="text" name='p2' value={p2} onChange={onInputChange} className='form-control' placeholder='Enter a value' />
+                                                                    <input type="text" name="valueTwo" id="valueTwo" value={valueTwo} onChange={onInputChange} className='form-control' placeholder='Enter a value' />
                                                                 )
                                                         }
                                                     })
@@ -253,10 +273,10 @@ const ManageFormulas = () => {
                                                 </div>
                                                 <div className="col-md-2">
                                                     {(() => {
-                                                        switch (c3) {
+                                                        switch (selectThree) {
                                                             case 'parameter':
                                                                 return (
-                                                                    <select name="p3" id="" value={p3} onChange={onInputChange} className='form-select'>
+                                                                    <select name="valueThree" id="valueThree" value={valueThree} onChange={onInputChange} className='form-select'>
                                                                         <option>Select Parameter</option>
                                                                         {parameters && parameters.length > 0 && parameters.map((item, index) => (
                                                                             <option value={item.name} key={index}>{item.name}</option>
@@ -265,7 +285,7 @@ const ManageFormulas = () => {
                                                                 );
                                                             case 'operator':
                                                                 return (
-                                                                    <select name="p3" id="" value={p3} onChange={onInputChange} className='form-select'>
+                                                                    <select name="valueThree" id="valueThree" value={valueThree} onChange={onInputChange} className='form-select'>
                                                                         <option>Select Operator</option>
                                                                         <option value="+">+</option>
                                                                         <option value="-">-</option>
@@ -276,7 +296,7 @@ const ManageFormulas = () => {
                                                                 );
                                                             case 'formula':
                                                                 return (
-                                                                    <select name="p3" id="" value={p3} onChange={onInputChange} className='form-select'>
+                                                                    <select name="valueThree" id="valueThree" value={valueThree} onChange={onInputChange} className='form-select'>
                                                                         <option>Select Formula</option>
                                                                         {formulas && formulas.length > 0 && formulas.map((item, index) => (
                                                                             <option value={item.name} key={index}>{item.name}</option>
@@ -285,7 +305,7 @@ const ManageFormulas = () => {
                                                                 );
                                                             default:
                                                                 return (
-                                                                    <input type="text" name='p3' value={p3} onChange={onInputChange} className='form-control' placeholder='Enter a value' />
+                                                                    <input type="text" name="valueThree" id="valueThree" value={valueThree} onChange={onInputChange} className='form-control' placeholder='Enter a value' />
                                                                 )
                                                         }
                                                     })
@@ -293,10 +313,10 @@ const ManageFormulas = () => {
                                                 </div>
                                                 <div className="col-md-2">
                                                     {(() => {
-                                                        switch (c4) {
+                                                        switch (selectFour) {
                                                             case 'parameter':
                                                                 return (
-                                                                    <select name="p4" id="" value={p4} onChange={onInputChange} className='form-select'>
+                                                                    <select name="valueFour" id="valueFour" value={valueFour} onChange={onInputChange} className='form-select'>
                                                                         <option>Select Parameter</option>
                                                                         {parameters && parameters.length > 0 && parameters.map((item, index) => (
                                                                             <option value={item.name} key={index}>{item.name}</option>
@@ -305,7 +325,7 @@ const ManageFormulas = () => {
                                                                 );
                                                             case 'operator':
                                                                 return (
-                                                                    <select name="p4" id="" value={p4} onChange={onInputChange} className='form-select'>
+                                                                    <select name="valueFour" id="valueFour" value={valueFour} onChange={onInputChange} className='form-select'>
                                                                         <option>Select Operator</option>
                                                                         <option value="+">+</option>
                                                                         <option value="-">-</option>
@@ -316,7 +336,7 @@ const ManageFormulas = () => {
                                                                 );
                                                             case 'formula':
                                                                 return (
-                                                                    <select name="p4" id="" value={p4} onChange={onInputChange} className='form-select'>
+                                                                    <select name="valueFour" id="valueFour" value={valueFour} onChange={onInputChange} className='form-select'>
                                                                         <option>Select Formula</option>
                                                                         {formulas && formulas.length > 0 && formulas.map((item, index) => (
                                                                             <option value={item.name} key={index}>{item.name}</option>
@@ -325,7 +345,7 @@ const ManageFormulas = () => {
                                                                 );
                                                             default:
                                                                 return (
-                                                                    <input type="text" name='p4' value={p4} onChange={onInputChange} className='form-control' placeholder='Enter a value' />
+                                                                    <input type="text" name="valueFour" id="valueFour" value={valueFour} onChange={onInputChange} className='form-control' placeholder='Enter a value' />
                                                                 )
                                                         }
                                                     })
@@ -333,10 +353,10 @@ const ManageFormulas = () => {
                                                 </div>
                                                 <div className="col-md-2">
                                                     {(() => {
-                                                        switch (c5) {
+                                                        switch (selectFive) {
                                                             case 'parameter':
                                                                 return (
-                                                                    <select name="p5" id="" value={p5} onChange={onInputChange} className='form-select'>
+                                                                    <select name="valueFive" id="valueFive" value={valueFive} onChange={onInputChange} className='form-select'>
                                                                         <option>Select Parameter</option>
                                                                         {parameters && parameters.length > 0 && parameters.map((item, index) => (
                                                                             <option value={item.name} key={index}>{item.name}</option>
@@ -345,7 +365,7 @@ const ManageFormulas = () => {
                                                                 );
                                                             case 'operator':
                                                                 return (
-                                                                    <select name="p5" id="" value={p5} onChange={onInputChange} className='form-select'>
+                                                                    <select name="valueFive" id="valueFive" value={valueFive} onChange={onInputChange} className='form-select'>
                                                                         <option>Select Operator</option>
                                                                         <option value="+">+</option>
                                                                         <option value="-">-</option>
@@ -356,7 +376,7 @@ const ManageFormulas = () => {
                                                                 );
                                                             case 'formula':
                                                                 return (
-                                                                    <select name="p5" id="" value={p5} onChange={onInputChange} className='form-select'>
+                                                                    <select name="valueFive" id="valueFive" value={valueFive} onChange={onInputChange} className='form-select'>
                                                                         <option>Select Formula</option>
                                                                         {formulas && formulas.length > 0 && formulas.map((item, index) => (
                                                                             <option value={item.name} key={index}>{item.name}</option>
@@ -365,47 +385,7 @@ const ManageFormulas = () => {
                                                                 );
                                                             default:
                                                                 return (
-                                                                    <input type="text" name='p5' value={p5} onChange={onInputChange} className='form-control' placeholder='Enter a value' />
-                                                                )
-                                                        }
-                                                    })
-                                                        ()}
-                                                </div>
-                                                <div className="col-md-2">
-                                                    {(() => {
-                                                        switch (c6) {
-                                                            case 'parameter':
-                                                                return (
-                                                                    <select name="p6" id="" value={p6} onChange={onInputChange} className='form-select'>
-                                                                        <option>Select Parameter</option>
-                                                                        {parameters && parameters.length > 0 && parameters.map((item, index) => (
-                                                                            <option value={item.name} key={index}>{item.name}</option>
-                                                                        ))}
-                                                                    </select>
-                                                                );
-                                                            case 'operator':
-                                                                return (
-                                                                    <select name="p6" id="" value={p6} onChange={onInputChange} className='form-select'>
-                                                                        <option>Select Operator</option>
-                                                                        <option value="+">+</option>
-                                                                        <option value="-">-</option>
-                                                                        <option value="x">x</option>
-                                                                        <option value="/">/</option>
-                                                                        <option value="=">=</option>
-                                                                    </select>
-                                                                );
-                                                            case 'formula':
-                                                                return (
-                                                                    <select name="p6" id="" value={p6} onChange={onInputChange} className='form-select'>
-                                                                        <option>Select Formula</option>
-                                                                        {formulas && formulas.length > 0 && formulas.map((item, index) => (
-                                                                            <option value={item.name} key={index}>{item.name}</option>
-                                                                        ))}
-                                                                    </select>
-                                                                );
-                                                            default:
-                                                                return (
-                                                                    <input type="text" name='p6' value={p6} onChange={onInputChange} className='form-control' placeholder='Enter a value' />
+                                                                    <input type="text" name="valueFive" id="valueFive" value={valueFive} onChange={onInputChange} className='form-control' placeholder='Enter a value' />
                                                                 )
                                                         }
                                                     })
@@ -422,8 +402,8 @@ const ManageFormulas = () => {
                                     </div>
                                     <div className="row mb-3">
                                         <div className="col-md-12 d-flex justify-content-end">
-                                            <button className='btn btn-success me-2'>Create Formula</button>
-                                            <button className='btn btn-secondary'>Cancel</button>
+                                            <button className='btn btn-success me-2' type='submit'>Create Formula</button>
+                                            <Link to="/" className='btn btn-secondary'>Cancel</Link>
                                         </div>
                                     </div>
                                 </form>

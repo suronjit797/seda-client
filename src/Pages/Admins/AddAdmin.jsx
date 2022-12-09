@@ -95,56 +95,56 @@ const AddAdmin = () => {
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
                             <form onSubmit={submitHandler}>
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="name" class="form-label">Full Name</label>
-                                        <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter full name' required />
+                                        <label htmlFor="name" className="form-label">Full Name</label>
+                                        <input type="text" name='name' value={name} onChange={onInputChange} className="form-control" id="name" placeholder='Enter full name' required />
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="email" class="form-label">Email Address</label>
-                                        <input type="email" name='email' value={email} onChange={onInputChange} class="form-control" id="email" placeholder='Enter email address' required />
+                                        <label htmlFor="email" className="form-label">Email Address</label>
+                                        <input type="email" name='email' value={email} onChange={onInputChange} className="form-control" id="email" placeholder='Enter email address' required />
                                     </div>
                                 </div>
 
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="password" class="form-label">Password</label>
-                                        <input type="password" name='password' value={password} onChange={onInputChange} class="form-control" id="password" minlength="6" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
+                                        <label htmlFor="password" className="form-label">Password</label>
+                                        <input type="password" name='password' value={password} onChange={onInputChange} className="form-control" id="password" minLength="6" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="reenterPassword" class="form-label">Reenter Password</label>
-                                        <input type="password" name='reenterPassword' value={reenterPassword} minlength="6" onChange={onInputChange} class="form-control" id="reenterPassword" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
+                                        <label htmlFor="reenterPassword" className="form-label">Reenter Password</label>
+                                        <input type="password" name='reenterPassword' value={reenterPassword} minLength="6" onChange={onInputChange} className="form-control" id="reenterPassword" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
                                     </div>
                                 </div>
                                 <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="cname" class="form-label">Company  Name</label>
-                                        <input type="text" name='companyName' value={companyName} onChange={onInputChange} class="form-control" id="cname" placeholder='Enter company name' />
+                                        <label htmlFor="cname" className="form-label">Company  Name</label>
+                                        <input type="text" name='companyName' value={companyName} onChange={onInputChange} className="form-control" id="cname" placeholder='Enter company name' />
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="companyAddress" class="form-label">Company Address</label>
-                                        <input type="text" name='companyAddress' value={companyAddress} onChange={onInputChange} class="form-control" id="companyAddress" placeholder='Enter company address' />
+                                        <label htmlFor="companyAddress" className="form-label">Company Address</label>
+                                        <input type="text" name='companyAddress' value={companyAddress} onChange={onInputChange} className="form-control" id="companyAddress" placeholder='Enter company address' />
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="phone" class="form-label">Phone Number</label>
+                                        <label htmlFor="phone" className="form-label">Phone Number</label>
                                         <div className='input-group'>
-                                            <span class="input-group-text" id="basic-addon1">+6</span>
-                                            <input type="number" name='phone' value={phone} onChange={onInputChange} class="form-control" id="phone" placeholder='Enter phone number' />
+                                            <span className="input-group-text" id="basic-addon1">+6</span>
+                                            <input type="number" name='phone' value={phone} onChange={onInputChange} className="form-control" id="phone" placeholder='Enter phone number' />
                                         </div>
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="fax" class="form-label">Fax Number</label>
+                                        <label htmlFor="fax" className="form-label">Fax Number</label>
                                         <div className='input-group'>
-                                            <span class="input-group-text" id="basic-addon1">+6</span>
-                                            <input type="number" name='fax' value={fax} onChange={onInputChange} class="form-control" id="fax" placeholder='Enter fax number' />
+                                            <span className="input-group-text" id="basic-addon1">+6</span>
+                                            <input type="number" name='fax' value={fax} onChange={onInputChange} className="form-control" id="fax" placeholder='Enter fax number' />
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="bname" class="form-label">Profile Photo</label>
+                                <div className="mb-3">
+                                    <label htmlFor="bname" className="form-label">Profile Photo</label>
                                     {imageUrl ? (
                                         <div mt={2} textAlign="center">
                                             <div>Preview:</div>
@@ -154,15 +154,15 @@ const AddAdmin = () => {
                                         :
                                         <>
                                             <input className='form-control' accept="image/*" type="file" id="select-image" style={{ display: 'none' }} onChange={e => handleFileUpload(e.target.files[0])} />
-                                            <label for="select-image">
+                                            <label htmlFor="select-image">
                                                 <img src="/images/avatar.png" alt="" height="100px" className='rounded-3 border p-2 ms-2' />
                                             </label>
                                         </>
                                     }
                                 </div>
                                 <div className='float-end'>
-                                    <button type="submit" class="btn btn-success me-2">Create Admin</button>
-                                    <Link to="/admins" class="btn btn-secondary">Cancel</Link>
+                                    <button type="submit" className="btn btn-success me-2">Create Admin</button>
+                                    <Link to="/admins" className="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>
                         </div>

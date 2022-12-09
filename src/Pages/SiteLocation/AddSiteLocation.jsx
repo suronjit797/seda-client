@@ -139,15 +139,15 @@ const AddSiteLocation = () => {
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
                             <form onSubmit={submitHandler}>
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="name" class="form-label">Site Name</label>
-                                        <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter full name' required />
+                                        <label htmlFor="name" className="form-label">Site Name</label>
+                                        <input type="text" name='name' value={name} onChange={onInputChange} className="form-control" id="name" placeholder='Enter full name' required />
                                     </div>
                                     {userDetails.role === "admin" ? '' :
                                         <div className="col-md-6">
-                                            <label for="email" class="form-label">Admin</label>
-                                            <select class="form-select" id='admin' name='admin' value={admin} onChange={onInputChange} aria-label="Select an admin">
+                                            <label htmlFor="email" className="form-label">Admin</label>
+                                            <select className="form-select" id='admin' name='admin' value={admin} onChange={onInputChange} aria-label="Select an admin">
                                                 <option label='Select an admin'></option>
                                                 {Admins && Admins.length > 0 && Admins.map((item, index) => (
                                                     <option value={item._id} key={index}>{item.name}</option>
@@ -159,8 +159,8 @@ const AddSiteLocation = () => {
                                 </div>
                                 <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="installer" class="form-label">Assign Installer</label>
-                                        <select class="form-select" id='installer' name='installer' value={installer} onChange={onInputChange} aria-label="Select an admin">
+                                        <label htmlFor="installer" className="form-label">Assign Installer</label>
+                                        <select className="form-select" id='installer' name='installer' value={installer} onChange={onInputChange} aria-label="Select an admin">
                                             {Installers && Installers.length > 0 && Installers.map((item, index) => (
                                                 <option value={item._id} key={index}>{item.name}</option>
                                             ))}
@@ -170,66 +170,66 @@ const AddSiteLocation = () => {
                                 <h5 className='mt-4'>Building Information</h5>
                                 <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="bname" class="form-label">Building Name</label>
-                                        <input type="text" name='buildingName' value={buildingName} onChange={onInputChange} class="form-control" id="bname" placeholder='Enter building name' />
+                                        <label htmlFor="bname" className="form-label">Building Name</label>
+                                        <input type="text" name='buildingName' value={buildingName} onChange={onInputChange} className="form-control" id="bname" placeholder='Enter building name' />
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="buildingType" class="form-label">Building Type</label>
-                                        <input type="text" name='buildingType' value={buildingType} onChange={onInputChange} class="form-control" id="buildingType" placeholder='Enter building type' />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div className="col-md-6">
-                                        <label for="buildingAddress1" class="form-label">Building Address Line 1</label>
-                                        <input type="text" name='buildingAddress1' value={buildingAddress1} onChange={onInputChange} class="form-control" id="buildingAddress1" placeholder='Enter building address line 1' />
-                                    </div>
-                                    <div className="col-md-6">
-                                        <label for="buildingAddress2" class="form-label">Building Address Line 2</label>
-                                        <input type="text" name='buildingAddress2' value={buildingAddress2} onChange={onInputChange} class="form-control" id="buildingAddress2" placeholder='Enter building address line 2' />
+                                        <label htmlFor="buildingType" className="form-label">Building Type</label>
+                                        <input type="text" name='buildingType' value={buildingType} onChange={onInputChange} className="form-control" id="buildingType" placeholder='Enter building type' />
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="buildingPostalCode" class="form-label">Building Postal Code</label>
-                                        <input type="number" name='buildingPostalCode' value={buildingPostalCode} onChange={onInputChange} class="form-control" id="buildingPostalCode" placeholder='Enter building postal code' />
+                                        <label htmlFor="buildingAddress1" className="form-label">Building Address Line 1</label>
+                                        <input type="text" name='buildingAddress1' value={buildingAddress1} onChange={onInputChange} className="form-control" id="buildingAddress1" placeholder='Enter building address line 1' />
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="localAuthority" class="form-label">Local Authority</label>
-                                        <input type="text" name='localAuthority' value={localAuthority} onChange={onInputChange} class="form-control" id="localAuthority" placeholder='Enter local authority' />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div className="col-md-6">
-                                        <label for="buildingOwnerName" class="form-label">Building Owner Name</label>
-                                        <input type="text" name='buildingOwnerName' value={buildingOwnerName} onChange={onInputChange} class="form-control" id="buildingOwnerName" placeholder='Enter building owner name' />
-                                    </div>
-                                    <div className="col-md-6">
-                                        <label for="buildingOwnerEmail" class="form-label">Building Owner Email</label>
-                                        <input type="email" name='buildingOwnerEmail' value={buildingOwnerEmail} onChange={onInputChange} class="form-control" id="buildingOwnerEmail" placeholder='Enter building owner email' />
+                                        <label htmlFor="buildingAddress2" className="form-label">Building Address Line 2</label>
+                                        <input type="text" name='buildingAddress2' value={buildingAddress2} onChange={onInputChange} className="form-control" id="buildingAddress2" placeholder='Enter building address line 2' />
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="netFloorArea" class="form-label">Nett Floor Area (sq ft)</label>
-                                        <input type="number" name='netFloorArea' value={netFloorArea} onChange={onInputChange} class="form-control" id="netFloorArea" placeholder='Enter nett floor area (sq ft)' />
+                                        <label htmlFor="buildingPostalCode" className="form-label">Building Postal Code</label>
+                                        <input type="number" name='buildingPostalCode' value={buildingPostalCode} onChange={onInputChange} className="form-control" id="buildingPostalCode" placeholder='Enter building postal code' />
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="tariffElectricity" class="form-label">Tariff Electricity (sen/kWh)</label>
-                                        <select class="form-select" id='tariffElectricity' name='tariffElectricity' value={tariffElectricity} onChange={onInputChange}>
+                                        <label htmlFor="localAuthority" className="form-label">Local Authority</label>
+                                        <input type="text" name='localAuthority' value={localAuthority} onChange={onInputChange} className="form-control" id="localAuthority" placeholder='Enter local authority' />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-md-6">
+                                        <label htmlFor="buildingOwnerName" className="form-label">Building Owner Name</label>
+                                        <input type="text" name='buildingOwnerName' value={buildingOwnerName} onChange={onInputChange} className="form-control" id="buildingOwnerName" placeholder='Enter building owner name' />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label htmlFor="buildingOwnerEmail" className="form-label">Building Owner Email</label>
+                                        <input type="email" name='buildingOwnerEmail' value={buildingOwnerEmail} onChange={onInputChange} className="form-control" id="buildingOwnerEmail" placeholder='Enter building owner email' />
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-md-6">
+                                        <label htmlFor="netFloorArea" className="form-label">Nett Floor Area (sq ft)</label>
+                                        <input type="number" name='netFloorArea' value={netFloorArea} onChange={onInputChange} className="form-control" id="netFloorArea" placeholder='Enter nett floor area (sq ft)' />
+                                    </div>
+                                    <div className="col-md-6">
+                                        <label htmlFor="tariffElectricity" className="form-label">Tariff Electricity (sen/kWh)</label>
+                                        <select className="form-select" id='tariffElectricity' name='tariffElectricity' value={tariffElectricity} onChange={onInputChange}>
                                             {ElectricityTariff && ElectricityTariff.length > 0 && ElectricityTariff.map((item, index) => (
                                                 <option value={item._id} key={index}>{item.name}</option>
                                             ))}
                                         </select>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="remark" class="form-label">Remark</label>
-                                        <input type="text" name='remark' value={remark} onChange={onInputChange} class="form-control" id="remark" placeholder='Enter remark' />
+                                        <label htmlFor="remark" className="form-label">Remark</label>
+                                        <input type="text" name='remark' value={remark} onChange={onInputChange} className="form-control" id="remark" placeholder='Enter remark' />
                                     </div>
                                     <div className="col-md-6">
                                         <label htmlFor="buildingBackground">Physical Building Background</label>
-                                        <select class="form-select" id='buildingBackground' name='buildingBackground' value={buildingBackground} onChange={onInputChange} aria-label="Select a Building Background">
+                                        <select className="form-select" id='buildingBackground' name='buildingBackground' value={buildingBackground} onChange={onInputChange} aria-label="Select a Building Background">
                                             {buildingTypes && buildingTypes.length > 0 && buildingTypes.map((item, index) => (
                                                 <option value={item._id} key={index}>{item.name}</option>
                                             ))}
@@ -237,22 +237,22 @@ const AddSiteLocation = () => {
                                     </div>
                                 </div>
                                 <h5 className='mt-4'>Contact Person Information</h5>
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="contactPersonName" class="form-label">Contact Person Name</label>
-                                        <input type="text" name='contactPersonName' value={contactPersonName} onChange={onInputChange} class="form-control" id="contactPersonName" placeholder='Enter contact person name' />
+                                        <label htmlFor="contactPersonName" className="form-label">Contact Person Name</label>
+                                        <input type="text" name='contactPersonName' value={contactPersonName} onChange={onInputChange} className="form-control" id="contactPersonName" placeholder='Enter contact person name' />
                                     </div>
                                     <div className="col-md-6">
-                                        <label for="contactPersonPhone" class="form-label">Contact Person Phone</label>
+                                        <label htmlFor="contactPersonPhone" className="form-label">Contact Person Phone</label>
                                         <div className='input-group'>
-                                            <span class="input-group-text" id="basic-addon1">+6</span>
-                                            <input type="number" name='contactPersonPhone' value={contactPersonPhone} onChange={onInputChange} class="form-control" id="contactPersonPhone" placeholder='Enter contact person phone' />
+                                            <span className="input-group-text" id="basic-addon1">+6</span>
+                                            <input type="number" name='contactPersonPhone' value={contactPersonPhone} onChange={onInputChange} className="form-control" id="contactPersonPhone" placeholder='Enter contact person phone' />
                                         </div>
                                     </div>
                                 </div>
                                 <div className='float-end'>
-                                    <button type="submit" class="btn btn-success me-2">Create Site Location</button>
-                                    <Link to="/site-locations" class="btn btn-secondary">Cancel</Link>
+                                    <button type="submit" className="btn btn-success me-2">Create Site Location</button>
+                                    <Link to="/site-locations" className="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>
                         </div>

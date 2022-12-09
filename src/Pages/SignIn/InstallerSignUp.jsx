@@ -19,7 +19,7 @@ const InstallerSignUp = () => {
         companyAddress: "",
         isActive: false
     });
-    const { name, email, password, phone, fax, companyName, companyAddress } = installerData
+    const { name, email, password, phone, companyName, companyAddress } = installerData
 
     const onInputChange = e => {
         setInstallerData({ ...installerData, [e.target.name]: e.target.value });
@@ -73,40 +73,40 @@ const InstallerSignUp = () => {
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             <form onSubmit={SubmitHandler}>
                                 <div className="row mb-3">
-                                    <label for="name" className="col-sm-5 col-md-4 col-form-label">Full Name</label>
+                                    <label htmlFor="name" className="col-sm-5 col-md-4 col-form-label">Full Name</label>
                                     <div className="col-sm-7 col-md-8">
                                         <input type="text" name='name' value={name} onChange={e => onInputChange(e)} className="form-control" id="name" placeholder="Enter Your Full Name" required />
                                     </div>
                                 </div>
                                 <div className="row mb-3">
-                                    <label for="email" className="col-sm-5 col-md-4 col-form-label">Email</label>
+                                    <label htmlFor="email" className="col-sm-5 col-md-4 col-form-label">Email</label>
                                     <div className="col-sm-7 col-md-8">
                                         <input type="email" name='email' value={email} onChange={e => onInputChange(e)} className="form-control" id="email" placeholder="Enter Your Email Address" required />
                                     </div>
                                 </div>
                                 <div className="row mb-3">
-                                    <label for="password" className="col-sm-5 col-md-4 col-form-label">Password</label>
+                                    <label htmlFor="password" className="col-sm-5 col-md-4 col-form-label">Password</label>
                                     <div className="col-sm-7 col-md-8">
                                         <div className="input-group">
                                             <input type={PasswordShown ? "text" : "password"} name='password' value={password} onChange={e => onInputChange(e)} className="form-control" id="password" placeholder="Enter Your Password" required />
-                                            <span class="input-group-text" id="basic-addon1">{PasswordShown ? <BsEyeSlash onClick={() => togglePassword()} /> : <BsEye onClick={() => togglePassword()} />}</span>
+                                            <span className="input-group-text" id="basic-addon1">{PasswordShown ? <BsEyeSlash onClick={() => togglePassword()} /> : <BsEye onClick={() => togglePassword()} />}</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row mb-3">
-                                    <label for="phone" className="col-sm-5 col-md-4 col-form-label">Phone</label>
+                                    <label htmlFor="phone" className="col-sm-5 col-md-4 col-form-label">Phone</label>
                                     <div className="col-sm-7 col-md-8">
                                         <input type="number" name='phone' value={phone} onChange={e => onInputChange(e)} className="form-control" id="phone" placeholder="Enter Your Phone Number" required />
                                     </div>
                                 </div>
                                 <div className="row mb-3">
-                                    <label for="companyName" className="col-sm-5 col-md-4 col-form-label">Company Name</label>
+                                    <label htmlFor="companyName" className="col-sm-5 col-md-4 col-form-label">Company Name</label>
                                     <div className="col-sm-7 col-md-8">
                                         <input type="text" name='companyName' value={companyName} onChange={e => onInputChange(e)} className="form-control" id="companyName" placeholder="Enter Your Company Name" required />
                                     </div>
                                 </div>
                                 <div className="row mb-3">
-                                    <label for="companyAddress" className="col-sm-5 col-md-4 col-form-label">Company Address</label>
+                                    <label htmlFor="companyAddress" className="col-sm-5 col-md-4 col-form-label">Company Address</label>
                                     <div className="col-sm-7 col-md-8">
                                         <input type="text" name='companyAddress' value={companyAddress} onChange={e => onInputChange(e)} className="form-control" id="companyAddress" placeholder="Enter Your Company Address" required />
                                     </div>

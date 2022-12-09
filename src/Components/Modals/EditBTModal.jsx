@@ -46,11 +46,11 @@ const EditBTModal = (props) => {
                 {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter a name' required />
+                        <label htmlFor="name" className="form-label">Name</label>
+                        <input type="text" name='name' value={name} onChange={onInputChange} className="form-control" id="name" placeholder='Enter a name' required />
                     </div>
                     <div className='float-end'>
-                        <button type="submit" class="btn btn-success me-2">Save</button>
+                        <button type="submit" className="btn btn-success me-2">Save</button>
                     </div>
                 </form>
             </Modal.Body>

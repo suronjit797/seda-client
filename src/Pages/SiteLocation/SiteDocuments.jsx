@@ -129,7 +129,7 @@ const SiteDocuments = () => {
         }
 
     }
-    //code for get bills
+    //code For get bills
     const [EBDocuments, setEBDocuments] = useState();
     const getEBDocuments = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/documents/` + siteLocationId + `/ElectricBill`, { withCredentials: true })
@@ -227,8 +227,8 @@ const SiteDocuments = () => {
                                     <form onSubmit={handleEBSubmit}>
                                         <div className="row d-flex align-items-center">
                                             <div className="col-md-6">
-                                                <label for="name" class="form-label">Bill Name</label>
-                                                <input type="text" name='name' value={EBDocumentData.name} onChange={onEBInputChange} class="form-control" id="name" placeholder='Enter bill name' required />
+                                                <label htmlFor="name" className="form-label">Bill Name</label>
+                                                <input type="text" name='name' value={EBDocumentData.name} onChange={onEBInputChange} className="form-control" id="name" placeholder='Enter bill name' required />
                                             </div>
                                             <div className="col-md-3 text-center">
 
@@ -282,8 +282,8 @@ const SiteDocuments = () => {
                                     <form onSubmit={handleSDSubmit}>
                                         <div className="row d-flex align-items-center">
                                             <div className="col-md-6">
-                                                <label for="name" class="form-label">Diagram Name</label>
-                                                <input type="text" name='name' value={SDDocumentData.name} onChange={onSDInputChange} class="form-control" id="name" placeholder='Enter diagram name' required />
+                                                <label htmlFor="name" className="form-label">Diagram Name</label>
+                                                <input type="text" name='name' value={SDDocumentData.name} onChange={onSDInputChange} className="form-control" id="name" placeholder='Enter diagram name' required />
                                             </div>
                                             <div className="col-md-3 text-center">
 

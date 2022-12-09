@@ -68,11 +68,11 @@ const Parameters = () => {
                                                     {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                                                     <form onSubmit={handleSubmit}>
                                                         <div className="mb-3">
-                                                            <label for="name" class="form-label">Parameter Name</label>
-                                                            <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter parameter name' required />
+                                                            <label htmlFor="name" className="form-label">Parameter Name</label>
+                                                            <input type="text" name='name' value={name} onChange={onInputChange} className="form-control" id="name" placeholder='Enter parameter name' required />
                                                         </div>
                                                         <div className="mb-3">
-                                                            <label for="type" class="form-label">Parameter Type</label>
+                                                            <label htmlFor="type" className="form-label">Parameter Type</label>
                                                             <select name="type" id="type" className='form-select' value={type} onChange={onInputChange}>
                                                                 <option >Select parameter type</option>
                                                                 <option value="Measured Value">Measured Value</option>
@@ -81,11 +81,11 @@ const Parameters = () => {
                                                             </select>
                                                         </div>
                                                         <div className="mb-3">
-                                                            <label for="value" class="form-label">Unit / Value</label>
-                                                            <input type="text" name='value' value={value} onChange={onInputChange} class="form-control" id="value" placeholder='Enter Parameter Value' required />
+                                                            <label htmlFor="value" className="form-label">Unit / Value</label>
+                                                            <input type="text" name='value' value={value} onChange={onInputChange} className="form-control" id="value" placeholder='Enter Parameter Value' required />
                                                         </div>
                                                         <div className='float-end'>
-                                                            <button type="submit" class="btn btn-success me-2">Create New Parameter</button>
+                                                            <button type="submit" className="btn btn-success me-2">Create New Parameter</button>
                                                         </div>
                                                     </form>
                                                 </div>

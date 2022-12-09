@@ -7,6 +7,7 @@ import AnalysisReportingSidebar from '../../Components/AnalysisReporting/Analysi
 import ReportTable from '../../Components/Reports/ReportTable';
 import Select from 'react-select';
 import SplineChart from '../../Components/Charts/SplineChart';
+import { useMemo } from 'react';
 
 const AnalysisReporting = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +26,7 @@ const AnalysisReporting = () => {
         parameter: ""
     });
     const { interval, device, from, to, parameter } = queryData;
-    let options = []
+    const options = useMemo(() => [], []);
     useEffect(() => {
         if (deviceParameters) {
             // eslint-disable-next-line
@@ -55,9 +56,11 @@ const AnalysisReporting = () => {
     }, [device]);
 
     const getDevices = async (locationId) => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/site/` + locationId, { withCredentials: true })
-        if (response) {
-            setDevices(response.data)
+        if(locationId){
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/site/` + locationId, { withCredentials: true })
+            if (response) {
+                setDevices(response.data)
+            }
         }
     }
     useEffect(() => {

@@ -61,15 +61,15 @@ const DeviceTypes = () => {
 
                                     <form onSubmit={handleSubmit}>
                                         <div className="mb-3">
-                                            <label for="name" class="form-label">Device Type Name</label>
-                                            <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter a device type name' required />
+                                            <label htmlFor="name" className="form-label">Device Type Name</label>
+                                            <input type="text" name='name' value={name} onChange={onInputChange} className="form-control" id="name" placeholder='Enter a device type name' required />
                                         </div>
                                         <div className="mb-3">
-                                            <label for="description" class="form-label">Device Type Description</label>
-                                            <input type="text" name='description' value={description} onChange={onInputChange} class="form-control" id="description" placeholder='Enter device type description' />
+                                            <label htmlFor="description" className="form-label">Device Type Description</label>
+                                            <input type="text" name='description' value={description} onChange={onInputChange} className="form-control" id="description" placeholder='Enter device type description' />
                                         </div>
                                         <div className='float-end'>
-                                            <button type="submit" class="btn btn-success me-2">Create Device Type</button>
+                                            <button type="submit" className="btn btn-success me-2">Create Device Type</button>
                                             <Link to="/devices" className='btn btn-secondary'>Cancel</Link>
                                         </div>
                                     </form>

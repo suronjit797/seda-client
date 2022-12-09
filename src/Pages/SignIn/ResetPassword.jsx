@@ -85,13 +85,13 @@ const ResetPassword = () => {
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             <form onSubmit={SubmitHandler} className={`${showPasswordBlock ? '' : 'd-none'}`}>
                                 <div className="row mb-3">
-                                    <label for="password" className="col-sm-4 col-md-4 col-form-label">New Password</label>
+                                    <label htmlFor="password" className="col-sm-4 col-md-4 col-form-label">New Password</label>
                                     <div className="col-sm-6 col-md-8">
                                         <input type="password" name='password' value={password} onChange={e => onInputChange(e)} className="form-control" id="password" placeholder="Enter New Password" required />
                                     </div>
                                 </div>
                                 <div className="row mb-3">
-                                    <label for="repeatPassword" className="col-sm-4 col-md-4 col-form-label">Repeat Password</label>
+                                    <label htmlFor="repeatPassword" className="col-sm-4 col-md-4 col-form-label">Repeat Password</label>
                                     <div className="col-sm-6 col-md-8">
                                         <input type="password" name='repeatPassword' value={repeatPassword} onChange={e => onInputChange(e)} className="form-control" id="repeatPassword" placeholder="Repeat New Password" required />
                                     </div>

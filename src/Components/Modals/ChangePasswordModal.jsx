@@ -63,18 +63,18 @@ const ChangePasswordModal = (props) => {
                 <h4 className='text-center'>Change Password</h4>
                 {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
                 <form onSubmit={submitHandler}>
-                    <div class="row mb-3">
+                    <div className="row mb-3">
                         <div className="col-md-6">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" name='password' value={password} onChange={onInputChange} class="form-control" id="password" minlength="6" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
+                            <label htmlFor="password" className="form-label">Password</label>
+                            <input type="password" name='password' value={password} onChange={onInputChange} className="form-control" id="password" minLength="6" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
                         </div>
                         <div className="col-md-6">
-                            <label for="reenterPassword" class="form-label">Reenter Password</label>
-                            <input type="password" name='reenterPassword' value={reenterPassword} minlength="6" onChange={onInputChange} class="form-control" id="reenterPassword" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
+                            <label htmlFor="reenterPassword" className="form-label">Reenter Password</label>
+                            <input type="password" name='reenterPassword' value={reenterPassword} minLength="6" onChange={onInputChange} className="form-control" id="reenterPassword" placeholder='&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;' required />
                         </div>
                     </div>
                     <div className='float-end'>
-                        <button type="submit" class="btn btn-success me-2">Change</button>
+                        <button type="submit" className="btn btn-success me-2">Change</button>
                     </div>
                 </form>
             </Modal.Body>

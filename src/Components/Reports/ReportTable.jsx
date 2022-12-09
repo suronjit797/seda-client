@@ -49,10 +49,10 @@ const ReportTable = ({data, title}) => {
         },
             1000
         );
-    }, []);
+    }, [title]);
     return (
         <div className='p-3'>
-            <table id="example" class="table table-striped w-100">
+            <table id="example" className="table table-striped w-100">
                 <thead>
                     <tr>
                         <td className='text-center'>No.</td>

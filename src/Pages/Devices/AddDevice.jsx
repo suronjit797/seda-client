@@ -44,7 +44,7 @@ const AddDevice = () => {
             }, 2000)
         }
     }
-    //for site location dropdown
+    //htmlFor site location dropdown
     const [siteLocations, setSiteLocations] = useState([]);
     const getSiteLocations = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location`, { withCredentials: true })
@@ -60,7 +60,7 @@ const AddDevice = () => {
         setDeviceData({ ...deviceData, site: siteLocations[0]?._id })
         // eslint-disable-next-line
     }, [siteLocations]);
-    //for device type dropdown
+    //htmlFor device type dropdown
     const [deviceTypes, setDeviceTypes] = useState([]);
     const getDeviceTypes = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/device-type`, { withCredentials: true })
@@ -94,48 +94,48 @@ const AddDevice = () => {
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
                             <form onSubmit={submitHandler}>
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="site" class="form-label">Site Location</label>
-                                        <select class="form-select" id='site' name='site' value={site} onChange={onInputChange} aria-label="Select a site location">
+                                        <label htmlFor="site" className="form-label">Site Location</label>
+                                        <select className="form-select" id='site' name='site' value={site} onChange={onInputChange} aria-label="Select a site location">
                                             {siteLocations && siteLocations.length > 0 && siteLocations.map((item, index) => (
                                                 <option value={item._id} key={index}>{item.name}</option>
                                             ))}
                                         </select>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="name" class="form-label">Device Name</label>
-                                        <input type="text" name='name' value={name} onChange={onInputChange} class="form-control" id="name" placeholder='Enter full name' required />
+                                        <label htmlFor="name" className="form-label">Device Name</label>
+                                        <input type="text" name='name' value={name} onChange={onInputChange} className="form-control" id="name" placeholder='Enter full name' required />
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="deviceType" class="form-label">Device Type</label>
-                                        <select class="form-select" id='deviceType' name='deviceType' value={deviceType} onChange={onInputChange} aria-label="Select a device type">
+                                        <label htmlFor="deviceType" className="form-label">Device Type</label>
+                                        <select className="form-select" id='deviceType' name='deviceType' value={deviceType} onChange={onInputChange} aria-label="Select a device type">
                                             {deviceTypes && deviceTypes.length > 0 && deviceTypes.map((item, index) => (
                                                 <option value={item._id} key={index}>{item.name}</option>
                                             ))}
                                         </select>
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="serial" class="form-label">Serial No</label>
-                                        <input type="text" name='serial' value={serial} onChange={onInputChange} class="form-control" id="serial" placeholder='Enter device serial' />
+                                        <label htmlFor="serial" className="form-label">Serial No</label>
+                                        <input type="text" name='serial' value={serial} onChange={onInputChange} className="form-control" id="serial" placeholder='Enter device serial' />
                                     </div>
                                 </div>
-                                <div class="row mb-3">
+                                <div className="row mb-3">
                                     <div className="col-md-6">
-                                        <label for="apiKey" class="form-label">Device API Key </label>
-                                        <input type="text" name='apiKey' value={apiKey} onChange={onInputChange} class="form-control" id="apiKey" placeholder='Enter device API key' required />
-                                        <div id="emailHelp" class="form-text">API Key is mandatory to get device data from the gateway</div>
+                                        <label htmlFor="apiKey" className="form-label">Device API Key </label>
+                                        <input type="text" name='apiKey' value={apiKey} onChange={onInputChange} className="form-control" id="apiKey" placeholder='Enter device API key' required />
+                                        <div id="emailHelp" className="form-text">API Key is mandatory to get device data from the gateway</div>
                                     </div>
                                 </div>
                                 <div className='float-end'>
-                                    <button type="submit" class="btn btn-success me-2">Create Device</button>
-                                    <Link to="/devices" class="btn btn-secondary">Cancel</Link>
+                                    <button type="submit" className="btn btn-success me-2">Create Device</button>
+                                    <Link to="/devices" className="btn btn-secondary">Cancel</Link>
                                 </div>
                             </form>
                         </div>

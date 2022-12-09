@@ -95,29 +95,29 @@ const EditProfile = () => {
                                     </div>
                                     {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                                     <form onSubmit={submitHandler}>
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label">Name</label>
-                                            <input type="text" class="form-control" name='name' value={name} onChange={onInputChange} id="name" placeholder='Enter your name' />
+                                        <div className="mb-3">
+                                            <label htmlFor="name" className="form-label">Name</label>
+                                            <input type="text" className="form-control" name='name' value={name} onChange={onInputChange} id="name" placeholder='Enter your name' />
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="email" class="form-label">Email address</label>
-                                            <input type="email" class="form-control" name='email' value={email} onChange={onInputChange} id="email" placeholder='Enter your email' />
+                                        <div className="mb-3">
+                                            <label htmlFor="email" className="form-label">Email address</label>
+                                            <input type="email" className="form-control" name='email' value={email} onChange={onInputChange} id="email" placeholder='Enter your email' />
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="phone" class="form-label">Phone Number</label>
+                                        <div className="mb-3">
+                                            <label htmlFor="phone" className="form-label">Phone Number</label>
                                             <div className='input-group'>
-                                                <span class="input-group-text" id="basic-addon1">+6</span>
-                                                <input type="number" name='phone' value={phone} onChange={onInputChange} class="form-control" id="phone" placeholder='Enter phone number' />
+                                                <span className="input-group-text" id="basic-addon1">+6</span>
+                                                <input type="number" name='phone' value={phone} onChange={onInputChange} className="form-control" id="phone" placeholder='Enter phone number' />
                                             </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="fax" class="form-label">Fax Number</label>
+                                        <div className="mb-3">
+                                            <label htmlFor="fax" className="form-label">Fax Number</label>
                                             <div className='input-group'>
-                                                <span class="input-group-text" id="basic-addon1">+6</span>
-                                                <input type="number" name='fax' value={fax} onChange={onInputChange} class="form-control" id="fax" placeholder='Enter fax number' />
+                                                <span className="input-group-text" id="basic-addon1">+6</span>
+                                                <input type="number" name='fax' value={fax} onChange={onInputChange} className="form-control" id="fax" placeholder='Enter fax number' />
                                             </div>
                                         </div>
-                                        <div class="mb-3">
+                                        <div className="mb-3">
                                             <label htmlFor="avatar" className="form-label d-block">Profile Photo</label>
 
                                             {imageUrl && selectedImage ? (
@@ -129,7 +129,7 @@ const EditProfile = () => {
                                                 :
                                                 <>
                                                     <input className='form-control' accept="image/*" type="file" id="select-image" style={{ display: 'none' }} onChange={e => handleFileUpload(e.target.files[0])} />
-                                                    <label for="select-image">
+                                                    <label htmlFor="select-image">
                                                         {userDetails?.avatar ?
                                                             <img src={userDetails?.avatar} alt="" height="100px" className='rounded-3' />
                                                             :
@@ -140,7 +140,7 @@ const EditProfile = () => {
                                             }
                                         </div>
                                         <div className="float-end">
-                                            <button type="submit" class="btn btn-success me-1">Update</button>
+                                            <button type="submit" className="btn btn-success me-1">Update</button>
                                             <Link to="/profile" className='btn btn-secondary'>Cancel</Link>
                                         </div>
                                     </form>

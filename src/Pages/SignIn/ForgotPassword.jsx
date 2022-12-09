@@ -39,8 +39,10 @@ const ForgotPassword = () => {
 
         }
     }
+
+    let background = '/images/bg-3.jpg'
     return (
-        <div className='content-wrapper'>
+        <div className='content-wrapper' style={{ backgroundImage: `url(${background})` }}>
             <div className='SignIn-wrapper'>
                 <div className="card-signIn">
                     <div className="row signIn-top">
@@ -61,7 +63,7 @@ const ForgotPassword = () => {
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             <form onSubmit={SubmitHandler}>
                                 <div className="row mb-3">
-                                    <label for="email" className="col-sm-4 col-md-3 col-form-label">Email</label>
+                                    <label htmlFor="email" className="col-sm-4 col-md-3 col-form-label">Email</label>
                                     <div className="col-sm-6 col-md-9">
                                         <input type="email" name='email' value={email} onChange={e => onInputChange(e)} className="form-control" id="email" placeholder="Enter Your Email Address" required/>
                                     </div>

@@ -86,7 +86,7 @@ const Users = () => {
         },
         {
             name: 'Status',
-            cell: row => <div>{row.isActive ? <span class="badge text-bg-success">Active</span> : <span class="badge text-bg-danger">Deactivated</span>}</div>,
+            cell: row => <div>{row.isActive ? <span className="badge text-bg-success">Active</span> : <span className="badge text-bg-danger">Deactivated</span>}</div>,
             selector: row => (row.isActive),
             width: '100px',
             center: true

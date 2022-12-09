@@ -90,32 +90,32 @@ const Settings = () => {
                                 <div className="col-md-6">
                                     <form onSubmit={handleSubmit}>
                                         <div className="mb-3">
-                                            <label for="currentPassword" class="form-label">Current Password</label>
+                                            <label htmlFor="currentPassword" className="form-label">Current Password</label>
                                             <div className="input-group">
-                                                <input type={currentPasswordShown ? "text" : "password"} name='currentPassword' value={currentPassword} minlength="6" onChange={onInputChange} class="form-control" id="currentPassword" placeholder='Enter your current password' required />
-                                                <span class="input-group-text" id="basic-addon1">{currentPasswordShown ? <BsEyeSlash onClick={() => toggleCurrentPassword()} /> : <BsEye onClick={() => toggleCurrentPassword()} />}</span>
+                                                <input type={currentPasswordShown ? "text" : "password"} name='currentPassword' value={currentPassword} minLength="6" onChange={onInputChange} className="form-control" id="currentPassword" placeholder='Enter your current password' required />
+                                                <span className="input-group-text" id="basic-addon1">{currentPasswordShown ? <BsEyeSlash onClick={() => toggleCurrentPassword()} /> : <BsEye onClick={() => toggleCurrentPassword()} />}</span>
                                             </div>
                                         </div>
                                         <div className="mb-3">
-                                            <label for="password" class="form-label">New Password</label>
+                                            <label htmlFor="password" className="form-label">New Password</label>
                                             <div className="input-group">
-                                                <input type={newPasswordShown ? "text" : "password"} name='password' value={password} onChange={onInputChange} minlength="6" class="form-control" id="password" placeholder='Enter a new password' required />
-                                                <span class="input-group-text" id="basic-addon1">{newPasswordShown ? <BsEyeSlash onClick={() => toggleNewPasswordShown()} /> : <BsEye onClick={() => toggleNewPasswordShown()} />}</span>
+                                                <input type={newPasswordShown ? "text" : "password"} name='password' value={password} onChange={onInputChange} minLength="6" className="form-control" id="password" placeholder='Enter a new password' required />
+                                                <span className="input-group-text" id="basic-addon1">{newPasswordShown ? <BsEyeSlash onClick={() => toggleNewPasswordShown()} /> : <BsEye onClick={() => toggleNewPasswordShown()} />}</span>
                                             </div>
                                         </div>
                                         <div className="mb-3">
-                                            <label for="repeatPassword" class="form-label">Retype New Password</label>
+                                            <label htmlFor="repeatPassword" className="form-label">Retype New Password</label>
                                             <div className="input-group">
-                                                <input type={repeatPasswordShown ? "text" : "password"} name='repeatPassword' value={repeatPassword} minlength="6"  onChange={onInputChange} class="form-control" id="repeatPassword" placeholder='Retype the new password' required />
-                                                <span class="input-group-text" id="basic-addon1">{repeatPasswordShown ? <BsEyeSlash onClick={() => toggleRepeatPasswordShown()} /> : <BsEye onClick={() => toggleRepeatPasswordShown()} />}</span>
+                                                <input type={repeatPasswordShown ? "text" : "password"} name='repeatPassword' value={repeatPassword} minLength="6"  onChange={onInputChange} className="form-control" id="repeatPassword" placeholder='Retype the new password' required />
+                                                <span className="input-group-text" id="basic-addon1">{repeatPasswordShown ? <BsEyeSlash onClick={() => toggleRepeatPasswordShown()} /> : <BsEye onClick={() => toggleRepeatPasswordShown()} />}</span>
                                             </div>
                                             {ErrorMessageNotMatch && <div className="alert alert-danger" role="alert">{ErrorMessageNotMatch} </div>}
                                         </div>
                                         <div className='float-end'>
                                             {isActive ?
-                                                <button type="submit" class="btn btn-success me-2">Update</button>
+                                                <button type="submit" className="btn btn-success me-2">Update</button>
                                                 :
-                                                <button type="submit" class="btn btn-success me-2" disabled>Update</button>
+                                                <button type="submit" className="btn btn-success me-2" disabled>Update</button>
                                             }
                                             <Link to="/" className='btn btn-secondary'>Cancel</Link>
                                         </div>

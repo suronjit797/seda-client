@@ -320,11 +320,11 @@ const DashboardThree = ({ handle }) => {
                                     <form className={`${!showFilter && 'd-none'}`}>
                                         <div className="row d-flex align-items-end">
                                             <div className="col-md-5">
-                                                <label for="from" class="form-label">From</label>
+                                                <label htmlFor="from" className="form-label">From</label>
                                                 <input type="datetime-local" className='form-control' id="from" name="from" />
                                             </div>
                                             <div className="col-md-5">
-                                                <label for="from" class="form-label">To</label>
+                                                <label htmlFor="from" className="form-label">To</label>
                                                 <input type="datetime-local" className='form-control' id="from" name="to" />
                                             </div>
                                             <div className="col-md-2">

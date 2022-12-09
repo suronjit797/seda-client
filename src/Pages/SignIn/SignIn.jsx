@@ -83,17 +83,17 @@ const SignIn = () => {
 
                             <form onSubmit={SubmitHandler}>
                                 <div className="row mb-3">
-                                    <label for="email" className="col-sm-4 col-md-3 col-form-label">Email</label>
+                                    <label htmlFor="email" className="col-sm-4 col-md-3 col-form-label">Email</label>
                                     <div className="col-sm-6 col-md-9">
                                         <input type="email" name='email' value={email} onChange={e => onInputChange(e)} className="form-control" id="email" placeholder="Enter Your Email Address" required />
                                     </div>
                                 </div>
                                 <div className="row mb-3">
-                                    <label for="password" className="col-sm-4 col-md-3 col-form-label">Password</label>
+                                    <label htmlFor="password" className="col-sm-4 col-md-3 col-form-label">Password</label>
                                     <div className="col-sm-6 col-md-9">
                                         <div className="input-group">
                                             <input type={PasswordShown ? "text" : "password"} name='password' value={password} onChange={e => onInputChange(e)} className="form-control" id="password" placeholder="Enter Your Password" required />
-                                            <span class="input-group-text" id="basic-addon1">{PasswordShown ? <BsEyeSlash onClick={() => togglePassword()} /> : <BsEye onClick={() => togglePassword()} />}</span>
+                                            <span className="input-group-text" id="basic-addon1">{PasswordShown ? <BsEyeSlash onClick={() => togglePassword()} /> : <BsEye onClick={() => togglePassword()} />}</span>
                                         </div>
                                         <Link to="/forgot-password"><label htmlFor="forgot" className='float-end'><u>Forgot Password?</u></label></Link>
                                     </div>

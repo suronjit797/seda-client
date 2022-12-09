@@ -63,8 +63,8 @@ const DashboardSettings = () => {
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             <div className="row mt-3">
                                 <div className="col-md-3">
-                                    <input class="form-check-input d-none" type="radio" value={1} name="dashboard" id="option1" onChange={() => setTemplate(1)} />
-                                    <label class="form-check-label" for="option1">
+                                    <input className="form-check-input d-none" type="radio" value={1} name="dashboard" id="option1" onChange={() => setTemplate(1)} />
+                                    <label className="form-check-label" htmlFor="option1">
                                         <div className={`${template === 1 ? 'text-center border border-3 border-success' : 'text-center'}`}>
                                             <img src="/images/1.png" alt="Dashboard 1" height={130} />
                                             <p>Dashboard 1</p>
@@ -72,8 +72,8 @@ const DashboardSettings = () => {
                                     </label>
                                 </div>
                                 <div className={`${userDetails?.role==="superAdmin" ? 'col-md-3' : 'd-none'}`}>
-                                    <input class="form-check-input d-none" type="radio" value={2} name="dashboard" id="option2" onChange={() => setTemplate(2)} />
-                                    <label class="form-check-label" for="option2">
+                                    <input className="form-check-input d-none" type="radio" value={2} name="dashboard" id="option2" onChange={() => setTemplate(2)} />
+                                    <label className="form-check-label" htmlFor="option2">
                                         <div className={`${template === 2 ? 'text-center border border-3 border-success' : 'text-center'}`}>
                                             <img src="/images/2.png" alt="Dashboard 2" height={130} />
                                             <p>Dashboard 2 (Super Admin)</p>
@@ -81,8 +81,8 @@ const DashboardSettings = () => {
                                     </label>
                                 </div>
                                 <div className="col-md-3">
-                                    <input class="form-check-input d-none" type="radio" value={3} name="dashboard" id="option3" onChange={() => setTemplate(3)} />
-                                    <label class="form-check-label" for="option3">
+                                    <input className="form-check-input d-none" type="radio" value={3} name="dashboard" id="option3" onChange={() => setTemplate(3)} />
+                                    <label className="form-check-label" htmlFor="option3">
                                         <div className={`${template === 3 ? 'text-center border border-3 border-success' : 'text-center'}`}>
                                             <img src="/images/3.png" alt="Dashboard 3" height={130} />
                                             <p>Dashboard 3</p>
@@ -90,8 +90,8 @@ const DashboardSettings = () => {
                                     </label>
                                 </div>
                                 <div className="col-md-3">
-                                    <input class="form-check-input d-none" type="radio" value={4} name="dashboard" id="option4" onChange={() => setTemplate(4)} />
-                                    <label class="form-check-label" for="option4">
+                                    <input className="form-check-input d-none" type="radio" value={4} name="dashboard" id="option4" onChange={() => setTemplate(4)} />
+                                    <label className="form-check-label" htmlFor="option4">
                                         <div className={`${template === 4 ? 'text-center border border-3 border-success' : 'text-center'}`}>
                                             <img src="/images/4.png" alt="Dashboard 4" height={130} />
                                             <p>Dashboard 4</p>

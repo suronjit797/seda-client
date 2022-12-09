@@ -88,19 +88,19 @@ const Header = () => {
                                 switch (userDetails.role) {
                                     case 'user':
                                         return (
-                                            <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin" disabled>
+                                            <select className="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin" disabled>
                                                 <option value={userDetails?.site?._id}>{userDetails?.site?.name}</option>
                                             </select>
                                         )
                                     case 'public':
                                         return (
-                                            <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin" disabled>
+                                            <select className="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin" disabled>
                                                 <option value={userDetails?.site?._id}>{userDetails?.site?.name}</option>
                                             </select>
                                         )
                                     default:
                                         return (
-                                            <select class="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin">
+                                            <select className="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin">
                                                 <option label='Site Selector'></option>
                                                 {userSites && userSites.length > 0 && userSites.map((item, index) => (
                                                     <option value={item._id} key={index}>{item.name}</option>
@@ -115,7 +115,7 @@ const Header = () => {
                     </div>
                     <div className="col-md-2">
                         {location.pathname === "/" &&
-                            <select class="form-select bg-success border-0 text-white" name='device' onChange={handleDeviceChange}>
+                            <select className="form-select bg-success border-0 text-white" name='device' onChange={handleDeviceChange}>
                                 <option >Device Selector</option>
                                 {devices && devices.length > 0 && devices.map((item, index) => (
                                     <option value={item._id} key={index}>{item.name}</option>
