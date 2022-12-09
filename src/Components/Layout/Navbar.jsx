@@ -9,12 +9,15 @@ import Swal from "sweetalert2";
 
 const Navbar = ({ handle }) => {
     const ref = useRef()
+    const ref1 = useRef()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [ToggleNav, setToggleNav] = useState(false);
     const [dropdownIsOpen, setDropdownIsOpen] = useState(false);
+    const [NotificationDropdownIsOpen, setNotificationDropdownIsOpen] = useState(false);
     const userDetails = useSelector((state) => state.user.userDetails);
     const toggleDropdown = () => setDropdownIsOpen(!dropdownIsOpen)
+    const toggleNotificationDropdownIsOpen = () => setNotificationDropdownIsOpen(!NotificationDropdownIsOpen)
 
     const logOut = async () => {
         Swal.fire({
@@ -49,13 +52,16 @@ const Navbar = ({ handle }) => {
             if (dropdownIsOpen && ref.current && !ref.current.contains(e.target)) {
                 setDropdownIsOpen(false)
             }
+            if (NotificationDropdownIsOpen && ref1.current && !ref1.current.contains(e.target)) {
+                setNotificationDropdownIsOpen(false)
+            }
         }
         document.addEventListener("mousedown", checkIfClickedOutside)
         return () => {
             // Cleanup the event listener
             document.removeEventListener("mousedown", checkIfClickedOutside)
         }
-    }, [dropdownIsOpen])
+    }, [dropdownIsOpen, NotificationDropdownIsOpen])
     return (
         <nav className="navbar navbar-expand-lg navbar-bg p-0">
             <div className="container-fluid">
@@ -115,7 +121,7 @@ const Navbar = ({ handle }) => {
                                 case 'public':
                                     return
                                 default:
-                                        return
+                                    return
                             }
                         })
                             ()}
@@ -134,6 +140,18 @@ const Navbar = ({ handle }) => {
                         <li className="nav-item">
                             <Link to='/profile' className='nav-link'>Profile</Link>
                         </li>
+                        {/* <li className="nav-item dropdown">
+                            <Dropdown show={NotificationDropdownIsOpen}>
+                                <Dropdown.Toggle id="dropdown-basic" className='bg-transparent text-dark border-0 fw-semibold' onClick={(e) => toggleNotificationDropdownIsOpen()}>
+                                    Notification
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu onClick={(e) => toggleNotificationDropdownIsOpen()} ref={ref1}>
+                                    <Link to='/' className='dropdown-item'>System Alarm Summary</Link>
+                                    <Link to='/' className='dropdown-item'>Create New Alarm</Link>
+                                    <Link to="/" className='dropdown-item'>Notification Recipient List</Link>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </li> */}
                         <li className="nav-item">
                             <button className='nav-link border-0 bg-transparent' onClick={() => logOut()}>Logout</button>
                         </li>

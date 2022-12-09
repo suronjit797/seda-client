@@ -15,6 +15,7 @@ const DeviceView = () => {
     const [deviceDetails, setDeviceDetails] = useState();
     const [deviceParameters, setDeviceParameters] = useState();
     const [formulas, setFormulas] = useState([]);
+    const [deviceFormulas, setDeviceFormulas] = useState([]);
     const [selectedFormula, setSelectedFormula] = useState();
     const [assignedFormulas, setAssignedFormulas] = useState([]);
     const [assignFormula, setAssignFormula] = useState({
@@ -25,6 +26,7 @@ const DeviceView = () => {
         name: "",
         unit: "",
         formula: "",
+        device: deviceId,
         type: "device",
         formulaParts: {
             selectOne: "",
@@ -57,7 +59,6 @@ const DeviceView = () => {
 
     const { formulaList } = assignFormula
     const [SuccessMessage, setSuccessMessage] = useState();
-    const [ErrorMessage, setErrorMessage] = useState();
 
     const onInputChange = e => {
         setAssignFormula({ ...assignFormula, [e.target.name]: e.target.value });
@@ -68,12 +69,14 @@ const DeviceView = () => {
     }, [formulaList, formulas]);
 
     useEffect(() => {
-        if(selectedFormula){
+        if (selectedFormula) {
             setFormulaData({
                 ...formulaData,
+                name: `${deviceDetails?.name} - ${selectedFormula?.name}`,
                 unit: selectedFormula?.unit,
-                formulaParts: { ...formulaData.formulaParts, 
-                    selectOne: selectedFormula?.formulaParts?.selectOne, 
+                formulaParts: {
+                    ...formulaData.formulaParts,
+                    selectOne: selectedFormula?.formulaParts?.selectOne,
                     valueOne: selectedFormula?.formulaParts?.valueOne,
                     selectTwo: selectedFormula?.formulaParts?.selectTwo,
                     valueTwo: selectedFormula?.formulaParts?.valueTwo,
@@ -83,10 +86,21 @@ const DeviceView = () => {
                     valueFour: selectedFormula?.formulaParts?.valueFour,
                     selectFive: selectedFormula?.formulaParts?.selectFive,
                     valueFive: selectedFormula?.formulaParts?.valueFive,
-                 },
+                },
             });
         }
-    }, [selectedFormula]);
+        // eslint-disable-next-line
+    }, [selectedFormula, deviceDetails]);
+
+    useEffect(() => {
+        if (formulaData) {
+            setFormulaData({
+                ...formulaData,
+                formula: `${valueOne} ${valueTwo} ${valueThree} ${valueFour} ${valueFive}`,
+            });
+        }
+        // eslint-disable-next-line
+    }, [valueOne, valueTwo, valueThree, valueFour, valueFive]);
 
     const getDevice = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/` + deviceId, { withCredentials: true })
@@ -107,43 +121,52 @@ const DeviceView = () => {
             setFormulas(response.data)
         }
     }
-    const getAssignedFormulas = async () => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/assignFormula/` + deviceId, { withCredentials: true })
+    const getDeviceFormulas = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/formula/device/`+ deviceId, { withCredentials: true })
         if (response) {
-            setAssignedFormulas(response.data)
+            setDeviceFormulas(response.data)
         }
     }
+
     useEffect(() => {
         getDeviceParameters()
         getDevice()
         getFormulas()
-        getAssignedFormulas()
+        getDeviceFormulas()
         // eslint-disable-next-line
     }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true)
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/assignFormula`, assignFormula, { withCredentials: true }).catch(function (error) {
-            if (error.response) {
-                setIsLoading(false)
-                setErrorMessage(error.response.data)
-                setTimeout(() => {
-                    setErrorMessage()
-                }, 2000)
-            }
-        });
-        const data = response.data
-        if (data) {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/formula`, formulaData, { withCredentials: true })
+        if (response) {
             setIsLoading(false)
-            getAssignedFormulas()
-            setSuccessMessage("Formula assigned successfully")
+            setFormulaData({
+                name: "",
+                unit: "",
+                formula: "",
+                type: "system",
+                formulaParts: {
+                    selectOne: "",
+                    valueOne: "",
+                    selectTwo: "",
+                    valueTwo: "",
+                    selectThree: "",
+                    valueThree: "",
+                    selectFour: "",
+                    valueFour: "",
+                    selectFive: "",
+                    valueFive: "",
+                }
+            });
+            getDeviceFormulas();
+            setSuccessMessage("Formula Created Successfully");
             setTimeout(() => {
-                setSuccessMessage()
+                setSuccessMessage();
             }, 2000)
         }
     }
-
 
     const UnassignFormula = async (Id) => {
         Swal.fire({
@@ -155,9 +178,9 @@ const DeviceView = () => {
             confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`${process.env.REACT_APP_API_URL}/assignFormula/` + Id, { withCredentials: true })
+                axios.delete(`${process.env.REACT_APP_API_URL}/formula/` + Id, { withCredentials: true })
                     .then(res => {
-                        getAssignedFormulas()
+                        getDeviceFormulas();
                         Swal.fire({
                             title: "Done!",
                             text: "Formula unassigned successfully",
@@ -174,8 +197,6 @@ const DeviceView = () => {
             }
         })
     }
-
-
 
     return (
         <div className='installer-view'>
@@ -228,7 +249,6 @@ const DeviceView = () => {
                                         {isLoading && <Spinner animation="border" variant="dark" />}
                                     </div>
                                     {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
-                                    {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
                                     <div className="row me-3">
                                         <div className="col-md-4">
                                             <label htmlFor="formula">Assign Formula</label>
@@ -250,7 +270,7 @@ const DeviceView = () => {
                                         <div className="col-md-3">
                                             <label htmlFor="formula">Formula Unit/Value</label>
                                             {selectedFormula ?
-                                                <input type="text" className='form-control' value={selectedFormula.unit} onChange={e => handleChange(e.target.value, 'unit')} disabled />
+                                                <input type="text" className='form-control' value={unit} onChange={e => handleChange(e.target.value, 'unit')} disabled />
                                                 :
                                                 <input type="text" className='form-control' value="" disabled />
                                             }
@@ -304,7 +324,7 @@ const DeviceView = () => {
                                                 (
                                                     <div>
                                                         {(() => {
-                                                            switch (selectedFormula?.formulaParts?.selectOne) {
+                                                            switch (selectOne) {
                                                                 case 'parameter':
                                                                     return (
                                                                         <select name="valueOne" id="valueOne" value={valueOne} onChange={e => handleChange(e.target.value, 'valueOne')} className='form-select'>
@@ -343,10 +363,10 @@ const DeviceView = () => {
                                                 (
                                                     <div>
                                                         {(() => {
-                                                            switch (selectedFormula?.formulaParts?.selectTwo) {
+                                                            switch (selectTwo) {
                                                                 case 'parameter':
                                                                     return (
-                                                                        <select name="valueTwo" id="valueTwo" value={selectedFormula?.formulaParts?.valueTwo} onChange={onInputChange} className='form-select'>
+                                                                        <select name="valueTwo" id="valueTwo" value={valueTwo} onChange={e => handleChange(e.target.value, 'valueTwo')} className='form-select'>
                                                                             <option>Select Parameter</option>
                                                                             {deviceParameters && deviceParameters.length > 0 && deviceParameters.map((item, index) => (
                                                                                 <option value={item._id} key={index}>{item._id}</option>
@@ -355,17 +375,17 @@ const DeviceView = () => {
                                                                     );
                                                                 case 'operator':
                                                                     return (
-                                                                        <input type="text" name="valueTwo" id="valueTwo" value={selectedFormula?.formulaParts?.valueTwo} onChange={onInputChange} className='form-control' placeholder='Enter a value' disabled />
+                                                                        <input type="text" name="valueTwo" id="valueTwo" value={valueTwo} onChange={e => handleChange(e.target.value, 'valueTwo')} className='form-control' placeholder='Enter a value' disabled />
                                                                     );
                                                                 case 'formula':
                                                                     return (
-                                                                        <select name="valueTwo" id="valueTwo" value={selectedFormula?.formulaParts?.valueTwo} onChange={onInputChange} className='form-select'>
+                                                                        <select name="valueTwo" id="valueTwo" value={valueTwo} onChange={e => handleChange(e.target.value, 'valueTwo')} className='form-select'>
                                                                             <option>Select Formula</option>
                                                                         </select>
                                                                     );
                                                                 default:
                                                                     return (
-                                                                        <input type="text" name="valueTwo" id="valueTwo" value={selectedFormula?.formulaParts?.valueTwo} onChange={onInputChange} className='form-control' placeholder='Enter a value' disabled />
+                                                                        <input type="text" name="valueTwo" id="valueTwo" value={valueTwo} onChange={e => handleChange(e.target.value, 'valueTwo')} className='form-control' placeholder='Enter a value' disabled />
                                                                     )
                                                             }
                                                         })
@@ -382,10 +402,10 @@ const DeviceView = () => {
                                                 (
                                                     <div>
                                                         {(() => {
-                                                            switch (selectedFormula?.formulaParts?.selectThree) {
+                                                            switch (selectThree) {
                                                                 case 'parameter':
                                                                     return (
-                                                                        <select name="valueThree" id="valueThree" value={selectedFormula?.formulaParts?.valueThree} onChange={onInputChange} className='form-select'>
+                                                                        <select name="valueThree" id="valueThree" value={valueThree} onChange={e => handleChange(e.target.value, 'valueThree')} className='form-select'>
                                                                             <option>Select Parameter</option>
                                                                             {deviceParameters && deviceParameters.length > 0 && deviceParameters.map((item, index) => (
                                                                                 <option value={item._id} key={index}>{item._id}</option>
@@ -394,17 +414,17 @@ const DeviceView = () => {
                                                                     );
                                                                 case 'operator':
                                                                     return (
-                                                                        <input type="text" name="valueThree" id="valueThree" value={selectedFormula?.formulaParts?.valueThree} onChange={onInputChange} className='form-control' placeholder='Enter a value' disabled />
+                                                                        <input type="text" name="valueThree" id="valueThree" value={valueThree} onChange={e => handleChange(e.target.value, 'valueThree')} className='form-control' placeholder='Enter a value' disabled />
                                                                     );
                                                                 case 'formula':
                                                                     return (
-                                                                        <select name="valueThree" id="valueThree" value={selectedFormula?.formulaParts?.valueThree} onChange={onInputChange} className='form-select'>
+                                                                        <select name="valueThree" id="valueThree" value={valueThree} onChange={e => handleChange(e.target.value, 'valueThree')} className='form-select'>
                                                                             <option>Select Formula</option>
                                                                         </select>
                                                                     );
                                                                 default:
                                                                     return (
-                                                                        <input type="text" name="valueThree" id="valueThree" value={selectedFormula?.formulaParts?.valueThree} onChange={onInputChange} className='form-control' placeholder='Enter a value' disabled />
+                                                                        <input type="text" name="valueThree" id="valueThree" value={valueThree} onChange={e => handleChange(e.target.value, 'valueThree')} className='form-control' placeholder='Enter a value' disabled />
                                                                     )
                                                             }
                                                         })
@@ -421,10 +441,10 @@ const DeviceView = () => {
                                                 (
                                                     <div>
                                                         {(() => {
-                                                            switch (selectedFormula?.formulaParts?.selectFour) {
+                                                            switch (selectFour) {
                                                                 case 'parameter':
                                                                     return (
-                                                                        <select name="valueFour" id="valueFour" value={selectedFormula?.formulaParts?.valueFour} onChange={onInputChange} className='form-select'>
+                                                                        <select name="valueFour" id="valueFour" value={valueFour} onChange={e => handleChange(e.target.value, 'valueFour')} className='form-select'>
                                                                             <option>Select Parameter</option>
                                                                             {deviceParameters && deviceParameters.length > 0 && deviceParameters.map((item, index) => (
                                                                                 <option value={item._id} key={index}>{item._id}</option>
@@ -433,17 +453,17 @@ const DeviceView = () => {
                                                                     );
                                                                 case 'operator':
                                                                     return (
-                                                                        <input type="text" name="valueFour" id="valueFour" value={selectedFormula?.formulaParts?.valueFour} onChange={onInputChange} className='form-control' placeholder='Enter a value' disabled />
+                                                                        <input type="text" name="valueFour" id="valueFour" value={valueFour} onChange={e => handleChange(e.target.value, 'valueFour')} className='form-control' placeholder='Enter a value' disabled />
                                                                     );
                                                                 case 'formula':
                                                                     return (
-                                                                        <select name="valueFour" id="valueFour" value={selectedFormula?.formulaParts?.valueFour} onChange={onInputChange} className='form-select'>
+                                                                        <select name="valueFour" id="valueFour" value={valueFour} onChange={e => handleChange(e.target.value, 'valueFour')} className='form-select'>
                                                                             <option>Select Formula</option>
                                                                         </select>
                                                                     );
                                                                 default:
                                                                     return (
-                                                                        <input type="text" name="valueFour" id="valueFour" value={selectedFormula?.formulaParts?.valueFour} onChange={onInputChange} className='form-control' placeholder='Enter a value' disabled />
+                                                                        <input type="text" name="valueFour" id="valueFour" value={valueFour} onChange={e => handleChange(e.target.value, 'valueFour')} className='form-control' placeholder='Enter a value' disabled />
                                                                     )
                                                             }
                                                         })
@@ -460,10 +480,10 @@ const DeviceView = () => {
                                                 (
                                                     <div>
                                                         {(() => {
-                                                            switch (selectedFormula?.formulaParts?.selectFive) {
+                                                            switch (selectFive) {
                                                                 case 'parameter':
                                                                     return (
-                                                                        <select name="valueFive" id="valueFive" value={selectedFormula?.formulaParts?.valueFive} onChange={onInputChange} className='form-select'>
+                                                                        <select name="valueFive" id="valueFive" value={valueFive} onChange={e => handleChange(e.target.value, 'valueFive')} className='form-select'>
                                                                             <option>Select Parameter</option>
                                                                             {deviceParameters && deviceParameters.length > 0 && deviceParameters.map((item, index) => (
                                                                                 <option value={item._id} key={index}>{item._id}</option>
@@ -472,17 +492,17 @@ const DeviceView = () => {
                                                                     );
                                                                 case 'operator':
                                                                     return (
-                                                                        <input type="text" name="valueFive" id="valueFive" value={selectedFormula?.formulaParts?.valueFive} onChange={onInputChange} className='form-control' placeholder='Enter a value' disabled />
+                                                                        <input type="text" name="valueFive" id="valueFive" value={valueFive} onChange={e => handleChange(e.target.value, 'valueFive')} className='form-control' placeholder='Enter a value' disabled />
                                                                     );
                                                                 case 'formula':
                                                                     return (
-                                                                        <select name="valueFive" id="valueFive" value={selectedFormula?.formulaParts?.valueFive} onChange={onInputChange} className='form-select'>
+                                                                        <select name="valueFive" id="valueFive" value={valueFive} onChange={e => handleChange(e.target.value, 'valueFive')} className='form-select'>
                                                                             <option>Select Formula</option>
                                                                         </select>
                                                                     );
                                                                 default:
                                                                     return (
-                                                                        <input type="text" name="valueFive" id="valueFive" value={selectedFormula?.formulaParts?.valueFive} onChange={onInputChange} className='form-control' placeholder='Enter a value' disabled />
+                                                                        <input type="text" name="valueFive" id="valueFive" value={valueFive} onChange={e => handleChange(e.target.value, 'valueFive')} className='form-control' placeholder='Enter a value' disabled />
                                                                     )
                                                             }
                                                         })
@@ -500,15 +520,17 @@ const DeviceView = () => {
                                             </div>
                                         </div>
                                         <div className="row mt-2 mb-3">
-                                            <div className="col-md-6">
-                                                <div className='mb-3'>
-                                                    <label htmlFor="name">Formula Name</label>
-                                                    <input type="text" id='name' name='name' onChange={e => handleChange(e.target.value, 'name')} className='form-control' placeholder='Enter formula name' required disabled />
+                                            <form onSubmit={handleSubmit}>
+                                                <div className="col-md-6">
+                                                    <div className='mb-3'>
+                                                        <label htmlFor="name">Formula Name</label>
+                                                        <input type="text" id='name' name='name' value={name} onChange={e => handleChange(e.target.value, 'name')} className='form-control' placeholder='Enter formula name' required disabled />
+                                                    </div>
+                                                    <div>
+                                                        <button className='btn btn-success' type='submit'>Save Formula</button>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <button className='btn btn-success'>Save Formula</button>
-                                                </div>
-                                            </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -527,10 +549,10 @@ const DeviceView = () => {
                                                 <div className="col-md-2 text-center"><b>Action</b></div>
                                             </div>
                                             <hr className='m-1' />
-                                            {assignedFormulas && assignedFormulas.length > 0 && assignedFormulas.map((item, index) => (
+                                            {deviceFormulas && deviceFormulas.length > 0 && deviceFormulas.map((item, index) => (
                                                 <div className="row py-2 border-bottom" key={index}>
                                                     <div className="col-md-2 text-center">{index + 1}</div>
-                                                    <div className="col-md-8 text-center">{item?.formula?.name}</div>
+                                                    <div className="col-md-8 text-center">{item?.name}</div>
                                                     <div className="col-md-2 text-center"><button className='btn btn-danger' onClick={() => UnassignFormula(item._id)}><FiTrash /></button></div>
                                                 </div>
                                             ))}
