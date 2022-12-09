@@ -17,7 +17,6 @@ const DeviceView = () => {
     const [formulas, setFormulas] = useState([]);
     const [deviceFormulas, setDeviceFormulas] = useState([]);
     const [selectedFormula, setSelectedFormula] = useState();
-    const [assignedFormulas, setAssignedFormulas] = useState([]);
     const [assignFormula, setAssignFormula] = useState({
         device: deviceId,
         formulaList: ""
@@ -516,7 +515,7 @@ const DeviceView = () => {
                                         </div>
                                         <div className="row">
                                             <div className="col-md-12">
-                                                <b>New Formula Preview: {formula}</b>
+                                                <b>Device Formula Preview: {formula}</b>
                                             </div>
                                         </div>
                                         <div className="row mt-2 mb-3">
