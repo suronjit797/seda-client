@@ -73,18 +73,6 @@ const AddSiteLocation = () => {
         getBuildingTypes()
         // eslint-disable-next-line
     }, []);
-    useEffect(() => {
-        setSiteLocationData({ ...siteLocationData, tariffElectricity: ElectricityTariff[0]?._id })
-        // eslint-disable-next-line
-    }, [ElectricityTariff]);
-    useEffect(() => {
-        setSiteLocationData({ ...siteLocationData, installer: Installers[0]?._id })
-        // eslint-disable-next-line
-    }, [Installers]);
-    useEffect(() => {
-        setSiteLocationData({ ...siteLocationData, buildingBackground: buildingTypes[0]?._id })
-        // eslint-disable-next-line
-    }, [buildingTypes]);
 
     useEffect(() => {
         if (userDetails.role === "admin") {
@@ -94,32 +82,24 @@ const AddSiteLocation = () => {
     }, [userDetails]);
     const submitHandler = async (e) => {
         e.preventDefault();
-        if (!siteLocationData?.admin === "") {
-            setIsLoading(true)
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/site-location`, siteLocationData, { withCredentials: true }).catch(function (error) {
-                if (error.response) {
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    if (error.response.status === 400 || 500) {
-                        console.log(error)
-                    }
-                    console.log(error.response.headers);
+        setIsLoading(true)
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/site-location`, siteLocationData, { withCredentials: true }).catch(function (error) {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                if (error.response.status === 400 || 500) {
+                    console.log(error)
                 }
-            });
-            const data = response.data
-            if (data) {
-                setIsLoading(false)
-                setSuccessMessage("Site Location Created Successfully")
-                setTimeout(() => {
-                    setSuccessMessage()
-                    navigate('/site-locations')
-                }, 2000)
+                console.log(error.response.headers);
             }
-        } else {
+        });
+        const data = response.data
+        if (data) {
             setIsLoading(false)
-            setErrorMessage("Please select an Admin")
+            setSuccessMessage("Site Location Created Successfully")
             setTimeout(() => {
-                setErrorMessage()
+                setSuccessMessage()
+                navigate('/site-locations')
             }, 2000)
         }
     }
@@ -148,7 +128,7 @@ const AddSiteLocation = () => {
                                         <div className="col-md-6">
                                             <label htmlFor="email" className="form-label">Admin</label>
                                             <select className="form-select" id='admin' name='admin' value={admin} onChange={onInputChange} aria-label="Select an admin">
-                                                <option label='Select an admin'></option>
+                                                <option label='Select an admin'>Select an admin</option>
                                                 {Admins && Admins.length > 0 && Admins.map((item, index) => (
                                                     <option value={item._id} key={index}>{item.name}</option>
                                                 ))}
@@ -161,6 +141,7 @@ const AddSiteLocation = () => {
                                     <div className="col-md-6">
                                         <label htmlFor="installer" className="form-label">Assign Installer</label>
                                         <select className="form-select" id='installer' name='installer' value={installer} onChange={onInputChange} aria-label="Select an admin">
+                                            <option label='Select an installer'>Select an installer</option>
                                             {Installers && Installers.length > 0 && Installers.map((item, index) => (
                                                 <option value={item._id} key={index}>{item.name}</option>
                                             ))}
@@ -216,6 +197,7 @@ const AddSiteLocation = () => {
                                     <div className="col-md-6">
                                         <label htmlFor="tariffElectricity" className="form-label">Tariff Electricity (sen/kWh)</label>
                                         <select className="form-select" id='tariffElectricity' name='tariffElectricity' value={tariffElectricity} onChange={onInputChange}>
+                                            <option label='Select tariff Electricity'>Select tariff Electricity</option>
                                             {ElectricityTariff && ElectricityTariff.length > 0 && ElectricityTariff.map((item, index) => (
                                                 <option value={item._id} key={index}>{item.name}</option>
                                             ))}
@@ -230,6 +212,7 @@ const AddSiteLocation = () => {
                                     <div className="col-md-6">
                                         <label htmlFor="buildingBackground">Physical Building Background</label>
                                         <select className="form-select" id='buildingBackground' name='buildingBackground' value={buildingBackground} onChange={onInputChange} aria-label="Select a Building Background">
+                                            <option label='Select a Building Background'>Select a Building Background</option>
                                             {buildingTypes && buildingTypes.length > 0 && buildingTypes.map((item, index) => (
                                                 <option value={item._id} key={index}>{item.name}</option>
                                             ))}

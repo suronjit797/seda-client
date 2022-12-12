@@ -42,7 +42,6 @@ import DeviceTypes from './Pages/Devices/DeviceTypes';
 import ElectricityTariff from './Pages/Settings/ElectricityTariff';
 import SystemComputation from './Pages/Settings/SystemComputation';
 import DashboardSettings from './Pages/Settings/DashboardSettings';
-import AlarmManagement from './Pages/Settings/AlarmManagement';
 import Profile from './Pages/Profile/Profile';
 import AnalysisReporting from './Pages/AnalysisReporting/AnalysisReporting';
 import EditProfile from './Pages/Profile/EditProfile';
@@ -66,6 +65,9 @@ import DashboardTwo from './Pages/Dashboard/DashboardTwo';
 import DashboardThree from './Pages/Dashboard/DashboardThree';
 import DashboardFour from './Pages/Dashboard/DashboardFour';
 import InstallerSignUp from './Pages/SignIn/InstallerSignUp';
+import AlarmSummary from './Pages/Notifications/AlarmSummary';
+import CreateAlarm from './Pages/Notifications/CreateAlarm';
+import RecipientList from './Pages/Notifications/RecipientList';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 
@@ -152,7 +154,6 @@ function App() {
               <Route path="/electricity-tariff" element={<ElectricityTariff />} />
               <Route path="/system-computation" element={<SystemComputation />} />
               <Route path="/dashboard-settings" element={<DashboardSettings />} />
-              <Route path="/alarm-management" element={<AlarmManagement />} />
               <Route path="/building-background-types" element={<BuildingBackgroundTypes />} />
               <Route path="/parameters" element={<Parameters />} />
               <Route path="/formulas" element={<ManageFormulas />} />
@@ -160,6 +161,11 @@ function App() {
               {/* Profile */}
               <Route path="/profile" element={<Profile />} />
               <Route path="/edit-profile" element={<EditProfile />} />
+
+               {/* Notification related routes */}
+               <Route path="/alarm-summary" element={<AlarmSummary />} />
+               <Route path="/create-alarm" element={<CreateAlarm />} />
+               <Route path="/recipient-list" element={<RecipientList />} />
 
             </Routes>
             <Footer />

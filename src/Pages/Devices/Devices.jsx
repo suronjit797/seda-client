@@ -41,8 +41,6 @@ const Devices = () => {
                 setIsLoading(false)
             }
         }
-
-
     }
     const columns = [
         {

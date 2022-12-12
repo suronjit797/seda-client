@@ -1,18 +1,18 @@
 import React from 'react';
-import SettingSidebarNav from '../../Components/Settings/SettingSidebarNav';
+import NotificationSidebar from '../../Components/Notifications/NotificationSidebar';
 
-const AlarmManagement = () => {
+const RecipientList = () => {
     return (
         <div className='settings'>
             <div className="container-fluid">
                 <div className="row my-5 vh60">
                     <div className="col-md-2">
-                        <SettingSidebarNav />
+                        <NotificationSidebar />
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3 mb-3">
-                            <h3>Alarm Management</h3>
-                            
+                            <h3>Notification Recipient List</h3>
+
                         </div>
                     </div>
                 </div>
@@ -21,4 +21,4 @@ const AlarmManagement = () => {
     );
 }
 
-export default AlarmManagement;
+export default RecipientList;
