@@ -38,6 +38,7 @@ const DeviceTypes = () => {
         }
     }
     useEffect(() => {
+        document.title = "SEDA - Manage Device Types"
         getDeviceTypes()
     }, []);
     return (

@@ -72,7 +72,7 @@ const AnalysisReporting = () => {
         }
     }, [userDetails, currentSite]);
     useEffect(() => {
-        document.title = "SEDA - Analysis & Reporting"
+        document.title = "SEDA - Parameter Comparison"
     }, []);
 
     const handleSubmit = async (e) => {

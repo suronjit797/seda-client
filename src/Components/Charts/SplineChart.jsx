@@ -23,8 +23,8 @@ const SplineChart = ({title, data, from, to}) => {
         xaxis: {
             type: 'datetime',
             categories: data[index]?.date,
-            min: new Date(from.getFullYear(), from.getMonth(), 1).getTime(),
-            max: new Date(to.getFullYear(), to.getMonth() + 1, 0).getTime(),
+            min: new Date(from).getTime(),
+            max: new Date(to).getTime(),
         },
         title: {
             text: title,

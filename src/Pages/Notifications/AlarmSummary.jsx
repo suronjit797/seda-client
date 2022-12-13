@@ -1,11 +1,13 @@
 import axios from 'axios';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import NotificationSidebar from '../../Components/Notifications/NotificationSidebar';
 import { FiTrash, FiEye, FiEdit } from "react-icons/fi"
 import moment from 'moment/moment';
 import DataTable from 'react-data-table-component';
+import Swal from "sweetalert2";
+
 
 const AlarmSummary = () => {
     const [notifications, setNotifications] = useState([]);
@@ -19,7 +21,7 @@ const AlarmSummary = () => {
         }
     }
     useEffect(() => {
-        document.title="SEDA - System Alarm Summary"
+        document.title = "SEDA - System Alarm Summary"
         getNotifications()
     }, []);
 
@@ -29,11 +31,11 @@ const AlarmSummary = () => {
             cell: (row, index, column, id) => <div>{index + 1}</div>,
             selector: row => (console.log(row)),
             width: "60px",
-            center:true
+            center: true
         },
         {
             name: 'Alarm Name',
-            cell:(row)=><div>{row.name}</div>,
+            cell: (row) => <div>{row.name}</div>,
             selector: row => (row),
         },
         {
@@ -66,20 +68,44 @@ const AlarmSummary = () => {
         {
             name: 'Action',
             cell: row => <div>
-                <Link to={`/admin/`+ row._id} className='btn btn-success me-1'><FiEye title="View"/></Link>
-                <Link to={`/edit-admin/`+ row._id} className='btn btn-info me-1'><FiEdit title="Edit"/></Link>
-                <button className='btn btn-danger'><FiTrash title="Delete"/></button>
+                <Link to={`/alarm-view/` + row._id} className='btn btn-success me-1'><FiEye title="View" /></Link>
+                <Link to={`/edit-alarm/` + row._id} className='btn btn-info me-1'><FiEdit title="Edit" /></Link>
+                <button className='btn btn-danger' onClick={()=>deleteAlarm(row._id)}><FiTrash title="Delete" /></button>
             </div>,
-            grow:2,
-            center:'yes'
+            grow: 2,
+            center: 'yes'
         },
     ];
 
+    const deleteAlarm = async (alarmId) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to delete this Alarm?",
+            //icon: "warning",
+            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonText: 'Confirm'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`${process.env.REACT_APP_API_URL}/notification/` + alarmId, { withCredentials: true })
+                    .then(res => {
+                        getNotifications()
+                        Swal.fire({
+                            title: "Done!",
+                            text: "Alarm Deleted Successfully",
+                            icon: "success",
+                            timer: 2000,
+                            button: false
+                        })
 
+                    });
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
 
-
-
-
+            }
+        })
+    }
 
     return (
         <div className='settings'>

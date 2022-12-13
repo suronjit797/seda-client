@@ -49,8 +49,10 @@ const ElectricityTariff = () => {
         }
     }
     useEffect(() => {
+        document.title = "SEDA - Electricity Tariff"
         getElectricityTariff()
     }, []);
+    
     return (
         <div className='settings'>
             <div className="container-fluid">

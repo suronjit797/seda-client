@@ -36,6 +36,7 @@ const BuildingBackgroundTypes = () => {
         }
     }
     useEffect(() => {
+        document.title = "SEDA - Manage Building Background"
         getBuildingTypes()
     }, []);
     return (

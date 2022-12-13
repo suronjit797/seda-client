@@ -43,6 +43,7 @@ const Parameters = () => {
         }
     }
     useEffect(() => {
+        document.title = "SEDA - Manage Parameter"
         getParameters()
     }, []);
     return (

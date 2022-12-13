@@ -51,11 +51,9 @@ const ManageFormulas = () => {
         }
     }
     useEffect(() => {
+        document.title = "SEDA - Manage Formulas"
         getParameters()
     }, []);
-
-    
-
 
     useEffect(() => {
         const changeFormula=async()=>{

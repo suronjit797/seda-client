@@ -40,44 +40,68 @@ const DashboardTwo = ({ handle }) => {
                             <div className="card p-3">
                                 <div className="row">
                                     <div className="col-md-6">
+                                    <h5>Site Locations Summary</h5>
                                         <div className="row">
                                             <div className="col-md-4">
-                                                <h6>Location Name</h6>
+                                                <h6>Total No. Building/Site</h6>
                                             </div>
                                             <div className="col-md-8">
-                                                <p>: Menara Kuala Lumpur</p>
+                                                <p className='m-0'>: 2</p>
                                             </div>
                                         </div>
                                         <div className="row">
                                             <div className="col-md-4">
-                                                <h6>Building Name</h6>
+                                                <h6>Total No. Installer</h6>
                                             </div>
                                             <div className="col-md-8">
-                                                <p>: Menara Kuala Lumpur (Office)</p>
+                                                <p className='m-0'>: 3</p>
                                             </div>
                                         </div>
                                         <div className="row">
                                             <div className="col-md-4">
-                                                <h6>Building Type</h6>
+                                                <h6>Total No. Devices</h6>
                                             </div>
                                             <div className="col-md-8">
-                                                <p>: Commercial</p>
+                                                <p className='m-0'>: 6</p>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <h5>Solar Thermal</h5>
                                         <div className="row">
-                                            <div className="col-md-4">
-                                                <h6>Installer</h6>
-                                            </div>
-                                            <div className="col-md-8">
-                                                <p>: Reneon Technologies</p>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-md-4">
-                                                <h6>Total Number of Devices</h6>
-                                            </div>
-                                            <div className="col-md-8">
-                                                <p>: 5</p>
+                                            <div className="col-md-12">
+                                                <div className="row">
+                                                    <div className="col-md-4">
+                                                        <h6>Total No. Building/Site</h6>
+                                                    </div>
+                                                    <div className="col-md-8">
+                                                        <p className='m-0'>: 2</p>
+                                                    </div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col-md-4">
+                                                        <h6>Total No. Installer</h6>
+                                                    </div>
+                                                    <div className="col-md-8">
+                                                        <p className='m-0'>: 3</p>
+                                                    </div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col-md-4">
+                                                        <h6>Total No. Devices</h6>
+                                                    </div>
+                                                    <div className="col-md-8">
+                                                        <p className='m-0'>: 6</p>
+                                                    </div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col-md-4">
+                                                        <h6>Total Capacity (kWp)</h6>
+                                                    </div>
+                                                    <div className="col-md-8">
+                                                        <p className='m-0'>: 6</p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

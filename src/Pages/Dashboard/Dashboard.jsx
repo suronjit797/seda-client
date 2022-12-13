@@ -14,16 +14,15 @@ const Dashboard = ({ handle }) => {
     const [to, setTo] = useState();
     let data = [10, 41, 35, 51, 49, 62, 69, 91, 130, 20, 44, 80]
     let currentDevice = useSelector((state) => state?.user?.currentDevice);
-    const getDeviceData = async () => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/byParameter/` + currentDevice + `/KWH`, { withCredentials: true })
+    const getDeviceData = async (deviceId, parameter) => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/byParameter/` + deviceId + `/`+ parameter, { withCredentials: true })
         if (response) {
             setDeviceData(response.data)
         }
     }
     useEffect(() => {
         if (currentDevice) {
-            console.log(currentDevice)
-            getDeviceData()
+            getDeviceData(currentDevice._id, currentDevice?.parameter || 'KWH')
         }
         // eslint-disable-next-line
     }, [currentDevice]);
@@ -86,7 +85,7 @@ const Dashboard = ({ handle }) => {
                                     </div>
                                     <div className="row">
                                         <div className="col-md-10">
-                                        {deviceData.length > 0 && showFilterData ? <AreaChart name="Power (kWh)" title="Monthly (kWh)" data={deviceData} from={from} to={to} /> : <AreaChart name="Power (kWh)" title="Monthly (kWh)" />}
+                                        {deviceData.length > 0 && showFilterData ? <AreaChart name="Power (kWh)" title="Monthly (kW)" data={deviceData} from={from} to={to} /> : <AreaChart data={deviceData} name="Power (kW)" title="Monthly (kW)" />}
                                         </div>
                                         <div className="col-md-2">
                                             <div className="minmax bg-success bg-opacity-50">

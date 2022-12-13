@@ -5,7 +5,7 @@ import axios from 'axios';
 import { setCurrentSite, setSiteDetails, setCurrentDevice } from '../../redux/userSlice';
 import { useLocation } from 'react-router-dom';
 
-const Header = () => {
+const Header = ({ handle }) => {
     const [devices, setDevices] = useState([]);
     const userDetails = useSelector((state) => state?.user?.userDetails);
     let userSites = useSelector((state) => state?.user?.userSites);
@@ -34,6 +34,7 @@ const Header = () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/site/` + locationId, { withCredentials: true })
         if (response) {
             setDevices(response.data)
+            dispatch(setCurrentDevice(response.data[0]))
         }
     }
 
@@ -41,6 +42,13 @@ const Header = () => {
         getSiteLocations(userDetails)
         // eslint-disable-next-line
     }, [userDetails]);
+    useEffect(() => {
+        if (userSites) {
+            dispatch(setCurrentSite(userSites[0]))
+            getDevices(userSites[0]?._id)
+        }
+        // eslint-disable-next-line
+    }, [userSites]);
 
     useEffect(() => {
         if (userDetails?.site) {
@@ -64,7 +72,10 @@ const Header = () => {
     }
     const handleDeviceChange = async (e) => {
         const deviceId = e.target.value
-        dispatch(setCurrentDevice(deviceId))
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/` + deviceId, { withCredentials: true })
+        if(response){
+            dispatch(setCurrentDevice(response.data))
+        }
     }
     let background = '/images/bg-3.jpg'
     return (
@@ -114,16 +125,20 @@ const Header = () => {
                         </div>
                     </div>
                     <div className="col-md-2">
-                        {location.pathname === "/" &&
-                            <select className="form-select bg-success border-0 text-white" name='device' onChange={handleDeviceChange}>
-                                <option >Device Selector</option>
-                                {devices && devices.length > 0 && devices.map((item, index) => (
-                                    <option value={item._id} key={index}>{item.name}</option>
-                                ))}
-                            </select>
-                        }
+                        <div className="d-flex">
+                            {location.pathname === "/" &&
+                                <select className="form-select bg-success border-0 text-white me-3" name='device' onChange={handleDeviceChange}>
+                                    <option >Device Selector</option>
+                                    {devices && devices.length > 0 && devices.map((item, index) => (
+                                        <option value={item._id} key={index}>{item.name}</option>
+                                    ))}
+                                </select>
+                            }
+
+                        </div>
                     </div>
                     <div className="col-md-2 d-flex justify-content-end align-items-center">
+                        {location.pathname === "/" && <button className='btn btn-warning me-5' onClick={handle.enter}>Display</button>}
                         <img src={userDetails?.avatar} alt="" className='img-fluid rounded-circle' style={{ height: "80px", width: "80px" }} />
                     </div>
                 </div>

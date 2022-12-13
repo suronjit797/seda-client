@@ -15,7 +15,7 @@ const DashboardSettings = () => {
     const [IsLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        document.title= "Dashboard Settings"
+        document.title= "Seda - Dashboard Settings"
         if (userDetails) {
             setTemplate(userDetails?.dashboard || 1)
         }

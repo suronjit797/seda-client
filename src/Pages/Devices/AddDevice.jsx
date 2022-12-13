@@ -69,6 +69,7 @@ const AddDevice = () => {
         }
     }
     useEffect(() => {
+        document.title = "SEDA - Add New Device"
         getDeviceTypes()
         // eslint-disable-next-line
     }, []);

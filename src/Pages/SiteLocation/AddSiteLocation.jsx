@@ -7,7 +7,6 @@ import AdminSidebarNav from '../../Components/Admins/AdminSidebarNav';
 
 const AddSiteLocation = () => {
     const [SuccessMessage, setSuccessMessage] = useState();
-    const [ErrorMessage, setErrorMessage] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate()
     const [buildingTypes, setBuildingTypes] = useState([]);
@@ -67,13 +66,13 @@ const AddSiteLocation = () => {
         }
     }
     useEffect(() => {
+        document.title="SEDA - Add A Site Location"
         getElectricityTariff()
         getInstaller()
         getAdmins()
         getBuildingTypes()
         // eslint-disable-next-line
     }, []);
-
     useEffect(() => {
         if (userDetails.role === "admin") {
             setSiteLocationData({ ...siteLocationData, admin: userDetails?._id })
@@ -117,7 +116,6 @@ const AddSiteLocation = () => {
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
-                            {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
                             <form onSubmit={submitHandler}>
                                 <div className="row mb-3">
                                     <div className="col-md-6">

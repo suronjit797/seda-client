@@ -68,6 +68,8 @@ import InstallerSignUp from './Pages/SignIn/InstallerSignUp';
 import AlarmSummary from './Pages/Notifications/AlarmSummary';
 import CreateAlarm from './Pages/Notifications/CreateAlarm';
 import RecipientList from './Pages/Notifications/RecipientList';
+import AlarmView from './Pages/Notifications/AlarmView';
+import EditAlarm from './Pages/Notifications/EditAlarm';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 
@@ -81,7 +83,7 @@ function App() {
       <div className="App">
         {isLogged ?
           <>
-            <Header />
+            <Header handle={handle}/>
 
             <Navbar handle={handle} />
             <Routes>
@@ -166,7 +168,8 @@ function App() {
                <Route path="/alarm-summary" element={<AlarmSummary />} />
                <Route path="/create-alarm" element={<CreateAlarm />} />
                <Route path="/recipient-list" element={<RecipientList />} />
-
+               <Route path="/alarm-view/:alarmId" element={<AlarmView />} />
+               <Route path="/edit-alarm/:alarmId" element={<EditAlarm />} />
             </Routes>
             <Footer />
 

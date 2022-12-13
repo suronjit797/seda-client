@@ -8,6 +8,9 @@ import SplineChart from '../../Components/Charts/SplineChart';
 import ReportTable from '../../Components/Reports/ReportTable';
 
 const DeviceComparison = () => {
+    useEffect(() => {
+        document.title = "SEDA - Device Comparison"
+    }, []);
     const [isLoading, setIsLoading] = useState(false);
     const [reportTypeGraph, setReportTypeGraph] = useState(true);
     const [devices, setDevices] = useState([]);

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { setCurrentDevice, setCurrentSite, setIsLogged, setUserDetails } from '../../redux/userSlice';
+import { setCurrentDevice, setCurrentSite, setIsLogged, setSiteDetails, setUserDetails } from '../../redux/userSlice';
 import Dropdown from 'react-bootstrap/Dropdown';
 import "./Layout.css"
 import Swal from "sweetalert2";
@@ -34,6 +34,7 @@ const Navbar = ({ handle }) => {
                         dispatch(setIsLogged(false))
                         dispatch(setUserDetails({}))
                         dispatch(setCurrentSite({}))
+                        dispatch(setSiteDetails({}))
                         dispatch(setCurrentDevice({}))
                         window.localStorage.clear()
                         navigate("/")
@@ -131,9 +132,9 @@ const Navbar = ({ handle }) => {
                         <li className="nav-item">
                             <Link to='/analysis-reporting' className='nav-link'>Analysis &amp; Reporting</Link>
                         </li>
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             {handle.active ? <button className="nav-link border-0 bg-transparent" onClick={handle.exit}>Exit</button> : <button className="nav-link border-0 bg-transparent" onClick={handle.enter}>Display</button>}
-                        </li>
+                        </li> */}
                         <li className="nav-item">
                             <Link to="/settings" className="nav-link">Settings</Link>
                         </li>

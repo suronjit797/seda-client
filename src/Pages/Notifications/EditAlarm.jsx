@@ -2,16 +2,14 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import NotificationSidebar from '../../Components/Notifications/NotificationSidebar';
 
-const CreateAlarm = () => {
-    useEffect(() => {
-        document.title = "SEDA - Create New Alarm"
-    }, []);
-    const [isLoading, setIsLoading] = useState(false);
+const EditAlarm = () => {
+    const Params = useParams()
+    const alarmId = Params.alarmId
     const [SuccessMessage, setSuccessMessage] = useState();
-    const [ErrorMessage, setErrorMessage] = useState();
+    const [isLoading, setIsLoading] = useState(false);
     const userDetails = useSelector((state) => state?.user?.userDetails);
     const [siteLocations, setSiteLocations] = useState([]);
     const [devices, setDevices] = useState([]);
@@ -39,7 +37,7 @@ const CreateAlarm = () => {
         // eslint-disable-next-line
     }, [userDetails]);
 
-    const [CreateAlarmData, setCreateAlarmData] = useState({
+    const [AlarmData, setAlarmData] = useState({
         name: "",
         type: "",
         site: "",
@@ -49,11 +47,10 @@ const CreateAlarm = () => {
         value: "",
         interval: ""
     });
-    const { name, type, site, device, parameter, option, value, interval } = CreateAlarmData
+    const { name, type, site, device, parameter, option, value, interval } = AlarmData
     const onInputChange = e => {
-        setCreateAlarmData({ ...CreateAlarmData, [e.target.name]: e.target.value });
+        setAlarmData({ ...AlarmData, [e.target.name]: e.target.value });
     };
-
     const getDevices = async (locationId) => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/site/` + locationId, { withCredentials: true })
         if (response) {
@@ -81,35 +78,43 @@ const CreateAlarm = () => {
         // eslint-disable-next-line
     }, [device]);
 
+    const getAlarm = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/notification/` + alarmId, { withCredentials: true })
+        if (response) {
+            const data = response.data
+            setAlarmData({
+                name: data?.name,
+                type: data?.type,
+                site: data?.site?._id,
+                device: data?.device?._id,
+                parameter: data?.parameter,
+                option: data?.option,
+                value: data?.value,
+                interval: data?.interval
+            })
+        }
+    }
+    useEffect(() => {
+        getAlarm()
+        // eslint-disable-next-line
+    }, []);
+
     const submitHandler = async (e) => {
         e.preventDefault();
         setIsLoading(true)
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/notification`, CreateAlarmData, { withCredentials: true }).catch(function (error) {
+        const response = await axios.put(`${process.env.REACT_APP_API_URL}/notification/`+ alarmId, AlarmData, { withCredentials: true }).catch(function (error) {
             if (error.response) {
                 setIsLoading(false)
-                setErrorMessage(error.response.data)
-                setTimeout(() => {
-                    setErrorMessage()
-                }, 2000)
+                console.log(error.response)
             }
         });
         const data = response.data
         if (data) {
             setIsLoading(false)
-            setSuccessMessage("Alarm created successfully")
-            setCreateAlarmData({
-                name: "",
-                type: "",
-                site: "",
-                device: "",
-                parameter: "",
-                option: "",
-                value: "",
-                interval: ""
-            })
+            setSuccessMessage("Alarm Updated successfully")
+            getAlarm()
             setTimeout(() => {
                 setSuccessMessage()
-
             }, 2000)
         }
     }
@@ -128,7 +133,6 @@ const CreateAlarm = () => {
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
                             {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
-                            {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}
                             <form onSubmit={submitHandler}>
                                 <div className="row">
                                     <div className="col-md-6">
@@ -140,9 +144,9 @@ const CreateAlarm = () => {
                                             <label htmlFor="type" className="form-label">Alarm Type</label>
                                             <select name="type" id="type" defaultValue={type} className='form-select' onChange={onInputChange}>
                                                 <option> Select alarm type</option>
-                                                <option value="message">System Warning Message Only</option>
-                                                <option value="email">Email Notification Only</option>
-                                                <option value="both">Email Notification + System Warning Message</option>
+                                                {type === "message" ? <option value="message" selected>System Warning Message Only</option> : <option value="message">System Warning Message Only</option>}
+                                                {type === "email" ? <option value="email" selected>System Warning Message Only</option> : <option value="message">Email Notification Only</option>}
+                                                {type === "both" ? <option value="both" selected>Email Notification + System Warning Message</option> : <option value="both">Email Notification + System Warning Message</option>}
                                             </select>
                                         </div>
                                         <div className="mb-3">
@@ -150,7 +154,7 @@ const CreateAlarm = () => {
                                             <select name="site" id="site" defaultValue={site} className='form-select' onChange={onInputChange}>
                                                 <option> Select site location</option>
                                                 {siteLocations && siteLocations.length > 0 && siteLocations.map((item, index) => (
-                                                    <option value={item._id} key={index}>{item.name}</option>
+                                                    site === item._id ? <option value={item._id} key={index} selected>{item.name}</option> : <option value={item._id} key={index}>{item.name}</option>
                                                 ))}
                                             </select>
                                         </div>
@@ -159,7 +163,7 @@ const CreateAlarm = () => {
                                             <select name="device" id="device" defaultValue={device} className='form-select' onChange={onInputChange}>
                                                 <option> Select device</option>
                                                 {devices && devices.length > 0 && devices.map((item, index) => (
-                                                    <option value={item._id} key={index}>{item.name}</option>
+                                                    device === item._id ? <option value={item._id} key={index} selected>{item.name}</option> : <option value={item._id} key={index}>{item.name}</option>
                                                 ))}
                                             </select>
                                         </div>
@@ -168,7 +172,8 @@ const CreateAlarm = () => {
                                             <select name="parameter" id="parameter" defaultValue={parameter} className='form-select' onChange={onInputChange}>
                                                 <option> Select device parameter</option>
                                                 {deviceParameters && deviceParameters.length > 0 && deviceParameters.map((item, index) => (
-                                                    <option value={item._id} key={index}>{item._id}</option>
+                                                    parameter === item._id ? <option value={item._id} key={index} selected>{item._id}</option> : <option value={item._id} key={index}>{item._id}</option>
+
                                                 ))}
                                             </select>
                                         </div>
@@ -176,9 +181,9 @@ const CreateAlarm = () => {
                                             <label htmlFor="option" className="form-label">Alarm Notification</label>
                                             <select name="option" id="option" className='form-select' defaultValue={option} onChange={onInputChange}>
                                                 <option> Select alarm notification option</option>
-                                                <option value="Min"> Min</option>
-                                                <option value="Max"> Max</option>
-                                                <option value="Range"> Range</option>
+                                                {option === "Min" ? <option value="Min" selected> Min</option> : <option value="Min"> Min</option>}
+                                                {option === "Max" ? <option value="Max" selected> Max</option> : <option value="Max"> Max</option>}
+                                                {option === "Range" ? <option value="Range" selected> Range</option> : <option value="Range"> Range</option>}
                                             </select>
                                         </div>
                                         <div className="row mb-3">
@@ -191,17 +196,17 @@ const CreateAlarm = () => {
                                                 <label htmlFor="interval" className="form-label">Set Trigger Interval</label>
                                                 <select name="interval" id="interval" className='form-select' defaultValue={interval} onChange={onInputChange}>
                                                     <option> Select alarm trigger interval</option>
-                                                    <option value="1"> 1 min</option>
-                                                    <option value="15"> 15 min</option>
-                                                    <option value="30"> 30 min</option>
-                                                    <option value="60"> 1 hour</option>
-                                                    <option value="720"> 12 hours</option>
-                                                    <option value="1440"> 24 hours</option>
+                                                    {interval === "1" ? <option value="1" selected> 1 min</option> : <option value="1"> 1 min</option>}
+                                                    {interval === "15" ? <option value="15" selected> 15 min</option> : <option value="15"> 15 min</option>}
+                                                    {interval === "30" ? <option value="30" selected> 30 min</option> : <option value="30" selected> 30 min</option>}
+                                                    {interval === "60" ? <option value="60" selected> 1 hour</option>: <option value="60"> 1 hour</option>}
+                                                     {interval === "720" ? <option value="720" selected> 12 hours</option>: <option value="720"> 12 hours</option>}
+                                                     {interval === "1440" ? <option value="1440" selected> 24 hours</option>: <option value="1440"> 24 hours</option>}
                                                 </select>
                                             </div>
                                         </div>
                                         <div className="mb-3 float-end">
-                                            <button className='btn btn-success me-2' type='submit'>Create Alarm</button>
+                                            <button className='btn btn-success me-2' type='submit'>Update</button>
                                             <Link to="/alarm-summary" className='btn btn-secondary'>Cancel</Link>
                                         </div>
                                     </div>
@@ -215,4 +220,4 @@ const CreateAlarm = () => {
     );
 }
 
-export default CreateAlarm;
+export default EditAlarm;

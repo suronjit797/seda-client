@@ -34,7 +34,7 @@ const Settings = () => {
         }
     };
     useEffect(() => {
-        document.title = "SEDA - Settings"
+        document.title = "SEDA - Change Password"
     }, []);
 
     const handleSubmit = async (e) => {

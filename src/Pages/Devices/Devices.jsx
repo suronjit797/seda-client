@@ -19,26 +19,26 @@ const Devices = () => {
         if (userDetails.role === "superAdmin") {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/device`, { withCredentials: true })
             if (response) {
-                setDevices(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
                 setIsLoading(false)
+                setDevices(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
             }
         } else if (userDetails.role === "admin") {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/admin`, { withCredentials: true })
             if (response) {
-                setDevices(response.data[0].sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
                 setIsLoading(false)
+                setDevices(response.data[0].sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
             }
         } else if (userDetails.role === "installer") {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/installer`, { withCredentials: true })
             if (response) {
-                setDevices(response.data[0].sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
                 setIsLoading(false)
+                setDevices(response.data[0].sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
             }
         } else {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/site/` + userDetails?.site?._id, { withCredentials: true })
             if (response) {
-                setDevices(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
                 setIsLoading(false)
+                setDevices(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
             }
         }
     }
@@ -134,7 +134,7 @@ const Devices = () => {
         },
     ];
     useEffect(() => {
-        document.title = "SEDA - Devices"
+        document.title = "SEDA - All Devices"
         getDevices()
         // eslint-disable-next-line
     }, []);
@@ -179,7 +179,7 @@ const Devices = () => {
                         <div className="card p-3 mb-3">
                             <div className="row">
                                 <div className="col-md-6"><h3>All Devices</h3></div>
-                                <div className="col-md-6 d-flex justify-content-end"><Link to="/" className="btn btn-secondary">Back</Link></div>
+                                <div className="col-md-6"><Link to="/" className="btn btn-secondary float-end">Back</Link></div>
                             </div>
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}

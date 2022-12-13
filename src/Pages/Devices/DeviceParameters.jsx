@@ -1,7 +1,12 @@
 import React from 'react';
 import DataTable from 'react-data-table-component';
 import { FiEdit } from "react-icons/fi"
-const DeviceParameters = ({data}) => {
+import { BiStar } from "react-icons/bi"
+import { AiFillStar } from "react-icons/ai"
+import axios from 'axios';
+import Swal from "sweetalert2";
+
+const DeviceParameters = ({ data, device,getDevice, getDeviceParameters }) => {
     const columns = [
         {
             name: "No.",
@@ -11,7 +16,7 @@ const DeviceParameters = ({data}) => {
         },
         {
             name: 'Name',
-            cell:row=><div className='text-capitalize'>{row?._id}</div>,
+            cell: row => <div className='text-capitalize'>{row?._id}</div>,
             selector: row => (row?._id),
 
         },
@@ -24,11 +29,54 @@ const DeviceParameters = ({data}) => {
         {
             name: 'Action',
             cell: row => <div>
-                <button className='btn btn-info me-1'><FiEdit/></button>
+                <button className='btn btn-info me-1'><FiEdit /></button>
+                {device?.parameter === row?._id ? <button className='btn btn-warning'><AiFillStar /></button> : <button className='btn btn-warning' onClick={() => setParameter(row?._id)}><BiStar /></button>}
+
             </div>,
             right: 'yes'
         },
     ];
+
+    const setParameter = async (parameter) => {
+        let data = {
+            parameter: parameter
+        }
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to set this parameter as default?",
+            //icon: "warning",
+            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonText: 'Confirm'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.put(`${process.env.REACT_APP_API_URL}/device/` + device._id, data, { withCredentials: true })
+                    .then(res => {
+                        getDevice()
+                        getDeviceParameters()
+                        Swal.fire({
+                            title: "Done!",
+                            text: "Set default parameter Successfully",
+                            icon: "success",
+                            timer: 2000,
+                            button: false
+                        })
+
+                    });
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+
+            }
+        })
+    }
+
+
+
+
+
+
+
     return (
         <div>
             <h4 className='mb-3'>Available Parameters</h4>

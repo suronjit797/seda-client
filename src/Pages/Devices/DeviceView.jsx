@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import DevicesSidebar from '../../Components/Devices/DevicesSidebar';
 import DeviceParameters from './DeviceParameters';
 import { FiTrash } from "react-icons/fi"
@@ -121,13 +121,14 @@ const DeviceView = () => {
         }
     }
     const getDeviceFormulas = async () => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/formula/device/`+ deviceId, { withCredentials: true })
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/formula/device/` + deviceId, { withCredentials: true })
         if (response) {
             setDeviceFormulas(response.data)
         }
     }
 
     useEffect(() => {
+        document.title= "Seda - Device Information"
         getDeviceParameters()
         getDevice()
         getFormulas()
@@ -234,13 +235,20 @@ const DeviceView = () => {
                                         <div className="col-3">Installer</div>
                                         <div className="col-9">: {deviceDetails?.site?.installer?.name}</div>
                                     </div>
-                                    <hr />
+                                   
 
                                 </div>
                                 <div className="col-md-6">
 
                                 </div>
                             </div>
+                            <div className="row">
+                                <div className="col-md-12 d-flex justify-content-end">
+                                    <Link to="/devices" className="btn btn-success me-2">Edit</Link>
+                                    <Link to="/devices" className="btn btn-secondary">Back</Link>
+                                </div>
+                            </div>
+                            <hr />
                             <div className="row">
                                 <div className="row mb-2">
                                     <h4>Assign Formula to Device</h4>
@@ -526,7 +534,7 @@ const DeviceView = () => {
                                                         <input type="text" id='name' name='name' value={name} onChange={e => handleChange(e.target.value, 'name')} className='form-control' placeholder='Enter formula name' required disabled />
                                                     </div>
                                                     <div>
-                                                        <button className='btn btn-success' type='submit'>Save Formula</button>
+                                                        <button className='btn btn-success me-2' type='submit'>Save Formula</button>
                                                     </div>
                                                 </div>
                                             </form>
@@ -536,7 +544,7 @@ const DeviceView = () => {
                             </div>
                             <div className="row mt-5">
                                 <div className="col-md-6">
-                                    <DeviceParameters data={deviceParameters} />
+                                    <DeviceParameters data={deviceParameters}  device={deviceDetails} getDevice={getDevice} getDeviceParameters={getDeviceParameters}/>
                                 </div>
                                 <div className="col-md-6">
                                     <h5 className='mt-3'>Assigned Formulas</h5>
