@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { FullScreen } from "react-full-screen";
 
 const DashboardFour = ({ handle }) => {
+    useEffect(() => {
+        document.title = "SEDA - Dashboard"
+    }, []);
     return (
         <div className='dashboard'>
             <div className="container-fluid">

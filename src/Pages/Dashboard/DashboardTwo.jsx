@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import { FullScreen } from "react-full-screen";
 import LineChart from '../../Components/Charts/LineChart';
@@ -8,6 +8,9 @@ const DashboardTwo = ({ handle }) => {
     let data = [82, 15, 80, 57, 11, 21, 26, 97, 15, 10, 37, 55]
     let data2 = [33, 96, 58, 56, 23, 100, 51, 86, 97, 90, 71, 73]
     let data3 = [31, 34, 60, 28, 97, 66, 89, 83, 61, 8, 83, 62]
+    useEffect(() => {
+        document.title = "SEDA - Dashboard"
+    }, []);
     return (
         <div className='dashboard'>
             <div className="container-fluid">
