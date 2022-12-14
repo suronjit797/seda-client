@@ -79,7 +79,7 @@ const DeviceParameters = ({ data, device,getDevice, getDeviceParameters }) => {
 
     return (
         <div>
-            <h4 className='mb-3'>Available Parameters</h4>
+            <h4 className='mb-3'>Available Device Parameters </h4>
             <DataTable
                 columns={columns}
                 data={data}

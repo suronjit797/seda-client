@@ -547,7 +547,7 @@ const DeviceView = () => {
                                     <DeviceParameters data={deviceParameters}  device={deviceDetails} getDevice={getDevice} getDeviceParameters={getDeviceParameters}/>
                                 </div>
                                 <div className="col-md-6">
-                                    <h5 className='mt-3'>Assigned Formulas</h5>
+                                    <h4 className='mt-3'>Assigned Device Formulas</h4>
                                     <div className="row me-2">
                                         <div className="card ms-2 me-3">
                                             <div className="row py-1">
