@@ -43,7 +43,7 @@ const Parameters = () => {
         }
     }
     useEffect(() => {
-        document.title = "SEDA - Manage Parameter"
+        document.title = "SEDA - Manage System Parameter"
         getParameters()
     }, []);
     return (
@@ -55,29 +55,28 @@ const Parameters = () => {
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3 mb-3">
-                            <h3>Manage Parameter</h3>
+                            <h3>Manage System Parameter</h3>
                             {(() => {
                                 switch (userDetails.role) {
                                     case 'superAdmin':
                                         return (
                                             <div className="row mt-4">
                                                 <div className="col-md-4">
-                                                    <h4 className='mb-3'>Add New Parameter</h4>
+                                                    <h4 className='mb-3'>Add New System Parameter</h4>
                                                     <div className='d-flex justify-content-center'>
                                                         {isLoading && <Spinner animation="border" variant="dark" />}
                                                     </div>
                                                     {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                                                     <form onSubmit={handleSubmit}>
                                                         <div className="mb-3">
-                                                            <label htmlFor="name" className="form-label">Parameter Name</label>
-                                                            <input type="text" name='name' value={name} onChange={onInputChange} className="form-control" id="name" placeholder='Enter parameter name' required />
+                                                            <label htmlFor="name" className="form-label">System Parameter Name</label>
+                                                            <input type="text" name='name' value={name} onChange={onInputChange} className="form-control" id="name" placeholder='Enter system parameter name' required />
                                                         </div>
                                                         <div className="mb-3">
-                                                            <label htmlFor="type" className="form-label">Parameter Type</label>
+                                                            <label htmlFor="type" className="form-label">System Parameter Type</label>
                                                             <select name="type" id="type" className='form-select' value={type} onChange={onInputChange}>
-                                                                <option >Select parameter type</option>
+                                                                <option >Select system parameter type</option>
                                                                 <option value="Measured Value">Measured Value</option>
-                                                                <option value="Computation Action">Computation Action</option>
                                                                 <option >Default Value</option>
                                                             </select>
                                                         </div>

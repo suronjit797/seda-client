@@ -16,12 +16,14 @@ const ParametersTable = ({data, getParameters}) => {
             width: "60px"
         },
         {
-            name: 'Parameter Name',
+            name: 'System Parameter Name',
             selector: row => (row?.name),
+            grow: 2,
         },
         {
-            name: 'Parameter Type',
+            name: 'System Parameter Type',
             selector: row => (row?.type),
+            grow: 2,
         },
         {
             name: 'Unit / Value',
@@ -73,7 +75,7 @@ const ParametersTable = ({data, getParameters}) => {
     }
     return (
         <div>
-            <h4 className='mb-2'>List of All Parameters</h4>
+            <h4 className='mb-2'>List of All System Parameters</h4>
             <DataTable
                 columns={columns}
                 data={data}

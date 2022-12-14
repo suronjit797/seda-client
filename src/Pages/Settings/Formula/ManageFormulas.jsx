@@ -141,7 +141,7 @@ const ManageFormulas = () => {
                                                 <div className="col-md-2">
                                                     <select name="selectOne" id="" className='form-select' onChange={onInputChange}>
                                                         <option>Select Type</option>
-                                                        <option value="parameter">Parameter</option>
+                                                        <option value="parameter">System Parameter</option>
                                                         <option value="operator">Operator</option>
                                                         <option value="formula">Formula</option>
                                                         <option value="text">Text</option>
@@ -150,7 +150,7 @@ const ManageFormulas = () => {
                                                 <div className="col-md-2">
                                                     <select name="selectTwo" id="" className='form-select' onChange={onInputChange}>
                                                         <option>Select Type</option>
-                                                        <option value="parameter">Parameter</option>
+                                                        <option value="parameter">System Parameter</option>
                                                         <option value="operator">Operator</option>
                                                         <option value="formula">Formula</option>
                                                         <option value="text">Text</option>
@@ -159,7 +159,7 @@ const ManageFormulas = () => {
                                                 <div className="col-md-2">
                                                     <select name="selectThree" id="" className='form-select' onChange={onInputChange}>
                                                         <option>Select Type</option>
-                                                        <option value="parameter">Parameter</option>
+                                                        <option value="parameter">System Parameter</option>
                                                         <option value="operator">Operator</option>
                                                         <option value="formula">Formula</option>
                                                         <option value="text">Text</option>
@@ -168,7 +168,7 @@ const ManageFormulas = () => {
                                                 <div className="col-md-2">
                                                     <select name="selectFour" id="" className='form-select' onChange={onInputChange}>
                                                         <option>Select Type</option>
-                                                        <option value="parameter">Parameter</option>
+                                                        <option value="parameter">System Parameter</option>
                                                         <option value="operator">Operator</option>
                                                         <option value="formula">Formula</option>
                                                         <option value="text">Text</option>
@@ -177,7 +177,7 @@ const ManageFormulas = () => {
                                                 <div className="col-md-2">
                                                     <select name="selectFive" id="" className='form-select' onChange={onInputChange}>
                                                         <option>Select Type</option>
-                                                        <option value="parameter">Parameter</option>
+                                                        <option value="parameter">System Parameter</option>
                                                         <option value="operator">Operator</option>
                                                         <option value="formula">Formula</option>
                                                         <option value="text">Text</option>
@@ -195,7 +195,7 @@ const ManageFormulas = () => {
                                                             case 'parameter':
                                                                 return (
                                                                     <select name="valueOne" id="valueOne" value={valueOne} onChange={onInputChange} className='form-select'>
-                                                                        <option>Select Parameter</option>
+                                                                        <option>Select System Parameter</option>
                                                                         {parameters && parameters.length > 0 && parameters.map((item, index) => (
                                                                             <option value={item.name} key={index}>{item.name}</option>
                                                                         ))}
@@ -235,7 +235,7 @@ const ManageFormulas = () => {
                                                             case 'parameter':
                                                                 return (
                                                                     <select name="valueTwo" id="valueTwo" value={valueTwo} onChange={onInputChange} className='form-select'>
-                                                                        <option>Select Parameter</option>
+                                                                        <option>Select System Parameter</option>
                                                                         {parameters && parameters.length > 0 && parameters.map((item, index) => (
                                                                             <option value={item.name} key={index}>{item.name}</option>
                                                                         ))}
@@ -275,7 +275,7 @@ const ManageFormulas = () => {
                                                             case 'parameter':
                                                                 return (
                                                                     <select name="valueThree" id="valueThree" value={valueThree} onChange={onInputChange} className='form-select'>
-                                                                        <option>Select Parameter</option>
+                                                                        <option>Select System Parameter</option>
                                                                         {parameters && parameters.length > 0 && parameters.map((item, index) => (
                                                                             <option value={item.name} key={index}>{item.name}</option>
                                                                         ))}
@@ -315,7 +315,7 @@ const ManageFormulas = () => {
                                                             case 'parameter':
                                                                 return (
                                                                     <select name="valueFour" id="valueFour" value={valueFour} onChange={onInputChange} className='form-select'>
-                                                                        <option>Select Parameter</option>
+                                                                        <option>Select System Parameter</option>
                                                                         {parameters && parameters.length > 0 && parameters.map((item, index) => (
                                                                             <option value={item.name} key={index}>{item.name}</option>
                                                                         ))}

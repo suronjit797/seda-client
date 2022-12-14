@@ -66,7 +66,7 @@ const EditParameterModal = (props) => {
                         <input type="text" name='value' value={value} onChange={onInputChange} className="form-control" id="value" placeholder='Enter a unite/ value' required />
                     </div>
                     <div className='float-end'>
-                        <button type="submit" className="btn btn-success me-2">Create</button>
+                        <button type="submit" className="btn btn-success me-2">Update</button>
                     </div>
                 </form>
             </Modal.Body>

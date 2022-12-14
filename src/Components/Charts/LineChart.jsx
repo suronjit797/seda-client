@@ -1,11 +1,11 @@
 import React from 'react';
 import Chart from 'react-apexcharts'
 
-const LineChart = ({type, title, name}) => {
+const LineChart = ({type, title, name, data}) => {
     const options = {
         series: [{
             name: name,
-            data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+            data: data
         }],
         chart: {
             height: 350,
