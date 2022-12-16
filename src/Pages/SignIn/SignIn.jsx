@@ -28,8 +28,6 @@ const SignIn = () => {
         setIsLoading(true)
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/login`, login, { withCredentials: true }).catch(function (error) {
             if (error.response) {
-                console.log(error.response.data);
-                console.log(error.response.status);
                 if (error.response.status === 401 || 500) {
                     setIsLoading(false)
                     setErrorMessage(error.response.data)
@@ -37,7 +35,6 @@ const SignIn = () => {
                         setErrorMessage()
                     }, 2000)
                 }
-                console.log(error.response.headers);
             }
         });
         const data = response.data

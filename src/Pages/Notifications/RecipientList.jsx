@@ -1,26 +1,37 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { Spinner } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import NotificationSidebar from '../../Components/Notifications/NotificationSidebar';
+import RecipientListTable from './RecipientListTable';
 
 const RecipientList = () => {
     const userDetails = useSelector((state) => state?.user?.userDetails);
+    const [isLoading, setIsLoading] = useState(false);
+    const [SuccessMessage, setSuccessMessage] = useState();
     const [siteLocations, setSiteLocations] = useState([]);
+    const [assignedAlarm, setAssignedAlarm] = useState([]);
     const [users, setUsers] = useState([]);
     const [notifications, setNotifications] = useState([]);
     const [AssignAlarmEx, setAssignAlarmEx] = useState({
+        name: "",
+        email: "",
+        role: "external",
         site: "",
-        role: "",
-        type:"existing",
-        user: "",
         alarm: "",
+        isActive: true
     });
-    const { site, role, user, alarm } = AssignAlarmEx
+    const { name, email, site, role, alarm } = AssignAlarmEx
 
     const onInputChange = e => {
         setAssignAlarmEx({ ...AssignAlarmEx, [e.target.name]: e.target.value });
     };
+
+    const handleUserChange = e => {
+        let user = users.filter((item) => item._id === e.target.value)
+        setAssignAlarmEx({ ...AssignAlarmEx, name: user[0]?.name, email: user[0]?.email });
+    }
 
     const getSiteLocations = async (userDetails) => {
         if (userDetails.role === "superAdmin") {
@@ -38,14 +49,28 @@ const RecipientList = () => {
             if (response) {
                 setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
             }
+        } else if (userDetails.role === "user") {
+            let site = [];
+            site.push(userDetails.site)
+            setSiteLocations(site)
+        } else if (userDetails.role === "public") {
+            let site = [];
+            site.push(userDetails.site)
+            setSiteLocations(site)
         }
     }
     const getNotifications = async () => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/notification`, { withCredentials: true })
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/notification/site/${site}`, { withCredentials: true })
         if (response) {
             setNotifications(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
         }
     }
+    useEffect(() => {
+        if (site) {
+            getNotifications()
+        }
+        // eslint-disable-next-line
+    }, [site]);
 
     const getUsers = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/siteUser/${site}/${role}`, { withCredentials: true })
@@ -54,24 +79,48 @@ const RecipientList = () => {
         }
     }
     useEffect(() => {
-        getUsers()
+        if (!role === "external") {
+            getUsers()
+        }
         // eslint-disable-next-line
-    }, [role]);
+    }, [site, role]);
 
+    const getAssignedAlarm = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/notification/assign`, { withCredentials: true })
+        if (response) {
+            setAssignedAlarm(response.data)
+        }
+    }
     useEffect(() => {
         document.title = "SEDA - Recipient List";
-        getNotifications()
+        getAssignedAlarm()
         // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         getSiteLocations(userDetails)
-
         // eslint-disable-next-line
     }, [userDetails]);
 
-    const handleSubmitEx = async(e)=>{
+    const handleSubmitEx = async (e) => {
         e.preventDefault();
+        setIsLoading(true)
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/notification/assign`, AssignAlarmEx, { withCredentials: true })
+        if (response) {
+            setIsLoading(false)
+            setSuccessMessage("Alarm Assign Successfully")
+            setAssignAlarmEx({
+                name: "",
+                email: "",
+                role: "",
+                site: "",
+                alarm: "",
+                isActive: true
+            })
+            setTimeout(() => {
+                setSuccessMessage()
+            }, 2000)
+        }
     }
 
     return (
@@ -84,13 +133,19 @@ const RecipientList = () => {
                     <div className="col-md-10">
                         <div className="card p-3 mb-3">
                             <div className="row">
-                                <div className="col-md-6"> <h3>Notification Recipient List</h3></div>
+                                <div className="col-md-6">
+                                    <h3>Notification Recipient List</h3>
+                                    <div className='d-flex justify-content-center'>
+                                        {isLoading && <Spinner animation="border" variant="dark" />}
+                                    </div>
+                                    {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
+                                </div>
                                 <div className="col-md-6 ">
                                     <Link className='btn btn-secondary float-end'>Back</Link>
                                 </div>
                             </div>
                             <div className="row mt-3">
-                                <div className="col-md-6">
+                                <div className="col-md-6 border-end">
                                     <h5>Assign Existing System User Accounts</h5>
                                     <form onSubmit={handleSubmitEx}>
                                         <div className="row">
@@ -115,7 +170,7 @@ const RecipientList = () => {
                                             </div>
                                             <div className="col-md-4">
                                                 <label htmlFor="user" className="form-label">Site User</label>
-                                                <select name="user" id="user" defaultValue={user} className='form-select' onChange={onInputChange}>
+                                                <select name="user" id="user" className='form-select' onChange={handleUserChange}>
                                                     <option> Select User</option>
                                                     {users && users.length > 0 && users.map((item, index) => (
                                                         <option value={item._id} key={index}>{item.name}</option>
@@ -123,7 +178,7 @@ const RecipientList = () => {
                                                 </select>
                                             </div>
                                         </div>
-                                        <div className="row">
+                                        <div className="row mt-2">
                                             <div className="col-md-4">
                                                 <label htmlFor="alarm" className="form-label">Alarm Name</label>
                                                 <select name="alarm" id="alarm" defaultValue={alarm} className='form-select' onChange={onInputChange}>
@@ -144,26 +199,32 @@ const RecipientList = () => {
                                     <form onSubmit={handleSubmitEx}>
                                         <div className="row">
                                             <div className="col-md-4">
+                                                <label htmlFor="site" className="form-label">Site Location</label>
+                                                <select name="site" id="site" defaultValue={site} className='form-select' onChange={onInputChange}>
+                                                    <option> Select site</option>
+                                                    {siteLocations && siteLocations.length > 0 && siteLocations.map((item, index) => (
+                                                        <option value={item._id} key={index}>{item.name}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div className="col-md-4">
                                                 <label htmlFor="name" className="form-label">Full Name</label>
-                                                <input type="text" className='form-control' name='name' placeholder='Enter full name' />
+                                                <input type="text" className='form-control' name='name' value={name} placeholder='Enter full name' onChange={onInputChange} />
                                             </div>
                                             <div className="col-md-4">
                                                 <label htmlFor="email" className="form-label">Email Address</label>
-                                                <input type="email" className='form-control' name='email' placeholder='Enter email address' />
+                                                <input type="email" className='form-control' name='email' value={email} placeholder='Enter email address' onChange={onInputChange} />
                                             </div>
+                                        </div>
+                                        <div className="row mt-2">
                                             <div className="col-md-4">
-                                            <label htmlFor="alarm" className="form-label">Alarm Name</label>
+                                                <label htmlFor="alarm" className="form-label">Alarm Name</label>
                                                 <select name="alarm" id="alarm" defaultValue={alarm} className='form-select' onChange={onInputChange}>
                                                     <option> Select alarm</option>
                                                     {notifications && notifications.length > 0 && notifications.map((item, index) => (
                                                         <option value={item._id} key={index}>{item.name}</option>
                                                     ))}
                                                 </select>
-                                            </div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-md-4">
-                                                
                                             </div>
                                             <div className="col-md-8">
                                                 <button type='submit' className='btn btn-warning mt-4 float-end'>Assign</button>
@@ -172,6 +233,9 @@ const RecipientList = () => {
                                     </form>
                                 </div>
                             </div>
+                            <hr />
+
+                            <RecipientListTable data={assignedAlarm} />
                         </div>
                     </div>
                 </div>
