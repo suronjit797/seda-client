@@ -79,7 +79,9 @@ const RecipientList = () => {
         }
     }
     useEffect(() => {
-        if (!role === "external") {
+        if (role === "external") {
+           
+        }else{
             getUsers()
         }
         // eslint-disable-next-line
@@ -109,16 +111,18 @@ const RecipientList = () => {
         if (response) {
             setIsLoading(false)
             setSuccessMessage("Alarm Assign Successfully")
+            getAssignedAlarm()
             setAssignAlarmEx({
                 name: "",
                 email: "",
-                role: "",
+                role: "external",
                 site: "",
                 alarm: "",
                 isActive: true
             })
             setTimeout(() => {
                 setSuccessMessage()
+                window.location.reload(false);
             }, 2000)
         }
     }
@@ -209,11 +213,11 @@ const RecipientList = () => {
                                             </div>
                                             <div className="col-md-4">
                                                 <label htmlFor="name" className="form-label">Full Name</label>
-                                                <input type="text" className='form-control' name='name' value={name} placeholder='Enter full name' onChange={onInputChange} />
+                                                <input type="text" className='form-control' name='name' placeholder='Enter full name' onChange={onInputChange} />
                                             </div>
                                             <div className="col-md-4">
                                                 <label htmlFor="email" className="form-label">Email Address</label>
-                                                <input type="email" className='form-control' name='email' value={email} placeholder='Enter email address' onChange={onInputChange} />
+                                                <input type="email" className='form-control' name='email' placeholder='Enter email address' onChange={onInputChange} />
                                             </div>
                                         </div>
                                         <div className="row mt-2">
