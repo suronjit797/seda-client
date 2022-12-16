@@ -239,7 +239,7 @@ const RecipientList = () => {
                             </div>
                             <hr />
 
-                            <RecipientListTable data={assignedAlarm} />
+                            <RecipientListTable data={assignedAlarm} getAssignedAlarm={getAssignedAlarm}/>
                         </div>
                     </div>
                 </div>

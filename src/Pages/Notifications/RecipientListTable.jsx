@@ -1,11 +1,13 @@
+import axios from 'axios';
 import moment from 'moment/moment';
 import React from 'react';
 import DataTable from 'react-data-table-component';
-import { FiTrash, FiEye} from "react-icons/fi"
-import {RiMailCloseLine, RiMailCheckLine} from "react-icons/ri"
+import { FiTrash, FiEye } from "react-icons/fi"
+import { RiMailCloseLine, RiMailCheckLine } from "react-icons/ri"
 import { Link } from 'react-router-dom';
+import Swal from "sweetalert2";
 
-const RecipientListTable = ({ data }) => {
+const RecipientListTable = ({ data, getAssignedAlarm }) => {
     const columns = [
         {
             name: "No.",
@@ -18,13 +20,13 @@ const RecipientListTable = ({ data }) => {
             name: 'User Name',
             cell: (row) => <div className='text-capitalize'>{row.name}</div>,
             selector: row => (row),
-            grow:2
+            grow: 2
         },
         {
             name: 'Email',
             cell: (row) => <div>{row.email}</div>,
             selector: row => (row),
-            grow:2
+            grow: 2
         },
         {
             name: 'User Type',
@@ -35,7 +37,7 @@ const RecipientListTable = ({ data }) => {
             name: 'Assign Site',
             cell: (row) => <div className='text-wrap'>{row.site.name}</div>,
             selector: row => (row.site.name),
-            grow:2
+            grow: 2
         },
         {
             name: 'Date Created',
@@ -65,14 +67,73 @@ const RecipientListTable = ({ data }) => {
                     }
                 })
                     ()}
-                <button className='btn btn-danger'><FiTrash title="Delete" /></button>
+                <button className='btn btn-danger' onClick={() => deleteAlarm(row._id)}><FiTrash title="Delete" /></button>
             </div>,
             grow: 2,
             center: 'yes'
         },
     ];
-    const activeDeactiveUser = async (userId, isActive) => {
+    const activeDeactiveUser = async (alarmId, isActive) => {
+        const data = {
+            isActive: !isActive
+        }
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to change Alarm status?",
+            //icon: "warning",
+            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonText: 'Confirm'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.put(`${process.env.REACT_APP_API_URL}/notification/assign/` + alarmId, data, { withCredentials: true })
+                    .then(res => {
+                        getAssignedAlarm()
+                        Swal.fire({
+                            title: "Done!",
+                            text: "Alarm Status Successfully Changed",
+                            icon: "success",
+                            timer: 2000,
+                            button: false
+                        })
 
+                    });
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+
+            }
+        })
+    }
+
+    const deleteAlarm = async (alarmId) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to delete this Alarm?",
+            //icon: "warning",
+            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonText: 'Confirm'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`${process.env.REACT_APP_API_URL}/notification/assign/` + alarmId, { withCredentials: true })
+                    .then(res => {
+                        getAssignedAlarm()
+                        Swal.fire({
+                            title: "Done!",
+                            text: "Alarm Deleted Successfully",
+                            icon: "success",
+                            timer: 2000,
+                            button: false
+                        })
+
+                    });
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+
+            }
+        })
     }
     return (
         <div>
