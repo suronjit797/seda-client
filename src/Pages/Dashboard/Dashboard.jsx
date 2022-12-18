@@ -63,16 +63,19 @@ const Dashboard = ({ handle }) => {
                                         <div className="col-md-9">
                                             <form onSubmit={handleFilter} className={`${!showFilter && 'd-none'}`}>
                                                 <div className="row d-flex align-items-end">
-                                                    <div className="col-md-5">
+                                                    <div className="col-md-4">
                                                         <label htmlFor="from" className="form-label">From</label>
                                                         <input type="datetime-local" value={from} onChange={(e) => setFrom(e.target.value)} className='form-control' id="from" name="from" required />
                                                     </div>
-                                                    <div className="col-md-5">
+                                                    <div className="col-md-4">
                                                         <label htmlFor="from" className="form-label">To</label>
                                                         <input type="datetime-local" value={to} onChange={(e) => setTo(e.target.value)} className='form-control' id="from" name="to" required />
                                                     </div>
-                                                    <div className="col-md-2">
-                                                        <button className='btn btn-warning' type='submit'>View</button>
+                                                    <div className="col-md-4">
+                                                        <div className="actions d-flex">
+                                                        <button className='btn btn-warning me-2' type='submit'>View</button>
+                                                        <button className='btn btn-secondary' type='button' onClick={()=>{setFrom();setTo();}}>Clear</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </form>
@@ -110,7 +113,7 @@ const Dashboard = ({ handle }) => {
                                 <div className="col-md-2">
                                     <div className="consumption text-center">
                                         <div className="card text-center mb-2 p-2">
-                                            <h4 className='text-success'>This month <br />Consumption</h4>
+                                            <h4 className='text-success'>Consumption <br/>this month</h4>
                                             <h2>215</h2>
                                             <p>kWh</p>
                                         </div>

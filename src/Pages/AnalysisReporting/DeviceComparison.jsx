@@ -108,7 +108,7 @@ const DeviceComparison = () => {
                         <div className="card p-3 mb-3">
                             <div className="row">
                                 <div className="col-md-6">
-                                    <h3>Device Comparison</h3>
+                                    <h3>Multiple Device Comparison</h3>
                                 </div>
                                 <div className="col-md-6 d-flex justify-content-end">
                                     <Link to="/" className='btn btn-secondary'>Back</Link>

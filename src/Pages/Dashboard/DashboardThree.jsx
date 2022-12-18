@@ -354,11 +354,11 @@ const DashboardThree = ({ handle }) => {
                             </div>
                             <div className="row mt-3">
                                 <div className="col-md-6">
-                                    <h6 className='text-center'>Energy Consumption per <br />months (kWh/months)</h6>
+                                    <h6 className='text-center'>Energy Consumption per month <br/> (kWh/month)</h6>
                                     <LineChart type="bar" name="kWh" data={data3} color="#00205b" title="" />
                                 </div>
                                 <div className="col-md-6">
-                                    <h6 className='text-center'>Building Energy Index per <br />months (kWh/m2)</h6>
+                                    <h6 className='text-center'>Building Energy Index per month <br/>(kWh/m2)</h6>
                                     <LineChart type="bar" name="kWh" data={data4} color="#875419" title="" />
                                 </div>
                             </div>
@@ -366,7 +366,7 @@ const DashboardThree = ({ handle }) => {
                         <aside className='col-md-2'>
                             <div className="consumption text-center">
                                 <div className="card text-center mb-2 p-2">
-                                    <h4 className='text-success'>This month <br />consumption</h4>
+                                    <h4 className='text-success'>Consumption <br/>this month</h4>
                                     <h2>215</h2>
                                     <p>kWh</p>
                                 </div>

@@ -18,6 +18,7 @@ const RecipientList = () => {
         name: "",
         email: "",
         role: "external",
+        user:"",
         site: "",
         alarm: "",
         isActive: true
@@ -30,7 +31,7 @@ const RecipientList = () => {
 
     const handleUserChange = e => {
         let user = users.filter((item) => item._id === e.target.value)
-        setAssignAlarmEx({ ...AssignAlarmEx, name: user[0]?.name, email: user[0]?.email });
+        setAssignAlarmEx({ ...AssignAlarmEx,user: e.target.value,  name: user[0]?.name, email: user[0]?.email });
     }
 
     const getSiteLocations = async (userDetails) => {
@@ -165,7 +166,7 @@ const RecipientList = () => {
                                             <div className="col-md-4">
                                                 <label htmlFor="role" className="form-label">User Type</label>
                                                 <select name="role" id="role" defaultValue={role} className='form-select' onChange={onInputChange}>
-                                                    <option label='Select Role'></option>
+                                                    <option label='Select role'></option>
                                                     <option value="admin">Admin</option>
                                                     <option value="installer">Installer</option>
                                                     <option value="user">Site User</option>
@@ -175,7 +176,7 @@ const RecipientList = () => {
                                             <div className="col-md-4">
                                                 <label htmlFor="user" className="form-label">Site User</label>
                                                 <select name="user" id="user" className='form-select' onChange={handleUserChange}>
-                                                    <option> Select User</option>
+                                                    <option> Select user</option>
                                                     {users && users.length > 0 && users.map((item, index) => (
                                                         <option value={item._id} key={index}>{item.name}</option>
                                                     ))}

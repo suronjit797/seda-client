@@ -141,18 +141,29 @@ const Navbar = ({ handle }) => {
                         <li className="nav-item">
                             <Link to='/profile' className='nav-link'>Profile</Link>
                         </li>
-                        <li className="nav-item dropdown">
-                            <Dropdown show={NotificationDropdownIsOpen}>
-                                <Dropdown.Toggle id="dropdown-basic" className='bg-transparent text-dark border-0 fw-semibold' onClick={(e) => toggleNotificationDropdownIsOpen()}>
-                                    Notification
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu onClick={(e) => toggleNotificationDropdownIsOpen()} ref={ref1}>
-                                    <Link to='/alarm-summary' className='dropdown-item'>System Alarm Summary</Link>
-                                    <Link to='/create-alarm' className='dropdown-item'>Create New Alarm</Link>
-                                    <Link to="/recipient-list" className='dropdown-item'>Notification Recipient List</Link>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </li>
+                        {(() => {
+                            switch (userDetails.role) {
+                                case 'public':
+                                    return
+                                    break;
+                                default:
+                                    return (
+                                        <li className="nav-item dropdown">
+                                            <Dropdown show={NotificationDropdownIsOpen}>
+                                                <Dropdown.Toggle id="dropdown-basic" className='bg-transparent text-dark border-0 fw-semibold' onClick={(e) => toggleNotificationDropdownIsOpen()}>
+                                                    Notification
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu onClick={(e) => toggleNotificationDropdownIsOpen()} ref={ref1}>
+                                                    <Link to='/alarm-summary' className='dropdown-item'>System Alarm Summary</Link>
+                                                    <Link to='/create-alarm' className='dropdown-item'>Create New Alarm</Link>
+                                                    <Link to="/recipient-list" className='dropdown-item'>Notification Recipient List</Link>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </li>
+                                    )
+                            }
+                        })
+                            ()}
                         <li className="nav-item">
                             <button className='nav-link border-0 bg-transparent' onClick={() => logOut()}>Logout</button>
                         </li>

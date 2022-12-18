@@ -26,7 +26,7 @@ const AlarmView = () => {
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3 mb-3">
-                            <h3>Admin Profile</h3>
+                            <h3>Alarm Profile</h3>
                             <div className="row mt-4">
                                 <div className="col-md-6">
                                     <div className="row mb-2">
@@ -69,7 +69,7 @@ const AlarmView = () => {
                             <div className="row">
                                 <div className="col-md-12 d-flex justify-content-end">
                                     <Link to={`/edit-alarm/` + alarmId} className="btn btn-success me-1">Edit</Link>
-                                    <Link to={`/alarm-summary`} className="btn btn-secondary">Cancel</Link>
+                                    <Link to={`/alarm-summary`} className="btn btn-secondary">Back</Link>
                                 </div>
                             </div>
                         </div>

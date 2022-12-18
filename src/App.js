@@ -70,6 +70,7 @@ import CreateAlarm from './Pages/Notifications/CreateAlarm';
 import RecipientList from './Pages/Notifications/RecipientList';
 import AlarmView from './Pages/Notifications/AlarmView';
 import EditAlarm from './Pages/Notifications/EditAlarm';
+import AddVirtualDevice from './Pages/Devices/AddVirtualDevice';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 
@@ -140,6 +141,7 @@ function App() {
               {/* Devices related routes */}
               <Route path="/devices" element={<Devices />} />
               <Route path="/add-device" element={<AddDevice />} />
+              <Route path="/add-virtual-device" element={<AddVirtualDevice />} />
               <Route path="/device-types" element={<DeviceTypes />} />
               <Route path="/device/:deviceId" element={<DeviceView />} />
               <Route path="/edit-device/:deviceId" element={<EditDevice />} />

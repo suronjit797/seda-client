@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import axios from 'axios';
-import { setCurrentSite, setSiteDetails, setCurrentDevice } from '../../redux/userSlice';
+import { setCurrentSite, setSiteDetails, setCurrentDevice, setUserDetails } from '../../redux/userSlice';
 import { useLocation } from 'react-router-dom';
 
 const Header = ({ handle }) => {
     const [devices, setDevices] = useState([]);
     const userDetails = useSelector((state) => state?.user?.userDetails);
     let userSites = useSelector((state) => state?.user?.userSites);
+    const [template, setTemplate] = useState(1);
     const dispatch = useDispatch()
     const location = useLocation()
     const getSiteLocations = async (userDetails) => {
@@ -40,6 +41,7 @@ const Header = ({ handle }) => {
 
     useEffect(() => {
         getSiteLocations(userDetails)
+        setTemplate(userDetails?.dashboard || 1)
         // eslint-disable-next-line
     }, [userDetails]);
     useEffect(() => {
@@ -73,8 +75,15 @@ const Header = ({ handle }) => {
     const handleDeviceChange = async (e) => {
         const deviceId = e.target.value
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/` + deviceId, { withCredentials: true })
-        if(response){
+        if (response) {
             dispatch(setCurrentDevice(response.data))
+        }
+    }
+
+    const handleDashboardChange = async(e)=>{
+        const response = await axios.put(`${process.env.REACT_APP_API_URL}/users/me`, { dashboard: e.target.value }, { withCredentials: true });
+        if(response){
+            dispatch(setUserDetails(response.data))
         }
     }
     let background = '/images/bg-3.jpg'
@@ -87,12 +96,37 @@ const Header = ({ handle }) => {
                             <img src="/images/logo.png" alt="SEDA logo" style={{ maxHeight: "100px" }} className="img-fluid" />
                         </div>
                     </div>
-                    <div className="col-sm-12 col-md-5">
+                    <div className="col-sm-12 col-md-3">
                         <h5 className='mt-3'>Welcome, {userDetails?.name}</h5>
                         <h6 className='text-capitalize'>{userDetails?.role === "superAdmin" ? "Super Admin" : userDetails?.role}</h6>
                         <p>{moment(new Date()).format("DD/MM/YYYY hh:mm A")}</p>
                     </div>
+                    <div className="col-md-2">
+                        {(location.pathname === "/") && (() => {
+                            switch (userDetails.role) {
+                                case 'superAdmin':
+                                    return (
+                                        <select className="form-select bg-success border-0 text-white" id='site-locations' defaultValue={template} name='dashboard' onChange={handleDashboardChange} aria-label="Select Dashboard">
+                                          {template===1 ? <option value="1" selected>Dashboard 1</option>: <option value="1">Dashboard 1</option>} 
+                                          {template===2 ? <option value="2" selected>Dashboard 2</option>: <option value="2">Dashboard 2</option>}
+                                          {template===3 ? <option value="3" selected>Dashboard 3</option>: <option value="3">Dashboard 3</option>}
+                                          {template===4 ? <option value="4" selected>Dashboard 4</option>: <option value="4">Dashboard 4</option>}
+                                        </select>
+                                    )
+                                default:
+                                    return (
+                                        <select className="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin">
+                                            <option label='Site Selector'></option>
+                                            {userSites && userSites.length > 0 && userSites.map((item, index) => (
+                                                <option value={item._id} key={index}>{item.name}</option>
+                                            ))}
+                                        </select>
+                                    )
 
+                            }
+                        })
+                            ()}
+                    </div>
                     <div className="col-md-2">
                         <div>
                             {(location.pathname === "/" || location.pathname === "/analysis-reporting") && (() => {

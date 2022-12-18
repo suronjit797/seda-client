@@ -62,8 +62,9 @@ const AlarmSummary = () => {
             selector: row => (row.site),
         },
         {
-            name: 'Date Installed',
+            name: 'Date Alarm Created',
             selector: row => (moment(row.device.createdAt).format("DD/MM/YYYY")),
+            grow:2
         },
         {
             name: 'Action',

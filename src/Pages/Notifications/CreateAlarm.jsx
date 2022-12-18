@@ -134,7 +134,7 @@ const CreateAlarm = () => {
                                     <div className="col-md-6">
                                         <div className="mb-3">
                                             <label htmlFor="name" className="form-label">Alarm Name</label>
-                                            <input type="text" name='name' value={name} onChange={onInputChange} className="form-control" id="name" placeholder='Enter Alarm Name' required />
+                                            <input type="text" name='name' value={name} onChange={onInputChange} className="form-control" id="name" placeholder='Enter alarm name' required />
                                         </div>
                                         <div className="mb-3">
                                             <label htmlFor="type" className="form-label">Alarm Type</label>

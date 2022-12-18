@@ -56,7 +56,7 @@ const SignIn = () => {
     }, []);
     let background = '/images/bg-3.jpg'
     return (
-        <div className='content-wrapper' style={{backgroundImage: `url(${background})`}}>
+        <div className='content-wrapper' style={{ backgroundImage: `url(${background})` }}>
             <div className='SignIn-wrapper'>
                 <div className="card-signIn">
                     <div className="row signIn-top">
@@ -107,7 +107,10 @@ const SignIn = () => {
                             <h6 className='ms-2 fw-bolder' style={{ color: "#00205b" }}>SEDA MALAYSIA</h6>
                         </div>
                         <div className="col-md-6 d-flex justify-content-center justify-content-md-end">
-                            <p className='me-2 mb-0 fw-bolder'>Version 1.0 | {new Date().getFullYear()}</p>
+                            <ul className='nav'>
+                                <li><a href="/docs/SEDA-OECM USER-MANUAL-V1-12.22.pdf" className='fw-bolder me-1' target="_blank" download>Download User Manual</a></li>
+                                <li><p className='me-2 mb-0 fw-bolder ms-1'>| Version 1.0 | {new Date().getFullYear()}</p></li>
+                            </ul>
                         </div>
                     </div>
                 </div>

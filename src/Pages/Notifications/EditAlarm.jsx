@@ -128,7 +128,7 @@ const EditAlarm = () => {
                     </div>
                     <div className="col-md-10">
                         <div className="card p-3 mb-3">
-                            <h3>Create New Alarm</h3>
+                            <h3>Edit Alarm Settings</h3>
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>

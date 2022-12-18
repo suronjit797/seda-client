@@ -11,6 +11,7 @@ import { useMemo } from 'react';
 
 const AnalysisReporting = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const [SuccessMessage, setSuccessMessage] = useState();
     const [reportTypeGraph, setReportTypeGraph] = useState(true);
     const [devices, setDevices] = useState([]);
     const [deviceData, setDeviceData] = useState([]);
@@ -80,9 +81,13 @@ const AnalysisReporting = () => {
         setIsLoading(true)
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/report/ParameterComparison`, queryData, { withCredentials: true })
         if (response) {
+            setSuccessMessage("Report Successfully Generated")
             setDeviceData(response.data?.result)
             setDeviceTableData(response.data?.data)
             setIsLoading(false)
+            setTimeout(() => {
+                setSuccessMessage()
+            }, 2000)
         }
     }
     return (
@@ -152,6 +157,7 @@ const AnalysisReporting = () => {
                             <div className='d-flex justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
+                            {SuccessMessage && <div className="alert alert-success" role="alert">{SuccessMessage} </div>}
                             <div className="row" style={{ minHeight: "400px" }}>
                                 <div className="col-md-12">
                                     <div className='mt-3'>
