@@ -12,17 +12,28 @@ const Dashboard = ({ handle }) => {
     const [showFilterData, setShowFilterData] = useState(false);
     const [from, setFrom] = useState();
     const [to, setTo] = useState();
-    let data = [10, 41, 35, 51, 49, 62, 69, 91, 130, 20, 44, 80]
+    let [lineData, setLineData] = useState([])
     let currentDevice = useSelector((state) => state?.user?.currentDevice);
+
     const getDeviceData = async (deviceId, parameter) => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/byParameter/` + deviceId + `/`+ parameter, { withCredentials: true })
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/byParameter/` + deviceId + `/` + parameter, { withCredentials: true })
         if (response) {
             setDeviceData(response.data)
         }
     }
+
+    const getLineData = async (deviceId, parameter) => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/monthlyKWH/` + deviceId + `/` + parameter, { withCredentials: true })
+        if (response) {
+            setLineData(response.data)
+        }
+    }
+
+
     useEffect(() => {
         if (currentDevice) {
             getDeviceData(currentDevice._id, currentDevice?.parameter || 'KWH')
+            getLineData(currentDevice._id, currentDevice?.parameter || 'KWH')
         }
         // eslint-disable-next-line
     }, [currentDevice]);
@@ -73,8 +84,8 @@ const Dashboard = ({ handle }) => {
                                                     </div>
                                                     <div className="col-md-4">
                                                         <div className="actions d-flex">
-                                                        <button className='btn btn-warning me-2' type='submit'>View</button>
-                                                        <button className='btn btn-secondary' type='button' onClick={()=>{setFrom();setTo();}}>Clear</button>
+                                                            <button className='btn btn-warning me-2' type='submit'>View</button>
+                                                            <button className='btn btn-secondary' type='button' onClick={() => { setFrom(); setTo(); }}>Clear</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -88,32 +99,32 @@ const Dashboard = ({ handle }) => {
                                     </div>
                                     <div className="row">
                                         <div className="col-md-10">
-                                        {deviceData.length > 0 && showFilterData ? <AreaChart name="Power (kWh)" title="Monthly (kW)" data={deviceData} from={from} to={to} /> : <AreaChart data={deviceData} name="Power (kW)" title="Monthly (kW)" />}
+                                            {deviceData.length > 0 && showFilterData ? <AreaChart name="Power (kWh)" title="Monthly (kW)" data={deviceData} from={from} to={to} /> : <AreaChart data={deviceData} name="Power (kW)" title="Monthly (kW)" />}
                                         </div>
                                         <div className="col-md-2">
                                             <div className="minmax bg-success bg-opacity-50">
-                                        <div className="row">
-                                            <div className="col-6">Min</div>
-                                            <div className="col-6 d-flex justify-content-end">xx</div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-6">Max</div>
-                                            <div className="col-6 d-flex justify-content-end">xx</div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-6">Average</div>
-                                            <div className="col-6 d-flex justify-content-end">xx</div>
+                                                <div className="row">
+                                                    <div className="col-6">Min</div>
+                                                    <div className="col-6 d-flex justify-content-end">xx</div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col-6">Max</div>
+                                                    <div className="col-6 d-flex justify-content-end">xx</div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col-6">Average</div>
+                                                    <div className="col-6 d-flex justify-content-end">xx</div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    </div>
-                                    </div>
-                                    
-                                    
+
+
                                 </div>
                                 <div className="col-md-2">
                                     <div className="consumption text-center">
                                         <div className="card text-center mb-2 p-2">
-                                            <h4 className='text-success'>Consumption <br/>this month</h4>
+                                            <h4 className='text-success'>Consumption <br />this month</h4>
                                             <h2>215</h2>
                                             <p>kWh</p>
                                         </div>
@@ -129,8 +140,17 @@ const Dashboard = ({ handle }) => {
                             </div>
                             <div className="row mt-4">
                                 <div className="col-md-8">
-                                    <LineChart type="bar" name="kWh" data={data} color="#1fb35b" title="Energy Consumption Monthly (kWh)" />
+                                    <LineChart type="bar" name="kWh" data={lineData} color="#1fb35b" title="Energy Consumption Monthly (kWh)" />
                                 </div>
+
+
+
+
+
+
+
+
+
                                 <div className="col-md-4">
                                     <h6 className='text-center mb-3'>Device (kWh)</h6>
                                     <PieChart />

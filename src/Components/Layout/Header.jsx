@@ -80,9 +80,9 @@ const Header = ({ handle }) => {
         }
     }
 
-    const handleDashboardChange = async(e)=>{
+    const handleDashboardChange = async (e) => {
         const response = await axios.put(`${process.env.REACT_APP_API_URL}/users/me`, { dashboard: e.target.value }, { withCredentials: true });
-        if(response){
+        if (response) {
             dispatch(setUserDetails(response.data))
         }
     }
@@ -107,10 +107,10 @@ const Header = ({ handle }) => {
                                 case 'superAdmin':
                                     return (
                                         <select className="form-select bg-success border-0 text-white" id='site-locations' defaultValue={template} name='dashboard' onChange={handleDashboardChange} aria-label="Select Dashboard">
-                                          {template===1 ? <option value="1" selected>Dashboard 1</option>: <option value="1">Dashboard 1</option>} 
-                                          {template===2 ? <option value="2" selected>Dashboard 2</option>: <option value="2">Dashboard 2</option>}
-                                          {template===3 ? <option value="3" selected>Dashboard 3</option>: <option value="3">Dashboard 3</option>}
-                                          {template===4 ? <option value="4" selected>Dashboard 4</option>: <option value="4">Dashboard 4</option>}
+                                            {template === 1 ? <option value="1" selected>Dashboard 1</option> : <option value="1">Dashboard 1</option>}
+                                            {template === 2 ? <option value="2" selected>Dashboard 2</option> : <option value="2">Dashboard 2</option>}
+                                            {template === 3 ? <option value="3" selected>Dashboard 3</option> : <option value="3">Dashboard 3</option>}
+                                            {template === 4 ? <option value="4" selected>Dashboard 4</option> : <option value="4">Dashboard 4</option>}
                                         </select>
                                     )
                                 default:

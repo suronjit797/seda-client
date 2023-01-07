@@ -84,24 +84,24 @@ function App() {
       <div className="App">
         {isLogged ?
           <>
-            <Header handle={handle}/>
+            <Header handle={handle} />
 
             <Navbar handle={handle} />
             <Routes>
-            {(() => {
+              {(() => {
                 switch (userDetails?.dashboard) {
-                    case 1:
-                        return <Route path="/" element={<Dashboard handle={handle} />} />
-                    case 2:
-                        return <Route path="/" element={<DashboardTwo handle={handle} />} />
-                    case 3:
-                        return  <Route path="/" element={<DashboardThree handle={handle} />} />
-                    case 4:
-                        return <Route path="/" element={<DashboardFour handle={handle} />} />
-                    default:
-                        return <Route path="/" element={<Dashboard handle={handle} />} />
+                  case 1:
+                    return <Route path="/" element={<Dashboard handle={handle} />} />
+                  case 2:
+                    return <Route path="/" element={<DashboardTwo handle={handle} />} />
+                  case 3:
+                    return <Route path="/" element={<DashboardThree handle={handle} />} />
+                  case 4:
+                    return <Route path="/" element={<DashboardFour handle={handle} />} />
+                  default:
+                    return <Route path="/" element={<Dashboard handle={handle} />} />
                 }
-            })
+              })
                 ()}
               {/* users related routes */}
               <Route path="/users" element={<Users />} />
@@ -146,12 +146,12 @@ function App() {
               <Route path="/device/:deviceId" element={<DeviceView />} />
               <Route path="/edit-device/:deviceId" element={<EditDevice />} />
               <Route path="/device-data/:deviceId" element={<DeviceData />} />
-              
+
 
               {/* Analysis &Reporting related routes */}
               <Route path="/analysis-reporting" element={<AnalysisReporting />} />
               <Route path="/device-comparison" element={<DeviceComparison />} />
-              
+
 
               {/* Settings related routes */}
               <Route path="/settings" element={<Settings />} />
@@ -166,12 +166,12 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/edit-profile" element={<EditProfile />} />
 
-               {/* Notification related routes */}
-               <Route path="/alarm-summary" element={<AlarmSummary />} />
-               <Route path="/create-alarm" element={<CreateAlarm />} />
-               <Route path="/recipient-list" element={<RecipientList />} />
-               <Route path="/alarm-view/:alarmId" element={<AlarmView />} />
-               <Route path="/edit-alarm/:alarmId" element={<EditAlarm />} />
+              {/* Notification related routes */}
+              <Route path="/alarm-summary" element={<AlarmSummary />} />
+              <Route path="/create-alarm" element={<CreateAlarm />} />
+              <Route path="/recipient-list" element={<RecipientList />} />
+              <Route path="/alarm-view/:alarmId" element={<AlarmView />} />
+              <Route path="/edit-alarm/:alarmId" element={<EditAlarm />} />
             </Routes>
             <Footer />
 
