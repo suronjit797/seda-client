@@ -30,7 +30,8 @@ const SignIn = () => {
             if (error.response) {
                 if (error.response.status === 401 || 500) {
                     setIsLoading(false)
-                    setErrorMessage(error.response.data)
+                    console.log(error.response)
+                    setErrorMessage('The information you entered is incorrect')
                     setTimeout(() => {
                         setErrorMessage()
                     }, 2000)
@@ -73,7 +74,7 @@ const SignIn = () => {
                         </div>
                         <div className="col-md-6 col-lg-7 col-xl-6">
                             <h3 className='mt-sm-3 mb-3'>Welcome Back</h3>
-                            <div className='d-flex justify-content-center'>
+                            <div className='d-flex mb-3 justify-content-center'>
                                 {isLoading && <Spinner animation="border" variant="dark" />}
                             </div>
                             {ErrorMessage && <div className="alert alert-danger" role="alert">{ErrorMessage} </div>}

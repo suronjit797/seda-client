@@ -146,7 +146,7 @@ const Header = ({ handle }) => {
                                     default:
                                         return (
                                             <select className="form-select bg-success border-0 text-white" id='site-locations' name='siteLocations' onChange={handleSiteChange} aria-label="Select an admin">
-                                                <option label='Site Selector'></option>
+                                                <option disabled label='Site Selector'></option>
                                                 {userSites && userSites.length > 0 && userSites.map((item, index) => (
                                                     <option value={item._id} key={index}>{item.name}</option>
                                                 ))}
@@ -162,7 +162,7 @@ const Header = ({ handle }) => {
                         <div className="d-flex">
                             {location.pathname === "/" &&
                                 <select className="form-select bg-success border-0 text-white me-3" name='device' onChange={handleDeviceChange}>
-                                    <option >Device Selector</option>
+                                    <option disabled>Device Selector</option>
                                     {devices && devices.length > 0 && devices.map((item, index) => (
                                         <option value={item._id} key={index}>{item.name}</option>
                                     ))}

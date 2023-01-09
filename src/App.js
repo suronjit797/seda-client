@@ -71,6 +71,7 @@ import RecipientList from './Pages/Notifications/RecipientList';
 import AlarmView from './Pages/Notifications/AlarmView';
 import EditAlarm from './Pages/Notifications/EditAlarm';
 import AddVirtualDevice from './Pages/Devices/AddVirtualDevice';
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 

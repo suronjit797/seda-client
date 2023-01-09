@@ -14,9 +14,6 @@ const AreaChart = ({ name, title, data, from, to }) => {
             id: 'area-datetime',
             type: 'area',
             height: 350,
-            zoom: {
-                autoScaleYaxis: true
-            }
         },
         dataLabels: {
             enabled: false

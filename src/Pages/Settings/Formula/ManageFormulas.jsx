@@ -103,6 +103,7 @@ const ManageFormulas = () => {
     useEffect(() => {
         getFormulas()
     }, []);
+
     return (
         <div className='settings'>
             <div className="container-fluid">

@@ -78,3 +78,29 @@ table.dataTable thead td {
   width: 150px;
   padding: 10px;
 }
+
+option:disabled{
+  color: #c5b9b9;
+}
+.position-relative{
+  position: relative;
+}
+
+.imagePreview{
+  text-align: center;
+  position: relative !important;
+}
+.imagePreview .badge{
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: .3s ease-in;
+}
+
+.imagePreview:hover .badge{
+  opacity: 1;
+}

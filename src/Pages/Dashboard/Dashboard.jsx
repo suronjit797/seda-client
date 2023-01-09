@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import React, { useEffect, useState } from 'react';
 import LineChart from '../../Components/Charts/LineChart';
 import { FullScreen } from "react-full-screen";
@@ -6,45 +7,101 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { BsFilterLeft } from "react-icons/bs"
 import PieChart from '../../Components/Charts/PieChart';
-const Dashboard = ({ handle }) => {
+import moment from 'moment'
+
+const Dashboard = memo(({ handle }) => {
+    let month = new Date().getMonth()
+    const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
+    const endOfMonth = moment().endOf('month').format('YYYY-MM-DD');
+
     const [deviceData, setDeviceData] = useState([]);
     const [showFilter, setShowFilter] = useState(false);
     const [showFilterData, setShowFilterData] = useState(false);
-    const [from, setFrom] = useState();
-    const [to, setTo] = useState();
-    let [lineData, setLineData] = useState([])
+    const [from, setFrom] = useState(startOfMonth);
+    const [to, setTo] = useState(endOfMonth);
     let currentDevice = useSelector((state) => state?.user?.currentDevice);
+    const [lineData, setLineData] = useState([])
+    const [dailyData, setDailyData] = useState({})
+    const [value, setValue] = useState({})   //this is consumption value (value.dailyEmissions)
+    const [deviceParameters, setDeviceParameters] = useState();
 
     const getDeviceData = async (deviceId, parameter) => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/byParameter/` + deviceId + `/` + parameter, { withCredentials: true })
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/byParameter/${deviceId}/${parameter}/`, { withCredentials: true })
         if (response) {
             setDeviceData(response.data)
         }
     }
 
-    const getLineData = async (deviceId, parameter) => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/monthlyKWH/` + deviceId + `/` + parameter, { withCredentials: true })
+    const getDailyConsumption = async (deviceId, parameter) => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/dailyConsumption/${deviceId}/${parameter}`, { withCredentials: true })
         if (response) {
-            setLineData(response.data)
+            setDailyData(response.data)
+        }
+    }
+    const getDailyEmissions = async (deviceId) => {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/formula/formulaResult`, {
+            formulaName: "K3 LV Room - Energy Consumption",
+            isMonthly: false,
+            deviceId,
+        })
+        if (response) {
+            setValue({ dailyEmission: response.data.result })
+        }
+    }
+    const getMonthlyEmissions = async (deviceId) => {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/formula/formulaResult`, {
+            formulaName: "K3 LV Room - Energy Consumption",
+            isMonthly: true,
+            deviceId,
+        })
+        if (response) {
+            setValue({ monthlyEmission: response.data.result })
         }
     }
 
+    const getDeviceParameters = async (deviceId) => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/device-parameters/` + deviceId, { withCredentials: true })
+        if (response) {
+            setDeviceParameters(response.data.sort((a, b) => a._id > b._id ? 1 : -1))
+        }
+    }
+
+    // line data 
+    useEffect(() => {
+        const getLineData = async (deviceId, parameter) => {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/monthlyKWH/${deviceId}/${parameter}/${from}/${to}`, { withCredentials: true })
+            if (response) {
+                setLineData(response.data)
+            }
+        }
+        getLineData(currentDevice._id, currentDevice?.parameter || 'KWH')
+
+        getDailyConsumption(currentDevice._id, currentDevice?.parameter || 'KWH')
+    }, [currentDevice, from, to])
 
     useEffect(() => {
         if (currentDevice) {
             getDeviceData(currentDevice._id, currentDevice?.parameter || 'KWH')
-            getLineData(currentDevice._id, currentDevice?.parameter || 'KWH')
+            getDeviceParameters(currentDevice._id)
+            getDailyEmissions(currentDevice._id)
+            getMonthlyEmissions(currentDevice._id)
         }
         // eslint-disable-next-line
     }, [currentDevice]);
+
     useEffect(() => {
         document.title = "SEDA - Dashboard"
-    }, []);
+    }, [])
 
     const handleFilter = async (e) => {
         e.preventDefault();
         setShowFilterData(true)
     }
+
+    let allNumber = [...deviceData.map(data => data[1])]
+    let min = deviceData.length ? Math.min(...deviceData.map(data => data[1])) : 0
+    let max = deviceData.length ? Math.max(...deviceData.map(data => data[1])) : 0
+    let average = allNumber.length > 0 ? (allNumber.reduce((a, b) => Number(a) + Number(b))) / allNumber.length : 0
 
     return (
         <div className='dashboard'>
@@ -57,14 +114,17 @@ const Dashboard = ({ handle }) => {
                                     <div className="consumption text-center">
                                         <div className="card text-center mb-2 p-2">
                                             <h4 className='text-success'>Today <br />Consumption</h4>
-                                            <h2>215</h2>
+                                            <h2> {(dailyData.value || 0).toFixed(2)} </h2>
                                             <p>kWh</p>
                                         </div>
                                     </div>
                                     <div className="consumption text-center">
                                         <div className="card text-center mb-2 p-2">
                                             <h4 className='text-success'>Today <br />CO<sub>2</sub> emissions </h4>
-                                            <h2>215</h2>
+
+                                            <h3>
+                                                {(!!value?.dailyEmission ? value?.dailyEmission : 0).toFixed(2)}
+                                            </h3>
                                             <p>kgCO<sub>2</sub></p>
                                         </div>
                                     </div>
@@ -104,16 +164,16 @@ const Dashboard = ({ handle }) => {
                                         <div className="col-md-2">
                                             <div className="minmax bg-success bg-opacity-50">
                                                 <div className="row">
-                                                    <div className="col-6">Min</div>
-                                                    <div className="col-6 d-flex justify-content-end">xx</div>
+                                                    <div className="col-6"> Min : </div>
+                                                    <div className="col-6 d-flex justify-content-end">{min.toFixed(2)}</div>
                                                 </div>
                                                 <div className="row">
-                                                    <div className="col-6">Max</div>
-                                                    <div className="col-6 d-flex justify-content-end">xx</div>
+                                                    <div className="col-6">Max : </div>
+                                                    <div className="col-6 d-flex justify-content-end">{max.toFixed(2)}</div>
                                                 </div>
                                                 <div className="row">
-                                                    <div className="col-6">Average</div>
-                                                    <div className="col-6 d-flex justify-content-end">xx</div>
+                                                    <div className="col-6">Average: </div>
+                                                    <div className="col-6 d-flex justify-content-end">{average.toFixed(2)}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -125,14 +185,16 @@ const Dashboard = ({ handle }) => {
                                     <div className="consumption text-center">
                                         <div className="card text-center mb-2 p-2">
                                             <h4 className='text-success'>Consumption <br />this month</h4>
-                                            <h2>215</h2>
+                                            <h2> {(lineData.length > 0 ? lineData[month] : 0).toFixed(2)} </h2>
                                             <p>kWh</p>
                                         </div>
                                     </div>
                                     <div className="consumption text-center">
                                         <div className="card text-center mb-2 p-2">
                                             <h4 className='text-success'>This month <br />CO<sub>2</sub> emissions </h4>
-                                            <h2>215</h2>
+                                            <h3>
+                                                {(!!value?.monthlyEmission ? value?.monthlyEmission : 0).toFixed(2)}
+                                            </h3>
                                             <p>kgCO<sub>2</sub></p>
                                         </div>
                                     </div>
@@ -140,20 +202,12 @@ const Dashboard = ({ handle }) => {
                             </div>
                             <div className="row mt-4">
                                 <div className="col-md-8">
-                                    <LineChart type="bar" name="kWh" data={lineData} color="#1fb35b" title="Energy Consumption Monthly (kWh)" />
+                                    <LineChart type="bar" from={from} to={to} name="kWh" data={deviceData} color="#1fb35b" title="Energy Consumption Monthly (kWh)" />
                                 </div>
-
-
-
-
-
-
-
-
 
                                 <div className="col-md-4">
                                     <h6 className='text-center mb-3'>Device (kWh)</h6>
-                                    <PieChart />
+                                    <PieChart data={deviceParameters && deviceParameters.length > 0 ? deviceParameters : []} />
                                 </div>
                             </div>
                         </div>
@@ -162,6 +216,6 @@ const Dashboard = ({ handle }) => {
             </div>
         </div>
     );
-}
+})
 
 export default Dashboard;

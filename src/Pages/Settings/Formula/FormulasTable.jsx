@@ -62,6 +62,7 @@ const FormulasTable = ({ formulas, getFormulas }) => {
             }
         })
     }
+
     return (
         <div>
             <h4 className='mb-2'>List of All Formulas</h4>

@@ -54,6 +54,7 @@ const DeviceView = () => {
                 [name]: value,
             });
         }
+        console.log(formulaData)
     }
 
     const { formulaList } = assignFormula
@@ -197,7 +198,6 @@ const DeviceView = () => {
             }
         })
     }
-
     return (
         <div className='installer-view'>
             <div className="container-fluid">
@@ -235,7 +235,6 @@ const DeviceView = () => {
                                         <div className="col-3">Installer</div>
                                         <div className="col-9">: {deviceDetails?.site?.installer?.name}</div>
                                     </div>
-                                   
 
                                 </div>
                                 <div className="col-md-6">

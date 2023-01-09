@@ -1,37 +1,39 @@
 import React from 'react';
 import Chart from 'react-apexcharts'
 
-const PieChart = ({title}) => {
-    let series= [44, 55, 13, 43, 22]
-    let options = {
+const PieChart = ({ data }) => {
+  // console.log(data)
+  let labels = data.map(d => d._id)
+  let series = data.map(d => d.count)
+  let options = {
+    chart: {
+      width: 380,
+      type: 'pie',
+    },
+    title: {
+      text: 'title',
+      align: 'center'
+    },
+    labels,
+    responsive: [{
+      breakpoint: 480,
+      options: {
         chart: {
-          width: 380,
-          type: 'pie',
+          width: 200
         },
-        title: {
-            text: title,
-            align: 'center'
-        },
-        labels: ['Device 1', 'Device 2', 'Device 3', 'Device 4', 'Device 5'],
-        responsive: [{
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: 'bottom'
-            }
-          }
-        }]
+        legend: {
+          position: 'bottom'
+        }
       }
+    }]
+  }
 
 
-    return (
-        <div>
-            <Chart options={options} series={series} type="pie" width={400} />
-        </div>
-    );
+  return (
+    <div>
+      <Chart options={options} series={series} type="pie" width={400} />
+    </div>
+  );
 }
 
 export default PieChart;

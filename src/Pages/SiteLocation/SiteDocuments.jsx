@@ -41,8 +41,18 @@ const SiteDocuments = () => {
     };
     const [EBSelectedImage, setEBSelectedImage] = useState(null);
     const [EBImageUrl, setEBImageUrl] = useState(null);
+
+    const removeEBImage = () => {
+        setEBImageUrl(null)
+        setEBSelectedImage(null)
+    }
+
     const handleEBFileUpload = file => {
-        setEBImageUrl(URL.createObjectURL(file));
+        if (file.type === 'application/pdf') {
+            setEBImageUrl('/images/pdfLogo.png')
+        } else {
+            setEBImageUrl(URL.createObjectURL(file));
+        }
         let form = new FormData()
         form.append('media', file)
         setEBSelectedImage(form);
@@ -65,10 +75,19 @@ const SiteDocuments = () => {
     const [SDSelectedImage, setSDSelectedImage] = useState(null);
     const [SDImageUrl, setSDImageUrl] = useState(null);
     const handleSDFileUpload = file => {
-        setSDImageUrl(URL.createObjectURL(file));
+        if (file.type === 'application/pdf') {
+            setSDImageUrl('/images/pdfLogo.png')
+        } else {
+            setSDImageUrl(URL.createObjectURL(file));
+        }
         let form = new FormData()
         form.append('media', file)
         setSDSelectedImage(form);
+    }
+
+    const removeSDImage = () => {
+        setSDImageUrl(null)
+        setSDSelectedImage(null)
     }
 
     const handleEBSubmit = async (e) => {
@@ -149,11 +168,11 @@ const SiteDocuments = () => {
         getSDDocuments()
         // eslint-disable-next-line
     }, []);
-    
+
     const download = (file, name) => {
-        var filename = file.substring(file.lastIndexOf('/')+1);
+        var filename = file.substring(file.lastIndexOf('/') + 1);
         console.log(filename, "filename")
-        var fileExtension = filename.split('.').pop();
+        var fileExtension = filename?.split('.').pop();
         console.log(fileExtension, "fileExtension")
         fetch(file, {
             method: "GET",
@@ -175,7 +194,7 @@ const SiteDocuments = () => {
     };
 
 
-    const deleteDocument=async(documentId)=>{
+    const deleteDocument = async (documentId) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You want to delete this document?",
@@ -185,25 +204,25 @@ const SiteDocuments = () => {
             confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`${process.env.REACT_APP_API_URL}/documents/`+documentId, { withCredentials: true })
-                        .then(res => {
-                            getEBDocuments()
-                            getSDDocuments()
-                            Swal.fire({
-                                title: "Done!",
-                                text: "Document Successfully Deleted",
-                                icon: "success",
-                                timer: 2000,
-                                button: false
-                            })
-                         
-                        });
+                axios.delete(`${process.env.REACT_APP_API_URL}/documents/` + documentId, { withCredentials: true })
+                    .then(res => {
+                        getEBDocuments()
+                        getSDDocuments()
+                        Swal.fire({
+                            title: "Done!",
+                            text: "Document Successfully Deleted",
+                            icon: "success",
+                            timer: 2000,
+                            button: false
+                        })
+
+                    });
             } else if (
-              result.dismiss === Swal.DismissReason.cancel
+                result.dismiss === Swal.DismissReason.cancel
             ) {
-               
+
             }
-          })
+        })
     }
 
     return (
@@ -231,15 +250,16 @@ const SiteDocuments = () => {
                                                 <input type="text" name='name' value={EBDocumentData.name} onChange={onEBInputChange} className="form-control" id="name" placeholder='Enter bill name' required />
                                             </div>
                                             <div className="col-md-3 text-center">
-
                                                 {EBImageUrl && EBSelectedImage ? (
-                                                    <div mt={2} textAlign="center">
-                                                        <img src={EBImageUrl} alt={EBSelectedImage.name} height="100px" />
+                                                    <div mt={2} className='imagePreview'>
+                                                        <span onClick={removeEBImage} class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"> X <span class="visually-hidden">unread messages</span></span>
+
+                                                        <img src={EBImageUrl} alt={EBSelectedImage.name} height="100px" style={{ maxWidth: '100%' }} />
                                                     </div>
                                                 )
                                                     :
                                                     <>
-                                                        <input className='form-control' accept="image/*" type="file" id="select-image" style={{ display: 'none' }} onChange={e => handleEBFileUpload(e.target.files[0])} />
+                                                        <input className='form-control' accept="image/*,.pdf" type="file" id="select-image" style={{ display: 'none' }} onChange={e => handleEBFileUpload(e.target.files[0])} />
                                                         <label htmlFor='select-image'>
                                                             <img src="/images/upload.png" alt="" height="100px" className='rounded-3 border p-2 ms-2' />
                                                         </label>
@@ -260,11 +280,12 @@ const SiteDocuments = () => {
                                                     <p className='text-muted p-0 mb-1' style={{ fontSize: "15px" }}>Uploaded By: {item?.uploadBy?.name}</p>
                                                     <p className='text-muted p-0' style={{ fontSize: "15px" }}>Uploaded On: {moment(item.createdAt).format("DD/MM/YYYY HH:MM A")}</p>
                                                 </div>
-                                                <div className="col-md-3"> <img src={item?.media} alt="" onClick={() => { setCurrentSelectedImage(item?.media); setIsOpen(true) }} id='lightbox-img' height="80px" className='rounded-3 border p-2 ms-2' /></div>
+                                                <div className="col-md-3">
+                                                    <img src={item?.media?.split('.').includes('pdf') ? '/images/pdfLogo.png' : item?.media} alt="" onClick={() => { setCurrentSelectedImage(item?.media?.split('.').includes('pdf') ? '/images/pdfLogo.png' : item?.media); setIsOpen(true) }} id='lightbox-img' height="80px" className='rounded-3 border p-2 ms-2' /></div>
                                                 <div className="col-md-3">
                                                     <div className="icons d-flex algin-items-center justify-content-end pe-3">
                                                         <GrDownload size="2em" className='me-2' onClick={(e) => download(item?.media, item.name)} />
-                                                        <RiDeleteBinLine size="2em" onClick={()=>deleteDocument(item._id)}/>
+                                                        <RiDeleteBinLine size="2em" onClick={() => deleteDocument(item._id)} />
                                                     </div>
                                                 </div>
                                             </div>
@@ -288,13 +309,15 @@ const SiteDocuments = () => {
                                             <div className="col-md-3 text-center">
 
                                                 {SDImageUrl && SDSelectedImage ? (
-                                                    <div mt={2} textAlign="center">
+                                                    <div mt={2} className='imagePreview'>
+                                                        <span onClick={removeSDImage} class="position-absolute top-0 start-100 translate-middle badge border border-light rounded-circle bg-danger p-2"> X <span class="visually-hidden">unread messages</span></span>
+
                                                         <img src={SDImageUrl} alt={SDSelectedImage.name} height="100px" />
                                                     </div>
                                                 )
                                                     :
                                                     <>
-                                                        <input className='form-control' accept="image/*" type="file" id="select-image1" style={{ display: 'none' }} onChange={e => handleSDFileUpload(e.target.files[0])} />
+                                                        <input className='form-control' accept="image/*,.pdf" type="file" id="select-image1" style={{ display: 'none' }} onChange={e => handleSDFileUpload(e.target.files[0])} />
                                                         <label htmlFor="select-image1">
                                                             <img src="/images/upload.png" alt="" height="100px" className='rounded-3 border p-2 ms-2' />
                                                         </label>
@@ -315,11 +338,12 @@ const SiteDocuments = () => {
                                                     <p className='text-muted p-0 mb-1' style={{ fontSize: "15px" }}>Uploaded By: {item?.uploadBy?.name}</p>
                                                     <p className='text-muted p-0' style={{ fontSize: "15px" }}>Uploaded On: {moment(item.createdAt).format("DD/MM/YYYY HH:MM A")}</p>
                                                 </div>
-                                                <div className="col-md-3"> <img src={item?.media} alt="" onClick={() => { setCurrentSelectedImage(item?.media); setIsOpen(true) }} id='lightbox-img' height="80px" className='rounded-3 border p-2 ms-2' /></div>
+                                                <div className="col-md-3">
+                                                    <img src={item?.media?.split('.').includes('pdf') ? '/images/pdfLogo.png' : item?.media} alt="" onClick={() => { setCurrentSelectedImage(item?.media?.split('.').includes('pdf') ? '/images/pdfLogo.png' : item?.media); setIsOpen(true) }} id='lightbox-img' height="80px" className='rounded-3 border p-2 ms-2' /></div>
                                                 <div className="col-md-3">
                                                     <div className="icons d-flex algin-items-center justify-content-end pe-3">
                                                         <GrDownload size="2em" className='me-2' onClick={(e) => download(item?.media, item.name)} />
-                                                        <RiDeleteBinLine size="2em" onClick={()=>deleteDocument(item._id)}/>
+                                                        <RiDeleteBinLine size="2em" onClick={() => deleteDocument(item._id)} />
                                                     </div>
                                                 </div>
                                             </div>

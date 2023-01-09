@@ -1,7 +1,11 @@
 import React from 'react';
 import Chart from 'react-apexcharts'
 
-const LineChart = ({type, title, name, data}) => {
+const LineChart = ({ type, title, name, data, from, to }) => {
+    var date = new Date();
+   
+    from = new Date(from)
+    to = new Date(to)
     const options = {
         series: [{
             name: name,
@@ -30,8 +34,16 @@ const LineChart = ({type, title, name, data}) => {
             },
         },
         xaxis: {
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        }
+            type: 'datetime',
+            min: new Date(from).getTime() || new Date(date.getFullYear(), date.getMonth(), 1).getTime(),
+            max: new Date(to).getTime() || new Date(date.getFullYear(), date.getMonth() + 1, 0).getTime(),
+            tickAmount: 6,
+        },
+        tooltip: {
+            x: {
+                format: 'dd MMM yyyy'
+            }
+        },
     };
 
     return (
