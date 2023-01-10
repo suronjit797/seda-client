@@ -3,15 +3,15 @@ import Chart from 'react-apexcharts'
 
 const PieChart = ({ data }) => {
   // console.log(data)
-  let labels = data.map(d => d._id)
-  let series = data.map(d => d.count)
+  let labels = data.map(d => d?.name)
+  let series = data.map(d => d?.value)
   let options = {
     chart: {
       width: 380,
       type: 'pie',
     },
     title: {
-      text: 'title',
+      text: 'Device (kWh)',
       align: 'center'
     },
     labels,

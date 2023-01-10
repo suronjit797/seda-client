@@ -23,7 +23,10 @@ const Dashboard = memo(({ handle }) => {
     const [lineData, setLineData] = useState([])
     const [dailyData, setDailyData] = useState({})
     const [value, setValue] = useState({})   //this is consumption value (value.dailyEmissions)
-    const [deviceParameters, setDeviceParameters] = useState();
+    const [pieChartData, setPieChartData] = useState([{
+        value: 1,
+        name: "No data to show"
+    }]);
 
     const getDeviceData = async (deviceId, parameter) => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/byParameter/${deviceId}/${parameter}/`, { withCredentials: true })
@@ -59,13 +62,6 @@ const Dashboard = memo(({ handle }) => {
         }
     }
 
-    const getDeviceParameters = async (deviceId) => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/device/device-parameters/` + deviceId, { withCredentials: true })
-        if (response) {
-            setDeviceParameters(response.data.sort((a, b) => a._id > b._id ? 1 : -1))
-        }
-    }
-
     // line data 
     useEffect(() => {
         const getLineData = async (deviceId, parameter) => {
@@ -74,15 +70,26 @@ const Dashboard = memo(({ handle }) => {
                 setLineData(response.data)
             }
         }
-        getLineData(currentDevice._id, currentDevice?.parameter || 'KWH')
+        const getPieData = async () => {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/device/${from}/${to}`, { withCredentials: true })
+            if (response.data.length > 0) {
+                setPieChartData(response.data)
+            } else {
+                setPieChartData([{
+                    value: 1,
+                    name: "No data to show"
+                }])
+            }
+        }
 
+        getLineData(currentDevice._id, currentDevice?.parameter || 'KWH')
+        getPieData()
         getDailyConsumption(currentDevice._id, currentDevice?.parameter || 'KWH')
-    }, [currentDevice, from, to])
+    }, [currentDevice, showFilterData])
 
     useEffect(() => {
         if (currentDevice) {
             getDeviceData(currentDevice._id, currentDevice?.parameter || 'KWH')
-            getDeviceParameters(currentDevice._id)
             getDailyEmissions(currentDevice._id)
             getMonthlyEmissions(currentDevice._id)
         }
@@ -145,7 +152,7 @@ const Dashboard = memo(({ handle }) => {
                                                     <div className="col-md-4">
                                                         <div className="actions d-flex">
                                                             <button className='btn btn-warning me-2' type='submit'>View</button>
-                                                            <button className='btn btn-secondary' type='button' onClick={() => { setFrom(); setTo(); }}>Clear</button>
+                                                            <button className='btn btn-secondary' type='button' onClick={() => { setFrom(startOfMonth); setTo(endOfMonth); setShowFilterData(false) }}>Clear</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -202,12 +209,14 @@ const Dashboard = memo(({ handle }) => {
                             </div>
                             <div className="row mt-4">
                                 <div className="col-md-8">
-                                    <LineChart type="bar" from={from} to={to} name="kWh" data={deviceData} color="#1fb35b" title="Energy Consumption Monthly (kWh)" />
+                                    {
+                                        deviceData.length > 0 && showFilterData ? <LineChart type="bar" from={from} to={to} name="kWh" data={deviceData} color="#1fb35b" title="Energy Consumption Monthly (kWh)" /> : <LineChart type="bar" name="kWh" data={deviceData} color="#1fb35b" title="Energy Consumption Monthly (kWh)" />
+                                    }
                                 </div>
 
                                 <div className="col-md-4">
-                                    <h6 className='text-center mb-3'>Device (kWh)</h6>
-                                    <PieChart data={deviceParameters && deviceParameters.length > 0 ? deviceParameters : []} />
+                                    {/* <h6 className='text-center mb-3'>Device (kWh)</h6> */}
+                                    <PieChart data={pieChartData} />
                                 </div>
                             </div>
                         </div>
