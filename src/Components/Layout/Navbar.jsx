@@ -164,9 +164,9 @@ const Navbar = ({ handle }) => {
                             }
                         })
                             ()}
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <button className='nav-link border-0 bg-transparent' onClick={() => logOut()}>Logout</button>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             </div>

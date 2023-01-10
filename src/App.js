@@ -173,6 +173,7 @@ function App() {
               <Route path="/recipient-list" element={<RecipientList />} />
               <Route path="/alarm-view/:alarmId" element={<AlarmView />} />
               <Route path="/edit-alarm/:alarmId" element={<EditAlarm />} />
+              <Route path='*' element={<p> route not found go to home page </p>} />
             </Routes>
             <Footer />
 
@@ -183,6 +184,7 @@ function App() {
             <Route path='/forgot-password' element={<ForgotPassword />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
             <Route path='/installer-signup' element={<InstallerSignUp />} />
+            <Route path='*' element={<p> route not found please login or go to home page </p>} />
           </Routes>
         }
       </div>

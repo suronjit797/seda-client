@@ -32,11 +32,11 @@ const Profile = () => {
                                         <div className="col-4">Phone Number</div>
                                         <div className="col-8">: +6{userDetails?.phone}</div>
                                     </div>
-                                    <div className="row mb-2">
+{/*                                     <div className="row mb-2">
                                         <div className="col-4">Fax Number</div>
                                         <div className="col-8">: +6{userDetails?.fax}</div>
-                                    </div>
-                                    <div className="row mb-2">
+                                    </div> */}
+                                    <div className="row mb-2 mt-3">
                                         <div className="col-4">Profile Photo</div>
                                         <div className="col-8">
                                             {userDetails?.avatar &&

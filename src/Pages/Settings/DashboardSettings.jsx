@@ -101,7 +101,7 @@ const DashboardSettings = () => {
                             </div>
                             <div className="row mt-3">
                                 <div className="col-md-12 d-flex justify-content-end">
-                                    <button className='btn btn-success' onClick={handleChangeTemplate}>Change Dashboard</button>
+                                    <button className='btn btn-success' onClick={handleChangeTemplate}>Set Dashboard</button>
                                 </div>
                             </div>
                         </div>

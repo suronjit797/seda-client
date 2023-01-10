@@ -82,9 +82,13 @@ const Dashboard = memo(({ handle }) => {
             }
         }
 
-        getLineData(currentDevice._id, currentDevice?.parameter || 'KWH')
-        getPieData()
-        getDailyConsumption(currentDevice._id, currentDevice?.parameter || 'KWH')
+        if (!!currentDevice._id) {
+            getLineData(currentDevice._id, currentDevice?.parameter || 'KWH')
+            getDailyConsumption(currentDevice._id, currentDevice?.parameter || 'KWH')
+            getPieData()
+        }
+
+        // eslint-disable-next-line
     }, [currentDevice, showFilterData])
 
     useEffect(() => {

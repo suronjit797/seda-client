@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import axios from 'axios';
-import { setCurrentSite, setSiteDetails, setCurrentDevice, setUserDetails } from '../../redux/userSlice';
-import { useLocation } from 'react-router-dom';
+import { setCurrentSite, setSiteDetails, setCurrentDevice, setUserDetails, setIsLogged } from '../../redux/userSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Header = ({ handle }) => {
+    const navigate = useNavigate()
     const [devices, setDevices] = useState([]);
     const userDetails = useSelector((state) => state?.user?.userDetails);
     let userSites = useSelector((state) => state?.user?.userSites);
@@ -86,6 +88,37 @@ const Header = ({ handle }) => {
             dispatch(setUserDetails(response.data))
         }
     }
+
+    const logOut = async () => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to logout.",
+            //icon: "warning",
+            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonText: 'Confirm'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.get(`${process.env.REACT_APP_API_URL}/users/logout`, { withCredentials: true })
+                    .then(res => {
+                        dispatch(setIsLogged(false))
+                        dispatch(setUserDetails({}))
+                        dispatch(setCurrentSite({}))
+                        dispatch(setSiteDetails({}))
+                        dispatch(setCurrentDevice({}))
+                        window.localStorage.clear()
+                        navigate("/")
+                    });
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+
+            }
+        })
+    }
+
+
+
     let background = '/images/bg-3.jpg'
     return (
         <div className='header' style={{ backgroundImage: `url(${background})`, backgroundSize: 'cover' }}>
@@ -173,7 +206,12 @@ const Header = ({ handle }) => {
                     </div>
                     <div className="col-md-2 d-flex justify-content-end align-items-center">
                         {location.pathname === "/" && <button className='btn btn-warning me-5' onClick={handle.enter}>Display</button>}
-                        <img src={userDetails?.avatar} alt="" className='img-fluid rounded-circle' style={{ height: "80px", width: "80px" }} />
+                        <div>
+                            <img src={userDetails?.avatar} alt="" className='img-fluid rounded-circle' style={{ height: "80px", width: "80px" }} />
+                            <div className='text-center mt-2'>
+                            <button className='btn btn-danger' onClick={() => logOut()}>Logout</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
