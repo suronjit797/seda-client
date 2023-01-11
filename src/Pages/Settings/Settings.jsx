@@ -58,16 +58,16 @@ const Settings = () => {
                     })
                     setUserData({});
                 }).catch(function (error) {
-                    if(error){
-                     Swal.fire({
-                         title: "Cancelled!",
-                         text: "Current password not matched",
-                         icon: "error",
-                         timer: 2000,
-                         button: false
-                     })
+                    if (error) {
+                        Swal.fire({
+                            title: "Cancelled!",
+                            text: "Current password not matched",
+                            icon: "error",
+                            timer: 2000,
+                            button: false
+                        })
                     }
-                 });
+                });
             } else if (
                 result.dismiss === Swal.DismissReason.cancel
             ) {
@@ -106,7 +106,7 @@ const Settings = () => {
                                         <div className="mb-3">
                                             <label htmlFor="repeatPassword" className="form-label">Retype New Password</label>
                                             <div className="input-group">
-                                                <input type={repeatPasswordShown ? "text" : "password"} name='repeatPassword' value={repeatPassword} minLength="6"  onChange={onInputChange} className="form-control" id="repeatPassword" placeholder='Retype the new password' required />
+                                                <input type={repeatPasswordShown ? "text" : "password"} name='repeatPassword' value={repeatPassword} minLength="6" onChange={onInputChange} className="form-control" id="repeatPassword" placeholder='Retype the new password' required />
                                                 <span className="input-group-text" id="basic-addon1">{repeatPasswordShown ? <BsEyeSlash onClick={() => toggleRepeatPasswordShown()} /> : <BsEye onClick={() => toggleRepeatPasswordShown()} />}</span>
                                             </div>
                                             {ErrorMessageNotMatch && <div className="alert alert-danger" role="alert">{ErrorMessageNotMatch} </div>}

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import SettingSidebarNav from '../../Components/Settings/SettingSidebarNav';
 import { setUserDetails } from '../../redux/userSlice';
+import SelectedDashboardSettings from './SelectedDashboardSettings/SelectedDashboardSettings';
 
 const DashboardSettings = () => {
     const dispatch = useDispatch()
@@ -15,7 +16,7 @@ const DashboardSettings = () => {
     const [IsLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        document.title= "Seda - Dashboard Settings"
+        document.title = "Seda - Dashboard Settings"
         if (userDetails) {
             setTemplate(userDetails?.dashboard || 1)
         }
@@ -42,7 +43,7 @@ const DashboardSettings = () => {
                 setSuccessMessage()
                 navigate("/")
             }, 3000)
-            
+
         }
     }
 
@@ -71,7 +72,7 @@ const DashboardSettings = () => {
                                         </div>
                                     </label>
                                 </div>
-                                <div className={`${userDetails?.role==="superAdmin" ? 'col-md-3' : 'd-none'}`}>
+                                <div className={`${userDetails?.role === "superAdmin" ? 'col-md-3' : 'd-none'}`}>
                                     <input className="form-check-input d-none" type="radio" value={2} name="dashboard" id="option2" onChange={() => setTemplate(2)} />
                                     <label className="form-check-label" htmlFor="option2">
                                         <div className={`${template === 2 ? 'text-center border border-3 border-success' : 'text-center'}`}>
@@ -98,6 +99,10 @@ const DashboardSettings = () => {
                                         </div>
                                     </label>
                                 </div>
+                            </div>
+
+                            <div className="my-4">
+                                <SelectedDashboardSettings template={template} />
                             </div>
                             <div className="row mt-3">
                                 <div className="col-md-12 d-flex justify-content-end">

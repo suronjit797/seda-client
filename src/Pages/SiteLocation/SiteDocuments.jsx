@@ -102,7 +102,9 @@ const SiteDocuments = () => {
             }, 2000)
         } else {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/documents`, EBDocumentData, { withCredentials: true })
+            console.log({EBSelectedImage})
             if (response) {
+                console.log(EBSelectedImage)
                 const data = response.data
                 const addImageResponse = await axios.put(`${process.env.REACT_APP_API_URL}/documents/${data._id}`, EBSelectedImage, { withCredentials: true })
                 if (addImageResponse) {

@@ -104,3 +104,8 @@ option:disabled{
 .imagePreview:hover .badge{
   opacity: 1;
 }
+
+
+img{
+  max-width: 100% !important;
+}

@@ -85,6 +85,7 @@ const Header = ({ handle }) => {
     const handleDashboardChange = async (e) => {
         const response = await axios.put(`${process.env.REACT_APP_API_URL}/users/me`, { dashboard: e.target.value }, { withCredentials: true });
         if (response) {
+            console.log(response.data)
             dispatch(setUserDetails(response.data))
         }
     }
@@ -209,7 +210,7 @@ const Header = ({ handle }) => {
                         <div>
                             <img src={userDetails?.avatar} alt="" className='img-fluid rounded-circle' style={{ height: "80px", width: "80px" }} />
                             <div className='text-center mt-2'>
-                            <button className='btn btn-danger' onClick={() => logOut()}>Logout</button>
+                                <button className='btn btn-danger' onClick={() => logOut()}>Logout</button>
                             </div>
                         </div>
                     </div>
