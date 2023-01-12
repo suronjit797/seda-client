@@ -53,7 +53,7 @@ const Dashboard = memo(({ handle }) => {
             formulaName: "K3 LV Room - Energy Consumption",
             isMonthly: true,
             deviceId,
-        })
+        }, { withCredentials: true })
         if (response) {
             setValue({ monthlyEmission: response.data.result })
         }
@@ -84,28 +84,28 @@ const Dashboard = memo(({ handle }) => {
         }
 
         const counter1 = {
-            formulaName: template.counter[0].formula || 'Energy Consumption',
-            deviceId: currentDevice._id,
-            from: template.counter[0].from || startOfDay,
-            to: template.counter[0].to || endOfDay
+            formulaName: template?.counter[0]?.formula || 'Energy Consumption',
+            deviceId: currentDevice?._id,
+            from: template?.counter[0]?.from || startOfDay,
+            to: template?.counter[0]?.to || endOfDay
         }
         const counter2 = {
-            formulaName: template.counter[1].formula || 'CO2 Emission',
+            formulaName: template?.counter[1].formula || 'CO2 Emission',
             deviceId: currentDevice._id,
-            from: template.counter[1].from || startOfDay,
-            to: template.counter[1].to || endOfDay
+            from: template?.counter[1].from || startOfDay,
+            to: template?.counter[1].to || endOfDay
         }
         const counter3 = {
-            formulaName: template.counter[2].formula || `Energy Consumption`,
-            deviceId: currentDevice._id,
-            from: template.counter[2].from || startOfMonth,
-            to: template.counter[2].to || endOfMonth
+            formulaName: template?.counter[2]?.formula || `Energy Consumption`,
+            deviceId: currentDevice?._id,
+            from: template?.counter[2]?.from || startOfMonth,
+            to: template?.counter[2]?.to || endOfMonth
         }
         const counter4 = {
-            formulaName: template.counter[3].formula || `CO2 Emission`,
-            deviceId: currentDevice._id,
-            from: template.counter[3].from || startOfMonth,
-            to: template.counter[3].to || endOfMonth
+            formulaName: template?.counter[3]?.formula || `CO2 Emission`,
+            deviceId: currentDevice?._id,
+            from: template?.counter[3]?.from || startOfMonth,
+            to: template?.counter[3]?.to || endOfMonth
         }
 
         if (!!currentDevice._id) {
