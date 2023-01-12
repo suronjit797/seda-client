@@ -2,7 +2,7 @@ import React from 'react';
 import Chart from 'react-apexcharts'
 
 const AreaChart = ({ name, title, data, from, to }) => {
-    console.log(data[0])
+    // console.log(data[0])
     var date = new Date();
     from = new Date(from)
     to = new Date(to)

@@ -4,7 +4,6 @@ import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import './SelectedDashboardSettings.css'
 import { setUserDetails } from '../../../redux/userSlice';
-import { current } from '@reduxjs/toolkit';
 import { Spinner } from 'react-bootstrap';
 
 const SelectedDashboardSettings1 = memo((props) => {

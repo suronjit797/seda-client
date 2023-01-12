@@ -13,11 +13,12 @@ const Dashboard = memo(({ handle }) => {
     let month = new Date().getMonth()
     const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
     const endOfMonth = moment().endOf('month').format('YYYY-MM-DD');
-    
+
+    // redux
     let currentDevice = useSelector((state) => state?.user?.currentDevice);
-    let userDetails = useSelector((state) => state?.user?.userDetails);
-    
-    const [deviceData, setDeviceData] = useState([]);
+    let template = useSelector((state) => state?.user?.userDetails?.dashboardSetting?.dashboard1);
+
+    // state
     const [showFilter, setShowFilter] = useState(false);
     const [showFilterData, setShowFilterData] = useState(false);
     const [from, setFrom] = useState(startOfMonth);
@@ -25,6 +26,11 @@ const Dashboard = memo(({ handle }) => {
     const [lineData, setLineData] = useState([])
     const [dailyData, setDailyData] = useState({})
     const [value, setValue] = useState({})   //this is consumption value (value.dailyEmissions)
+
+    const [counter, setCounter] = useState({})
+    // chart 
+    const [deviceData, setDeviceData] = useState([]);    //graph 1
+    const [graph2, setGraph2] = useState([])
     const [pieChartData, setPieChartData] = useState([{
         value: 1,
         name: "No data to show"
@@ -77,7 +83,20 @@ const Dashboard = memo(({ handle }) => {
             if (response.data.length > 0) {
                 console.log(response.data)
                 setPieChartData(response.data)
-            } 
+            }
+        }
+        const getCounter1 = async () => {
+            let body = {
+                formulaName: '',
+                deviceId: '',
+                from: '',
+                to: ''
+            }
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/formula/formulaResult`, { withCredentials: true })
+            if (response.data.length > 0) {
+                console.log(response.data)
+                setPieChartData(response.data)
+            }
         }
 
         if (!!currentDevice._id) {
@@ -112,6 +131,8 @@ const Dashboard = memo(({ handle }) => {
     let max = deviceData.length ? Math.max(...deviceData.map(data => data[1])) : 0
     let average = allNumber.length > 0 ? (allNumber.reduce((a, b) => Number(a) + Number(b))) / allNumber.length : 0
 
+
+
     return (
         <div className='dashboard'>
             <div className="container-fluid">
@@ -122,7 +143,9 @@ const Dashboard = memo(({ handle }) => {
                                 <div className="col-md-2">
                                     <div className="consumption text-center">
                                         <div className="card text-center mb-2 p-2">
-                                            <h4 className='text-success'>Today <br />Consumption</h4>
+                                            <h4 className='text-success'>
+                                                {template?.counter[0].name || 'Today <br />Consumption'}
+                                            </h4>
                                             <h2> {(dailyData.value || 0).toFixed(2)} </h2>
                                             <p>kWh</p>
                                         </div>

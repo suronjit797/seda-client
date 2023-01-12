@@ -13,8 +13,10 @@ import SelectedDashboardSettings4 from './SelectedDashboardSettings/SelectedDash
 const DashboardSettings = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const [template, setTemplate] = useState(1);
+
     const userDetails = useSelector(state => state.user?.userDetails)
+    // state
+    const [template, setTemplate] = useState(1);
     const [SuccessMessage, setSuccessMessage] = useState();
     const [IsLoading, setIsLoading] = useState(false);
 
