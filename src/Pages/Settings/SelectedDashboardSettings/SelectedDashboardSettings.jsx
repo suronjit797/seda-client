@@ -1,20 +1,28 @@
 import axios from 'axios';
 import React, { memo, useState, useEffect } from 'react';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './SelectedDashboardSettings.css'
+import { setUserDetails } from '../../../redux/userSlice';
 
 const SelectedDashboardSettings = memo((props) => {
     // const startOfMonth = moment('11,11,2022').startOf('month').format('yyyy-MM-DDThh:mm:ss');
     // const endOfMonth = moment('11,11,2022').endOf('month').format('yyyy-MM-DDThh:mm:ss');
 
-    let userDetails = useSelector((state) => state?.user?.userDetails);
+    const dispatch = useDispatch()
 
+    // redux
+    let userDetails = useSelector((state) => state?.user?.userDetails);
+    let currentDevice = useSelector((state) => state?.user?.currentDevice);
+
+    // important variables
     const startOfDay = moment().startOf('day').format('yyyy-MM-DDThh:mm:ss');
     const endOfDay = moment().endOf('day').format('yyyy-MM-DDThh:mm:ss');
 
+    // states
     let [templateData, setTemplateData] = useState({ name: `Dashboard ${props.template}` })   //have to take data in api
     const [formulas, setFormulas] = useState([])
+    const [parameters, setParameters] = useState([])
     const [pieKey, setPieKey] = useState([{
         value: 1,
         name: "No data to show"
@@ -64,14 +72,14 @@ const SelectedDashboardSettings = memo((props) => {
     let [graphs, setGraphs] = useState({
         graph1: {
             name: '',
-            xAxis: '',
+            yAxis: '',
             isToday: false,
             from: '',
             to: ''
         },
         graph2: {
             name: '',
-            xAxis: '',
+            yAxis: '',
             isToday: false,
             from: '',
             to: ''
@@ -107,6 +115,15 @@ const SelectedDashboardSettings = memo((props) => {
             })
             .catch(error => console.log(error))
 
+        // get parameters
+        axios.get(`${process.env.REACT_APP_API_URL}/device/device-parameters/${currentDevice._id}`, { withCredentials: true })
+            .then(response => {
+                if (response.data.length > 0) {
+                    setParameters(response.data)
+                }
+            })
+            .catch(error => console.log(error))
+
         // eslint-disable-next-line
     }, [props, settingData])
 
@@ -116,18 +133,92 @@ const SelectedDashboardSettings = memo((props) => {
         const data = { ...settingData }
         data.counter = counter
         data.graphs = graphs
-        data.userId = userDetails._id
-        data.dashboardType = userDetails.dashboard
-        data.dashboardId = userDetails?.dashboardSetting?._id
 
-        axios.put(`${process.env.REACT_APP_API_URL}/dashboardSetting`, data, { withCredentials: true })
-            .then(res => console.log(res.data))
+        const d1 = {
+            dashboard1: data,
+            userId: userDetails._id,
+            dashboardId: userDetails?.dashboardSetting?._id,
+            dashboardType: userDetails.dashboard
+        }
+
+        console.log(d1)
+
+        axios.put(`${process.env.REACT_APP_API_URL}/dashboardSetting`, d1, { withCredentials: true })
+            .then(res => {
+                // console.log(res.data.userResult)
+                if (res.data.userResult) {
+                    dispatch(setUserDetails(res.data.userResult))
+                }
+            })
             .catch(err => console.log(err))
+
+        setCounter([
+            {
+                name: '',
+                formula: '',
+                isToday: false,
+                from: '',
+                to: ''
+            },
+            {
+                name: '',
+                formula: '',
+                isToday: false,
+                from: '',
+                to: ''
+            },
+            {
+                name: '',
+                formula: '',
+                isToday: false,
+                from: '',
+                to: ''
+            },
+            {
+                name: '',
+                formula: '',
+                isToday: false,
+                from: '',
+                to: ''
+            }
+        ])
+
+        setGraphs({
+            graph1: {
+                name: '',
+                yAxis: '',
+                isToday: false,
+                from: '',
+                to: ''
+            },
+            graph2: {
+                name: '',
+                yAxis: '',
+                isToday: false,
+                from: '',
+                to: ''
+            },
+            pieChart: {
+                name: '',
+                device: [],
+                isToday: false,
+                from: '',
+                to: ''
+            },
+
+        })
+
+        setSettingData({
+            name: '',
+            counter: [],
+            graphs: {},
+            userId: userDetails._id
+        })
     }
 
     return (
         <div className='selectedDashboardSettings border-success'>
-            <h3 className='fw-bold mb-4'> {templateData?.name || `Dashboard ${props.template}`} </h3>
+            <h3 className='fw-bold mb-4'> {userDetails?.dashboardSetting?.dashboard1?.name || 'Dashboard 1'} </h3>
             <h4> Template Settings </h4>
             <hr className='mt-0' />
 
@@ -141,12 +232,12 @@ const SelectedDashboardSettings = memo((props) => {
                             <label htmlFor="templateName" className="form-label">Name</label>
                             <input
                                 type="text"
+                                value={settingData.name}
                                 onChange={(e) => setSettingData({ ...settingData, name: e.target.value })}
                                 className="form-control"
                                 name='name'
                                 id="templateName"
                                 placeholder="Enter template name"
-                                required
                             />
                         </div>
                     </div>
@@ -174,15 +265,16 @@ const SelectedDashboardSettings = memo((props) => {
                         <div className="col-lg-3 col-md-6">
                             {/* name */}
                             <div className="mb-3">
+                                {/* <label htmlFor="counterName1" className="form-label">{userDetails?.dashboardSetting?.dashboard1?.counter[0].name || 'Counter 1'} </label> */}
                                 <label htmlFor="counterName1" className="form-label">Option 1</label>
                                 <input
                                     type="text"
                                     name='option1'
+                                    value={counter[0].name}
                                     onChange={(e) => setCounter([...counter], counter[0].name = e.target.value)}
                                     className="form-control"
                                     id="counterName1"
                                     placeholder="Enter counter name"
-                                    required
                                 />
                             </div>
                             {/* value */}
@@ -193,6 +285,7 @@ const SelectedDashboardSettings = memo((props) => {
                                     name='displayedValue1'
                                     id='formula1'
                                     aria-label="Default select example"
+                                    value={counter[0].formula}
                                     onChange={(e) => setCounter([...counter], counter[0].formula = e.target.value)}
                                 >
                                     <option selected disabled> Select Formula </option>
@@ -229,11 +322,21 @@ const SelectedDashboardSettings = memo((props) => {
                             <div className="row align-items-end">
                                 <div className="col-xxl-6 mt-2">
                                     <label htmlFor="from1" className="form-label">From</label>
-                                    <input type="datetime-local" value={counter[0].from} onChange={(e) => setCounter([...counter], counter[0].from = e.target.value)} className='form-control' id="from1" name="from1" required disabled={counter[0].isToday} />
+                                    <input
+                                        type="datetime-local"
+                                        value={counter[0].from}
+                                        onChange={(e) => setCounter([...counter], counter[0].from = e.target.value)}
+                                        className='form-control' id="from1" name="from1"
+                                    />
                                 </div>
                                 <div className="col-xxl-6 mt-2">
                                     <label htmlFor="to1" className="form-label">To</label>
-                                    <input type="datetime-local" value={counter[0].to} onChange={(e) => setCounter([...counter], counter[0].to = e.target.value)} className='form-control' id="to1" name="to1" required disabled={counter[0].isToday} />
+                                    <input
+                                        type="datetime-local"
+                                        value={counter[0].to}
+                                        onChange={(e) => setCounter([...counter], counter[0].to = e.target.value)}
+                                        className='form-control' id="to1" name="to1"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -245,11 +348,11 @@ const SelectedDashboardSettings = memo((props) => {
                                 <input
                                     type="text"
                                     name='option1'
+                                    value={counter[1].name}
                                     onChange={(e) => setCounter([...counter], counter[1].name = e.target.value)}
                                     className="form-control"
                                     id="counterName2"
                                     placeholder="Enter counter name"
-                                    required
                                 />
                             </div>
                             {/* value */}
@@ -259,6 +362,7 @@ const SelectedDashboardSettings = memo((props) => {
                                     className="form-select"
                                     name='displayedValue2'
                                     id='formula2'
+                                    value={counter[1].formula}
                                     onChange={(e) => setCounter([...counter], counter[1].formula = e.target.value)}
                                 >
                                     <option selected disabled> Select Formula </option>
@@ -295,11 +399,21 @@ const SelectedDashboardSettings = memo((props) => {
                             <div className="row align-items-end">
                                 <div className="col-xxl-6 mt-2">
                                     <label htmlFor="from2" className="form-label">From</label>
-                                    <input type="datetime-local" value={counter[1].from} onChange={(e) => setCounter([...counter], counter[1].from = e.target.value)} className='form-control' id="from2" name="from2" required disabled={counter[1].isToday} />
+                                    <input
+                                        type="datetime-local"
+                                        value={counter[1].from}
+                                        onChange={(e) => setCounter([...counter], counter[1].from = e.target.value)}
+                                        className='form-control' id="from2" name="from2"
+                                    />
                                 </div>
                                 <div className="col-xxl-6 mt-2">
                                     <label htmlFor="to2" className="form-label">To</label>
-                                    <input type="datetime-local" value={counter[1].to} onChange={(e) => setCounter([...counter], counter[1].to = e.target.value)} className='form-control' id="to2" name="to2" required disabled={counter[1].isToday} />
+                                    <input
+                                        type="datetime-local"
+                                        value={counter[1].to}
+                                        onChange={(e) => setCounter([...counter], counter[1].to = e.target.value)}
+                                        className='form-control' id="to2" name="to2"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -311,11 +425,11 @@ const SelectedDashboardSettings = memo((props) => {
                                 <input
                                     type="text"
                                     name='option3'
+                                    value={counter[2].name}
                                     onChange={(e) => setCounter([...counter], counter[2].name = e.target.value)}
                                     className="form-control"
                                     id="counterName3"
                                     placeholder="Enter counter name"
-                                    required
                                 />
                             </div>
                             {/* value */}
@@ -325,6 +439,7 @@ const SelectedDashboardSettings = memo((props) => {
                                     className="form-select"
                                     name='displayedValue3'
                                     id='formula3'
+                                    value={counter[2].formula}
                                     onChange={(e) => setCounter([...counter], counter[2].formula = e.target.value)}
                                 >
                                     <option selected disabled> Select Formula </option>
@@ -361,11 +476,21 @@ const SelectedDashboardSettings = memo((props) => {
                             <div className="row align-items-end">
                                 <div className="col-xxl-6 mt-2">
                                     <label htmlFor="from3" className="form-label">From</label>
-                                    <input type="datetime-local" value={counter[2].from} onChange={(e) => setCounter([...counter], counter[2].from = e.target.value)} className='form-control' id="from3" name="from3" required disabled={counter[2].isToday} />
+                                    <input
+                                        type="datetime-local"
+                                        value={counter[2].from}
+                                        onChange={(e) => setCounter([...counter], counter[2].from = e.target.value)}
+                                        className='form-control' id="from3" name="from3"
+                                    />
                                 </div>
                                 <div className="col-xxl-6 mt-2">
                                     <label htmlFor="to3" className="form-label">To</label>
-                                    <input type="datetime-local" value={counter[2].to} onChange={(e) => setCounter([...counter], counter[2].to = e.target.value)} className='form-control' id="to3" name="to3" required disabled={counter[2].isToday} />
+                                    <input
+                                        type="datetime-local"
+                                        value={counter[2].to}
+                                        onChange={(e) => setCounter([...counter], counter[2].to = e.target.value)}
+                                        className='form-control' id="to3" name="to3"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -377,11 +502,11 @@ const SelectedDashboardSettings = memo((props) => {
                                 <input
                                     type="text"
                                     name='option1'
+                                    value={counter[3].name}
                                     onChange={(e) => setCounter([...counter], counter[3].name = e.target.value)}
                                     className="form-control"
                                     id="counterName4"
                                     placeholder="Enter counter name"
-                                    required
                                 />
                             </div>
                             {/* value */}
@@ -391,6 +516,7 @@ const SelectedDashboardSettings = memo((props) => {
                                     className="form-select"
                                     name='displayedValue3'
                                     id='formula4'
+                                    value={counter[3].formula}
                                     onChange={(e) => setCounter([...counter], counter[3].formula = e.target.value)}
                                 >
                                     <option selected disabled> Select Formula </option>
@@ -425,13 +551,25 @@ const SelectedDashboardSettings = memo((props) => {
 
                             </div>
                             <div className="row align-items-end">
-                                <div className="col-xxl-6 mt-2">
-                                    <label htmlFor="from4" className="form-label">From</label>
-                                    <input type="datetime-local" value={counter[3].from} onChange={(e) => setCounter([...counter], counter[3].from = e.target.value)} className='form-control' id="from4" name="from4" required disabled={counter[3].isToday} />
-                                </div>
-                                <div className="col-xxl-6 mt-2">
-                                    <label htmlFor="to4" className="form-label">To</label>
-                                    <input type="datetime-local" value={counter[3].to} onChange={(e) => setCounter([...counter], counter[3].to = e.target.value)} className='form-control' id="to4" name="to4" required disabled={counter[3].isToday} />
+                                <div className="row align-items-end">
+                                    <div className="col-xxl-6 mt-2">
+                                        <label htmlFor="from4" className="form-label">From</label>
+                                        <input
+                                            type="datetime-local"
+                                            value={counter[3].from}
+                                            onChange={(e) => setCounter([...counter], counter[3].from = e.target.value)}
+                                            className='form-control' id="from4" name="from4"
+                                        />
+                                    </div>
+                                    <div className="col-xxl-6 mt-2">
+                                        <label htmlFor="to4" className="form-label">To</label>
+                                        <input
+                                            type="datetime-local"
+                                            value={counter[3].to}
+                                            onChange={(e) => setCounter([...counter], counter[3].to = e.target.value)}
+                                            className='form-control' id="to4" name="to4"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -443,10 +581,13 @@ const SelectedDashboardSettings = memo((props) => {
                 {/* for graph */}
                 {/* data 3 */}
 
+                {/* <h4 className='mt-4'> Graph Settings </h4>
+                <hr className='mt-0' /> */}
+
                 <div className="row">
                     {/* graph 1 */}
                     <div className="col-xxl-4 col-md-6">
-                        <h4 className='mt-4'> Graph 1 Setting </h4>
+                        <h4 className='mt-4'> {userDetails?.dashboardSetting?.dashboard1?.graphs?.graph1?.name || 'Graph 1 Setting'} </h4>
                         <hr className='mt-0' />
 
                         <div className="row">
@@ -456,30 +597,32 @@ const SelectedDashboardSettings = memo((props) => {
                                     <input
                                         type="text"
                                         name='graph1'
+                                        value={graphs.graph1.name}
                                         onChange={(e) => setGraphs({ ...graphs, graph1: { ...graphs.graph1, name: e.target.value } })}
                                         className="form-control"
                                         id="graph1"
                                         placeholder="Enter graph name"
-                                        required
                                     />
                                 </div>
                             </div>
 
                             <div className="col-md-6">
-                                <label htmlFor="xAxisValue1" className="form-label"> Select X-Axis Value</label>
+                                <label htmlFor="yAxisValue1" className="form-label"> Select y-Axis Value</label>
                                 <select
                                     className="form-select"
-                                    name='xAxisValue1'
-                                    id='xAxisValue1'
-                                    onChange={(e) => setGraphs({ ...graphs, graph1: { ...graphs.graph1, xAxis: e.target.value } })}
+                                    name='yAxisValue1'
+                                    id='yAxisValue1'
+                                    value={graphs.graph1.yAxis}
+                                    onChange={(e) => setGraphs({ ...graphs, graph1: { ...graphs.graph1, yAxis: e.target.value } })}
                                 >
                                     <option disabled selected> Select value </option>
-                                    <option value="date">Date</option>
-                                    <option value="name">Name</option>
+                                    {
+                                        parameters.map(parameter => <option value="date" key={parameter._id}>{parameter._id}</option>)
+                                    }
                                 </select>
                             </div>
 
-                            <div className="col-md-6 col-xxl-3">
+                            <div className="col-md-6">
                                 <div className="mt-3">
                                     <input
                                         className="form-check-input me-3"
@@ -501,24 +644,22 @@ const SelectedDashboardSettings = memo((props) => {
                             </div>
 
                             <div className="row">
-                                <div className="col-xxl-3 col-md-6 mt-2">
+                                <div className="col-md-6 mt-2">
                                     <label htmlFor="from1" className="form-label">From</label>
                                     <input
                                         type="datetime-local"
                                         value={graphs.graph1.from}
                                         onChange={(e) => setGraphs({ ...graphs, graph1: { ...graphs.graph1, from: e.target.value } })}
                                         className='form-control' id="from1" name="from1"
-                                        required disabled={graphs.graph1.isToday}
                                     />
                                 </div>
-                                <div className="col-xxl-3 col-md-6 mt-2">
+                                <div className="col-md-6 mt-2">
                                     <label htmlFor="to1" className="form-label">To</label>
                                     <input
                                         type="datetime-local"
                                         value={graphs.graph1.to}
                                         onChange={(e) => setGraphs({ ...graphs, graph1: { ...graphs.graph1, to: e.target.value } })}
                                         className='form-control' id="to1" name="to1"
-                                        required disabled={graphs.graph1.isToday}
                                     />
                                 </div>
                             </div>
@@ -527,7 +668,7 @@ const SelectedDashboardSettings = memo((props) => {
 
                     {/* graph 2 */}
                     <div className="col-xxl-4 col-md-6">
-                        <h4 className='mt-4'> Graph 2 Setting </h4>
+                        <h4 className='mt-4'> {userDetails?.dashboardSetting?.dashboard1?.graphs?.graph2?.name || 'Graph 2 Setting'} </h4>
                         <hr className='mt-0' />
 
                         <div className="row">
@@ -542,26 +683,27 @@ const SelectedDashboardSettings = memo((props) => {
                                         className="form-control"
                                         id="graph2"
                                         placeholder="Enter graph name"
-                                        required
                                     />
                                 </div>
                             </div>
 
                             <div className="col-md-6">
-                                <label htmlFor="xAxisValue2" className="form-label"> Select X-Axis Value</label>
+                                <label htmlFor="yAxisValue2" className="form-label"> Select Y-Axis Value</label>
                                 <select
                                     className="form-select"
-                                    name='xAxisValue2'
-                                    id='xAxisValue2'
-                                    onChange={(e) => setGraphs({ ...graphs, graph2: { ...graphs.graph2, xAxis: e.target.value } })}
+                                    name='yAxisValue2'
+                                    id='yAxisValue2'
+                                    value={graphs.graph2.yAxis}
+                                    onChange={(e) => setGraphs({ ...graphs, graph2: { ...graphs.graph2, yAxis: e.target.value } })}
                                 >
                                     <option disabled selected> Select value </option>
-                                    <option value="date">Date</option>
-                                    <option value="name">Name</option>
+                                    {
+                                        parameters.map(parameter => <option value="date" key={parameter._id}>{parameter._id}</option>)
+                                    }
                                 </select>
                             </div>
 
-                            <div className="col-md-6 col-xxl-3">
+                            <div className="col-md-6">
                                 <div className="mt-3">
                                     <input
                                         className="form-check-input me-3"
@@ -583,24 +725,22 @@ const SelectedDashboardSettings = memo((props) => {
                             </div>
 
                             <div className="row">
-                                <div className="col-xxl-3 col-md-6 mt-2">
+                                <div className="col-md-6 mt-2">
                                     <label htmlFor="from2" className="form-label">From</label>
                                     <input
                                         type="datetime-local"
                                         value={graphs.graph2.from}
                                         onChange={(e) => setGraphs({ ...graphs, graph2: { ...graphs.graph2, from: e.target.value } })}
                                         className='form-control' id="from2" name="from2"
-                                        required disabled={graphs.graph2.isToday}
                                     />
                                 </div>
-                                <div className="col-xxl-3 col-md-6 mt-2">
+                                <div className="col-md-6 mt-2">
                                     <label htmlFor="to1" className="form-label">To</label>
                                     <input
                                         type="datetime-local"
                                         value={graphs.graph2.to}
                                         onChange={(e) => setGraphs({ ...graphs, graph2: { ...graphs.graph2, to: e.target.value } })}
                                         className='form-control' id="to1" name="to1"
-                                        required disabled={graphs.graph2.isToday}
                                     />
                                 </div>
                             </div>
@@ -610,7 +750,7 @@ const SelectedDashboardSettings = memo((props) => {
 
                     {/* pie chart */}
                     <div className="col-xxl-4 col-md-6">
-                        <h4 className='mt-4'> Pie Chart Settings </h4>
+                        <h4 className='mt-4'> {userDetails?.dashboardSetting?.dashboard1?.graphs?.pieChart?.name || 'Pie Chart Settings'} </h4>
                         <hr className='mt-0' />
 
                         <div className="row">
@@ -619,8 +759,8 @@ const SelectedDashboardSettings = memo((props) => {
                                     <label htmlFor="pieChart" className="form-label">Graph Name</label>
                                     <input
                                         type="text"
-                                        required
                                         name='pieChart'
+                                        value={graphs.pieChart.name}
                                         onChange={e => setGraphs({ ...graphs, pieChart: { ...graphs.pieChart, name: e.target.value } })}
                                         className="form-control"
                                         id="pieChart"
@@ -631,13 +771,13 @@ const SelectedDashboardSettings = memo((props) => {
                         </div>
 
                         <div className="row">
-                            <div className="col-md-6 col-xxl-3">
+                            <div className="col-md-6">
                                 <div>
                                     <input
                                         className="form-check-input me-3"
                                         type="checkbox"
                                         checked={graphs.pieChart.isToday}
-                                        id="graphToday2"
+                                        id="graphToday3"
                                         onChange={(e) => {
                                             if (e.target.checked) {
                                                 setGraphs({ ...graphs, pieChart: { ...graphs.pieChart, from: startOfDay, to: endOfDay, isToday: true } });
@@ -646,7 +786,7 @@ const SelectedDashboardSettings = memo((props) => {
                                             }
                                         }}
                                     />
-                                    <label className="form-check-label" htmlFor="graphToday2" style={{ userSelect: 'none' }}>
+                                    <label className="form-check-label" htmlFor="graphToday3" style={{ userSelect: 'none' }}>
                                         Today's data
                                     </label>
                                 </div>
@@ -654,24 +794,22 @@ const SelectedDashboardSettings = memo((props) => {
                         </div>
 
                         <div className="row">
-                            <div className="col-xxl-3 col-md-6 mt-2">
+                            <div className="col-md-6 mt-2">
                                 <label htmlFor="from2" className="form-label">From</label>
                                 <input
                                     type="datetime-local"
                                     value={graphs.pieChart.from}
                                     onChange={(e) => setGraphs({ ...graphs, pieChart: { ...graphs.pieChart, from: e.target.value } })}
                                     className='form-control' id="from2" name="from2"
-                                    required disabled={graphs.pieChart.isToday}
                                 />
                             </div>
-                            <div className="col-xxl-3 col-md-6 mt-2">
+                            <div className="col-md-6 mt-2">
                                 <label htmlFor="to1" className="form-label">To</label>
                                 <input
                                     type="datetime-local"
                                     value={graphs.pieChart.to}
                                     onChange={(e) => setGraphs({ ...graphs, pieChart: { ...graphs.pieChart, to: e.target.value } })}
                                     className='form-control' id="to1" name="to1"
-                                    required disabled={graphs.pieChart.isToday}
                                 />
                             </div>
                         </div>
@@ -720,7 +858,7 @@ const SelectedDashboardSettings = memo((props) => {
                         </div>
                     </div>
                 </div>
-                <div className="text-end">
+                <div className="text-end mt-3">
                     <button type='submit' className="btn btn-success me-2"> update </button>
                     <button className="btn btn-secondary"> cancel </button>
                 </div>

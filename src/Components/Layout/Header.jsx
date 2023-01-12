@@ -85,7 +85,6 @@ const Header = ({ handle }) => {
     const handleDashboardChange = async (e) => {
         const response = await axios.put(`${process.env.REACT_APP_API_URL}/users/me`, { dashboard: e.target.value }, { withCredentials: true });
         if (response) {
-            console.log(response.data)
             dispatch(setUserDetails(response.data))
         }
     }

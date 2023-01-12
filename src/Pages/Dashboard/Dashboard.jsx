@@ -73,13 +73,9 @@ const Dashboard = memo(({ handle }) => {
         const getPieData = async () => {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/device/${from}/${to}`, { withCredentials: true })
             if (response.data.length > 0) {
+                console.log(response.data)
                 setPieChartData(response.data)
-            } else {
-                setPieChartData([{
-                    value: 1,
-                    name: "No data to show"
-                }])
-            }
+            } 
         }
 
         if (!!currentDevice._id) {
@@ -93,7 +89,7 @@ const Dashboard = memo(({ handle }) => {
 
     useEffect(() => {
         if (currentDevice) {
-            getDeviceData(currentDevice._id, currentDevice?.parameter || 'KWH')
+            getDeviceData(currentDevice._id, currentDevice?.parameter || 'current')
             getDailyEmissions(currentDevice._id)
             getMonthlyEmissions(currentDevice._id)
         }
