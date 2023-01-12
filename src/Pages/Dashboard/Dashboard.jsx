@@ -13,6 +13,8 @@ const Dashboard = memo(({ handle }) => {
     let month = new Date().getMonth()
     const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
     const endOfMonth = moment().endOf('month').format('YYYY-MM-DD');
+    const startOfDay = moment().startOf('day').format('YYYY-MM-DD');
+    const endOfDay = moment().endOf('day').format('YYYY-MM-DD');
 
     // redux
     let currentDevice = useSelector((state) => state?.user?.currentDevice);
@@ -24,10 +26,13 @@ const Dashboard = memo(({ handle }) => {
     const [from, setFrom] = useState(startOfMonth);
     const [to, setTo] = useState(endOfMonth);
     const [lineData, setLineData] = useState([])
-    const [dailyData, setDailyData] = useState({})
     const [value, setValue] = useState({})   //this is consumption value (value.dailyEmissions)
 
-    const [counter, setCounter] = useState({})
+    // counter
+    const [counter1, setCounter1] = useState({})
+    const [counter2, setCounter2] = useState({})
+    const [counter3, setCounter3] = useState({})
+    const [counter4, setCounter4] = useState({})
     // chart 
     const [deviceData, setDeviceData] = useState([]);    //graph 1
     const [graph2, setGraph2] = useState([])
@@ -43,22 +48,6 @@ const Dashboard = memo(({ handle }) => {
         }
     }
 
-    const getDailyConsumption = async (deviceId, parameter) => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/dailyConsumption/${deviceId}/${parameter}`, { withCredentials: true })
-        if (response) {
-            setDailyData(response.data)
-        }
-    }
-    const getDailyEmissions = async (deviceId) => {
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/formula/formulaResult`, {
-            formulaName: "K3 LV Room - Energy Consumption",
-            isMonthly: false,
-            deviceId,
-        })
-        if (response) {
-            setValue({ dailyEmission: response.data.result })
-        }
-    }
     const getMonthlyEmissions = async (deviceId) => {
         const response = await axios.post(`${process.env.REACT_APP_API_URL}/formula/formulaResult`, {
             formulaName: "K3 LV Room - Energy Consumption",
@@ -85,24 +74,47 @@ const Dashboard = memo(({ handle }) => {
                 setPieChartData(response.data)
             }
         }
-        const getCounter1 = async () => {
-            let body = {
-                formulaName: '',
-                deviceId: '',
-                from: '',
-                to: ''
-            }
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/formula/formulaResult`, { withCredentials: true })
-            if (response.data.length > 0) {
-                console.log(response.data)
-                setPieChartData(response.data)
-            }
+        const getCounter = async (body, setCounter) => {
+            await axios.post(`${process.env.REACT_APP_API_URL}/formula/formulaResult`, body, { withCredentials: true })
+                .then(response => {
+                    if (response.data) {
+                        setCounter(response.data)
+                    }
+                }).catch(err => console.log(err))
+        }
+
+        const counter1 = {
+            formulaName: template.counter[0].formula || 'Energy Consumption',
+            deviceId: currentDevice._id,
+            from: template.counter[0].from || startOfDay,
+            to: template.counter[0].to || endOfDay
+        }
+        const counter2 = {
+            formulaName: template.counter[1].formula || 'CO2 Emission',
+            deviceId: currentDevice._id,
+            from: template.counter[1].from || startOfDay,
+            to: template.counter[1].to || endOfDay
+        }
+        const counter3 = {
+            formulaName: template.counter[2].formula || `Energy Consumption`,
+            deviceId: currentDevice._id,
+            from: template.counter[2].from || startOfMonth,
+            to: template.counter[2].to || endOfMonth
+        }
+        const counter4 = {
+            formulaName: template.counter[3].formula || `CO2 Emission`,
+            deviceId: currentDevice._id,
+            from: template.counter[3].from || startOfMonth,
+            to: template.counter[3].to || endOfMonth
         }
 
         if (!!currentDevice._id) {
             getLineData(currentDevice._id, currentDevice?.parameter || 'KWH')
-            getDailyConsumption(currentDevice._id, currentDevice?.parameter || 'KWH')
             getPieData()
+            getCounter(counter1, setCounter1)
+            getCounter(counter2, setCounter2)
+            getCounter(counter3, setCounter3)
+            getCounter(counter4, setCounter4)
         }
 
         // eslint-disable-next-line
@@ -111,7 +123,6 @@ const Dashboard = memo(({ handle }) => {
     useEffect(() => {
         if (currentDevice) {
             getDeviceData(currentDevice._id, currentDevice?.parameter || 'current')
-            getDailyEmissions(currentDevice._id)
             getMonthlyEmissions(currentDevice._id)
         }
         // eslint-disable-next-line
@@ -144,20 +155,20 @@ const Dashboard = memo(({ handle }) => {
                                     <div className="consumption text-center">
                                         <div className="card text-center mb-2 p-2">
                                             <h4 className='text-success'>
-                                                {template?.counter[0].name || 'Today <br />Consumption'}
+                                                {template?.counter[0].name || <>Today <br />Consumption</>}
                                             </h4>
-                                            <h2> {(dailyData.value || 0).toFixed(2)} </h2>
-                                            <p>kWh</p>
+                                            <h2> {counter1?.result || 0} </h2>
+                                            <p> {counter1?.unit || 'kWh'} </p>
                                         </div>
                                     </div>
                                     <div className="consumption text-center">
                                         <div className="card text-center mb-2 p-2">
-                                            <h4 className='text-success'>Today <br />CO<sub>2</sub> emissions </h4>
+                                            <h4 className='text-success'>{template?.counter[1].name || <>Today <br />CO<sub>2</sub> emissions</>} </h4>
 
                                             <h3>
-                                                {(!!value?.dailyEmission ? value?.dailyEmission : 0).toFixed(2)}
+                                                {counter2?.result || 0}
                                             </h3>
-                                            <p>kgCO<sub>2</sub></p>
+                                            <p>{counter2?.unit || <>kgCO<sub>2</sub></>}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -216,18 +227,20 @@ const Dashboard = memo(({ handle }) => {
                                 <div className="col-md-2">
                                     <div className="consumption text-center">
                                         <div className="card text-center mb-2 p-2">
-                                            <h4 className='text-success'>Consumption <br />this month</h4>
-                                            <h2> {(lineData.length > 0 ? lineData[month] : 0).toFixed(2)} </h2>
-                                            <p>kWh</p>
+                                            <h4 className='text-success'>
+                                                {template?.counter[2].name || <>Consumption <br />this month</>}
+                                            </h4>
+                                            <h2> {counter3?.result || 0} </h2>
+                                            <p> {counter3?.unit || 'kWh'} </p>
                                         </div>
                                     </div>
                                     <div className="consumption text-center">
                                         <div className="card text-center mb-2 p-2">
-                                            <h4 className='text-success'>This month <br />CO<sub>2</sub> emissions </h4>
+                                            <h4 className='text-success'>{template?.counter[2].name || <>This month <br />CO<sub>2</sub> emissions</>} </h4>
                                             <h3>
-                                                {(!!value?.monthlyEmission ? value?.monthlyEmission : 0).toFixed(2)}
+                                                {counter4?.result || 0}
                                             </h3>
-                                            <p>kgCO<sub>2</sub></p>
+                                            <p>{counter4?.unit || <>kgCO<sub>2</sub></>}</p>
                                         </div>
                                     </div>
                                 </div>

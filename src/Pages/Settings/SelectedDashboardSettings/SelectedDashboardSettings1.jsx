@@ -642,7 +642,7 @@ const SelectedDashboardSettings1 = memo((props) => {
                                 >
                                     <option value='' disabled selected> Select value </option>
                                     {
-                                        parameters.map(parameter => <option value="date" key={parameter._id}>{parameter._id}</option>)
+                                        parameters.map(parameter => <option value={parameter._id} key={parameter._id}>{parameter._id}</option>)
                                     }
                                 </select>
                             </div>
@@ -723,7 +723,7 @@ const SelectedDashboardSettings1 = memo((props) => {
                                 >
                                     <option value='' disabled selected> Select value </option>
                                     {
-                                        parameters.map(parameter => <option value="date" key={parameter._id}>{parameter._id}</option>)
+                                        parameters.map(parameter => <option value={parameter._id} key={parameter._id}>{parameter._id}</option>)
                                     }
                                 </select>
                             </div>
