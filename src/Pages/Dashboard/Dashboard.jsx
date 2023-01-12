@@ -13,13 +13,15 @@ const Dashboard = memo(({ handle }) => {
     let month = new Date().getMonth()
     const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
     const endOfMonth = moment().endOf('month').format('YYYY-MM-DD');
-
+    
+    let currentDevice = useSelector((state) => state?.user?.currentDevice);
+    let userDetails = useSelector((state) => state?.user?.userDetails);
+    
     const [deviceData, setDeviceData] = useState([]);
     const [showFilter, setShowFilter] = useState(false);
     const [showFilterData, setShowFilterData] = useState(false);
     const [from, setFrom] = useState(startOfMonth);
     const [to, setTo] = useState(endOfMonth);
-    let currentDevice = useSelector((state) => state?.user?.currentDevice);
     const [lineData, setLineData] = useState([])
     const [dailyData, setDailyData] = useState({})
     const [value, setValue] = useState({})   //this is consumption value (value.dailyEmissions)

@@ -5,7 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import SettingSidebarNav from '../../Components/Settings/SettingSidebarNav';
 import { setUserDetails } from '../../redux/userSlice';
-import SelectedDashboardSettings from './SelectedDashboardSettings/SelectedDashboardSettings';
+import SelectedDashboardSettings1 from './SelectedDashboardSettings/SelectedDashboardSettings1';
+import SelectedDashboardSettings2 from './SelectedDashboardSettings/SelectedDashboardSettings2';
+import SelectedDashboardSettings3 from './SelectedDashboardSettings/SelectedDashboardSettings3';
+import SelectedDashboardSettings4 from './SelectedDashboardSettings/SelectedDashboardSettings4';
 
 const DashboardSettings = () => {
     const dispatch = useDispatch()
@@ -67,8 +70,8 @@ const DashboardSettings = () => {
                                     <input className="form-check-input d-none" type="radio" value={1} name="dashboard" id="option1" onChange={() => setTemplate(1)} />
                                     <label className="form-check-label" htmlFor="option1">
                                         <div className={`${template === 1 ? 'text-center border border-3 border-success' : 'text-center'}`}>
-                                            <img src="/images/1.png" alt="Dashboard 1" height={130} />
-                                            <p>Dashboard 1</p>
+                                            <img src="/images/1.png" alt={userDetails?.dashboardSetting?.dashboard1?.name || "Dashboard 1"} height={130} />
+                                            <p> {userDetails?.dashboardSetting?.dashboard1?.name || "Dashboard 1"} </p>
                                         </div>
                                     </label>
                                 </div>
@@ -102,7 +105,11 @@ const DashboardSettings = () => {
                             </div>
 
                             <div className="my-4">
-                                <SelectedDashboardSettings template={template} />
+                                {template === 1 && <SelectedDashboardSettings1 template={template} />}
+                                {template === 2 && <SelectedDashboardSettings2 template={template} />}
+                                {template === 3 && <SelectedDashboardSettings3 template={template} />}
+                                {template === 4 && <SelectedDashboardSettings4 template={template} />}
+
                             </div>
                             <div className="row mt-3">
                                 <div className="col-md-12 d-flex justify-content-end">

@@ -4,8 +4,10 @@ import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import './SelectedDashboardSettings.css'
 import { setUserDetails } from '../../../redux/userSlice';
+import { current } from '@reduxjs/toolkit';
+import { Spinner } from 'react-bootstrap';
 
-const SelectedDashboardSettings = memo((props) => {
+const SelectedDashboardSettings1 = memo((props) => {
     // const startOfMonth = moment('11,11,2022').startOf('month').format('yyyy-MM-DDThh:mm:ss');
     // const endOfMonth = moment('11,11,2022').endOf('month').format('yyyy-MM-DDThh:mm:ss');
 
@@ -20,7 +22,8 @@ const SelectedDashboardSettings = memo((props) => {
     const endOfDay = moment().endOf('day').format('yyyy-MM-DDThh:mm:ss');
 
     // states
-    let [templateData, setTemplateData] = useState({ name: `Dashboard ${props.template}` })   //have to take data in api
+    const [isLoading, setIsLoading] = useState(true)
+    const [templateData, setTemplateData] = useState()
     const [formulas, setFormulas] = useState([])
     const [parameters, setParameters] = useState([])
     const [pieKey, setPieKey] = useState([{
@@ -95,8 +98,6 @@ const SelectedDashboardSettings = memo((props) => {
     })
 
     useEffect(() => {
-        setTemplateData(settingData)
-
         // get formula
         axios.get(`${process.env.REACT_APP_API_URL}/formula`, { withCredentials: true })
             .then(res => {
@@ -124,11 +125,26 @@ const SelectedDashboardSettings = memo((props) => {
             })
             .catch(error => console.log(error))
 
-        // eslint-disable-next-line
-    }, [props, settingData])
+        //get template by setting id
+        axios.get(`${process.env.REACT_APP_API_URL}/dashboardSetting/${userDetails?.dashboardSetting?._id}`, { withCredentials: true })
+            .then(response => {
+                if (response.data) {
+                    setTemplateData(response.data)
+                    setIsLoading(false)
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                setIsLoading(false)
+            })
+
+
+
+    }, [props, settingData, currentDevice, userDetails])
 
     const submitHandler = e => {
         e.preventDefault();
+        setIsLoading(true)
 
         const data = { ...settingData }
         data.counter = counter
@@ -151,6 +167,8 @@ const SelectedDashboardSettings = memo((props) => {
                 }
             })
             .catch(err => console.log(err))
+
+        setIsLoading(false)
 
         setCounter([
             {
@@ -216,9 +234,17 @@ const SelectedDashboardSettings = memo((props) => {
         })
     }
 
+    if(isLoading) {
+        return (
+            <div className="d-flex align-items-center justify-content-center" style={{minHeight: '200px'}}>
+                <Spinner animation="border" variant="dark" />
+            </div>
+        )
+    }
+
     return (
         <div className='selectedDashboardSettings border-success'>
-            <h3 className='fw-bold mb-4'> {userDetails?.dashboardSetting?.dashboard1?.name || 'Dashboard 1'} </h3>
+            <h3 className='fw-bold mb-4'> {templateData?.dashboard1?.name || 'Dashboard 1'} </h3>
             <h4> Template Settings </h4>
             <hr className='mt-0' />
 
@@ -245,7 +271,7 @@ const SelectedDashboardSettings = memo((props) => {
                     <div className="col-lg-3 col-md-6">
                         <label htmlFor="userType" className="form-label"> User Type </label>
                         <select className="form-select" id='userType' aria-label="Default select example">
-                            <option selected disabled> Select roll </option>
+                            <option value='' selected disabled> Select roll </option>
                             <option value="1">One</option>
                             <option value="2">Two</option>
                             <option value="3">Three</option>
@@ -265,7 +291,7 @@ const SelectedDashboardSettings = memo((props) => {
                         <div className="col-lg-3 col-md-6">
                             {/* name */}
                             <div className="mb-3">
-                                {/* <label htmlFor="counterName1" className="form-label">{userDetails?.dashboardSetting?.dashboard1?.counter[0].name || 'Counter 1'} </label> */}
+                                {/* <label htmlFor="counterName1" className="form-label">{templateData?.dashboard1?.counter[0].name || 'Counter 1'} </label> */}
                                 <label htmlFor="counterName1" className="form-label">Option 1</label>
                                 <input
                                     type="text"
@@ -288,7 +314,7 @@ const SelectedDashboardSettings = memo((props) => {
                                     value={counter[0].formula}
                                     onChange={(e) => setCounter([...counter], counter[0].formula = e.target.value)}
                                 >
-                                    <option selected disabled> Select Formula </option>
+                                    <option value='' selected disabled> Select Formula </option>
                                     {
                                         formulas.length > 0 ? (
                                             formulas.map(formula => <option key={formula._id} value={formula?.name?.trim()}>{formula.name} </option>)
@@ -365,7 +391,7 @@ const SelectedDashboardSettings = memo((props) => {
                                     value={counter[1].formula}
                                     onChange={(e) => setCounter([...counter], counter[1].formula = e.target.value)}
                                 >
-                                    <option selected disabled> Select Formula </option>
+                                    <option value='' selected disabled> Select Formula </option>
                                     {
                                         formulas.length > 0 ? (
                                             formulas.map(formula => <option key={formula._id} value={formula?.name?.trim()}>{formula.name}</option>)
@@ -442,7 +468,7 @@ const SelectedDashboardSettings = memo((props) => {
                                     value={counter[2].formula}
                                     onChange={(e) => setCounter([...counter], counter[2].formula = e.target.value)}
                                 >
-                                    <option selected disabled> Select Formula </option>
+                                    <option value='' selected disabled> Select Formula </option>
                                     {
                                         formulas.length > 0 ? (
                                             formulas.map(formula => <option key={formula._id} value={formula?.name?.trim()}>{formula.name}</option>)
@@ -519,7 +545,7 @@ const SelectedDashboardSettings = memo((props) => {
                                     value={counter[3].formula}
                                     onChange={(e) => setCounter([...counter], counter[3].formula = e.target.value)}
                                 >
-                                    <option selected disabled> Select Formula </option>
+                                    <option value='' selected disabled> Select Formula </option>
                                     {
                                         formulas.length > 0 ? (
                                             formulas.map(formula => <option key={formula._id} value={formula?.name?.trim()}>{formula.name}</option>)
@@ -587,7 +613,7 @@ const SelectedDashboardSettings = memo((props) => {
                 <div className="row">
                     {/* graph 1 */}
                     <div className="col-xxl-4 col-md-6">
-                        <h4 className='mt-4'> {userDetails?.dashboardSetting?.dashboard1?.graphs?.graph1?.name || 'Graph 1 Setting'} </h4>
+                        <h4 className='mt-4'> {templateData?.dashboard1?.graphs?.graph1?.name || 'Graph 1 Setting'} </h4>
                         <hr className='mt-0' />
 
                         <div className="row">
@@ -615,7 +641,7 @@ const SelectedDashboardSettings = memo((props) => {
                                     value={graphs.graph1.yAxis}
                                     onChange={(e) => setGraphs({ ...graphs, graph1: { ...graphs.graph1, yAxis: e.target.value } })}
                                 >
-                                    <option disabled selected> Select value </option>
+                                    <option value='' disabled selected> Select value </option>
                                     {
                                         parameters.map(parameter => <option value="date" key={parameter._id}>{parameter._id}</option>)
                                     }
@@ -668,7 +694,7 @@ const SelectedDashboardSettings = memo((props) => {
 
                     {/* graph 2 */}
                     <div className="col-xxl-4 col-md-6">
-                        <h4 className='mt-4'> {userDetails?.dashboardSetting?.dashboard1?.graphs?.graph2?.name || 'Graph 2 Setting'} </h4>
+                        <h4 className='mt-4'> {templateData?.dashboard1?.graphs?.graph2?.name || 'Graph 2 Setting'} </h4>
                         <hr className='mt-0' />
 
                         <div className="row">
@@ -696,7 +722,7 @@ const SelectedDashboardSettings = memo((props) => {
                                     value={graphs.graph2.yAxis}
                                     onChange={(e) => setGraphs({ ...graphs, graph2: { ...graphs.graph2, yAxis: e.target.value } })}
                                 >
-                                    <option disabled selected> Select value </option>
+                                    <option value='' disabled selected> Select value </option>
                                     {
                                         parameters.map(parameter => <option value="date" key={parameter._id}>{parameter._id}</option>)
                                     }
@@ -750,7 +776,7 @@ const SelectedDashboardSettings = memo((props) => {
 
                     {/* pie chart */}
                     <div className="col-xxl-4 col-md-6">
-                        <h4 className='mt-4'> {userDetails?.dashboardSetting?.dashboard1?.graphs?.pieChart?.name || 'Pie Chart Settings'} </h4>
+                        <h4 className='mt-4'> {templateData?.dashboard1?.graphs?.pieChart?.name || 'Pie Chart Settings'} </h4>
                         <hr className='mt-0' />
 
                         <div className="row">
@@ -845,16 +871,6 @@ const SelectedDashboardSettings = memo((props) => {
                                     </div>
                                 ))
                             }
-
-
-                            <div className="col-md-6">
-                                <div className="form-check">
-                                    <input className="form-check-input" type="checkbox" value="" id="defaultCheck2" />
-                                    <label className="form-check-label" htmlFor="defaultCheck2">
-                                        Default checkbox
-                                    </label>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -867,4 +883,4 @@ const SelectedDashboardSettings = memo((props) => {
     );
 });
 
-export default SelectedDashboardSettings;
+export default SelectedDashboardSettings1;
