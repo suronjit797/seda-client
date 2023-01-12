@@ -23,10 +23,8 @@ const Dashboard = memo(({ handle }) => {
     // state
     const [showFilter, setShowFilter] = useState(false);
     const [showFilterData, setShowFilterData] = useState(false);
-    const [from, setFrom] = useState(startOfMonth);
-    const [to, setTo] = useState(endOfMonth);
-    const [lineData, setLineData] = useState([])
-    const [value, setValue] = useState({})   //this is consumption value (value.dailyEmissions)
+    const [from, setFrom] = useState();
+    const [to, setTo] = useState();
 
     // counter
     const [counter1, setCounter1] = useState({})
@@ -41,39 +39,35 @@ const Dashboard = memo(({ handle }) => {
         name: "No data to show"
     }]);
 
-    const getDeviceData = async (deviceId, parameter) => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/byParameter/${deviceId}/${parameter}/`, { withCredentials: true })
+    // graph 1
+    const getDeviceData = async (deviceId, parameter, from, to) => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/byParameter/${deviceId}/${parameter}/${from}/${to}`, { withCredentials: true })
         if (response) {
             setDeviceData(response.data)
         }
     }
 
-    const getMonthlyEmissions = async (deviceId) => {
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/formula/formulaResult`, {
-            formulaName: "K3 LV Room - Energy Consumption",
-            isMonthly: true,
-            deviceId,
-        }, { withCredentials: true })
+    // graph 2
+    const g2 = async (deviceId, parameter, from, to) => {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/byParameter/${deviceId}/${parameter}/${from}/${to}`, { withCredentials: true })
         if (response) {
-            setValue({ monthlyEmission: response.data.result })
+            setGraph2(response.data)
         }
     }
 
-    // line data 
-    useEffect(() => {
-        const getLineData = async (deviceId, parameter) => {
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/monthlyKWH/${deviceId}/${parameter}/${from}/${to}`, { withCredentials: true })
-            if (response) {
-                setLineData(response.data)
-            }
-        }
-        const getPieData = async () => {
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/device/${from}/${to}`, { withCredentials: true })
+    // graph 3
+    const getPieData = async (body) => {
+        if (body) {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/chart/device/`, body, { withCredentials: true })
             if (response.data.length > 0) {
-                console.log(response.data)
                 setPieChartData(response.data)
+                setShowFilter(false)
+                setShowFilterData(false)
             }
         }
+    }
+
+    useEffect(() => {
         const getCounter = async (body, setCounter) => {
             await axios.post(`${process.env.REACT_APP_API_URL}/formula/formulaResult`, body, { withCredentials: true })
                 .then(response => {
@@ -109,7 +103,6 @@ const Dashboard = memo(({ handle }) => {
         }
 
         if (!!currentDevice._id) {
-            getLineData(currentDevice._id, currentDevice?.parameter || 'KWH')
             getPieData()
             getCounter(counter1, setCounter1)
             getCounter(counter2, setCounter2)
@@ -122,11 +115,30 @@ const Dashboard = memo(({ handle }) => {
 
     useEffect(() => {
         if (currentDevice) {
-            getDeviceData(currentDevice._id, currentDevice?.parameter || 'current')
-            getMonthlyEmissions(currentDevice._id)
+            getDeviceData(currentDevice._id,
+                template?.graphs?.graph1?.yAxis || 'KWH',
+                from || template?.graphs?.graph1?.from || startOfMonth,
+                to || template?.graphs?.graph1?.to || endOfMonth
+            )
+
+            g2(currentDevice._id,
+                template?.graphs?.graph2?.yAxis || 'KWH',
+                from || template?.graphs?.graph2?.from || startOfMonth,
+                to || template?.graphs?.graph2?.to || endOfMonth
+            )
+
+            console.log(template?.graphs?.pieChart?.to)
+
+            let pieData = {
+                from: from || template?.graphs?.pieChart?.from || startOfMonth,
+                to: to || template?.graphs?.pieChart?.to || endOfMonth,
+                queryDevice: template?.graphs?.pieChart?.device
+            }
+            getPieData(pieData)
         }
+
         // eslint-disable-next-line
-    }, [currentDevice]);
+    }, [currentDevice, showFilterData, template]);
 
     useEffect(() => {
         document.title = "SEDA - Dashboard"
@@ -202,7 +214,19 @@ const Dashboard = memo(({ handle }) => {
                                     </div>
                                     <div className="row">
                                         <div className="col-md-10">
-                                            {deviceData.length > 0 && showFilterData ? <AreaChart name="Power (kWh)" title="Monthly (kW)" data={deviceData} from={from} to={to} /> : <AreaChart data={deviceData} name="Power (kW)" title="Monthly (kW)" />}
+                                            {deviceData.length > 0 && showFilterData ? (<AreaChart
+                                                name="Power (kWh)"
+                                                title="Monthly (kW)"
+                                                data={deviceData}
+                                                from={from}
+                                                to={to}
+                                            />) : (<AreaChart
+                                                data={deviceData}
+                                                name="Power (kW)"
+                                                title="Monthly (kW)"
+                                                from={template?.graphs?.graph1?.from || startOfMonth}
+                                                to={template?.graphs?.graph1?.to || endOfMonth}
+                                            />)}
                                         </div>
                                         <div className="col-md-2">
                                             <div className="minmax bg-success bg-opacity-50">
@@ -248,7 +272,23 @@ const Dashboard = memo(({ handle }) => {
                             <div className="row mt-4">
                                 <div className="col-md-8">
                                     {
-                                        deviceData.length > 0 && showFilterData ? <LineChart type="bar" from={from} to={to} name="kWh" data={deviceData} color="#1fb35b" title="Energy Consumption Monthly (kWh)" /> : <LineChart type="bar" name="kWh" data={deviceData} color="#1fb35b" title="Energy Consumption Monthly (kWh)" />
+                                        graph2.length > 0 && showFilterData ? (<LineChart
+                                            type="bar"
+                                            from={from}
+                                            to={to}
+                                            name="kWh"
+                                            data={graph2}
+                                            color="#1fb35b"
+                                            title="Energy Consumption Monthly (kWh)"
+                                        />) : (<LineChart
+                                            type="bar"
+                                            from={template?.graphs?.graph2?.from || startOfMonth}
+                                            to={template?.graphs?.graph2?.to || endOfMonth}
+                                            name="kWh"
+                                            data={graph2}
+                                            color="#1fb35b"
+                                            title="Energy Consumption Monthly (kWh)"
+                                        />)
                                     }
                                 </div>
 

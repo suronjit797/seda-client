@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './SelectedDashboardSettings.css'
 import { setUserDetails } from '../../../redux/userSlice';
 import { Spinner } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 
 const SelectedDashboardSettings1 = memo((props) => {
     // const startOfMonth = moment('11,11,2022').startOf('month').format('yyyy-MM-DDThh:mm:ss');
@@ -15,14 +16,15 @@ const SelectedDashboardSettings1 = memo((props) => {
     // redux
     let userDetails = useSelector((state) => state?.user?.userDetails);
     let currentDevice = useSelector((state) => state?.user?.currentDevice);
+    let template = userDetails?.dashboardSetting?.dashboard1
 
     // important variables
     const startOfDay = moment().startOf('day').format('yyyy-MM-DDThh:mm:ss');
     const endOfDay = moment().endOf('day').format('yyyy-MM-DDThh:mm:ss');
 
+
     // states
     const [isLoading, setIsLoading] = useState(true)
-    const [templateData, setTemplateData] = useState()
     const [formulas, setFormulas] = useState([])
     const [parameters, setParameters] = useState([])
     const [pieKey, setPieKey] = useState([{
@@ -30,9 +32,11 @@ const SelectedDashboardSettings1 = memo((props) => {
         name: "No data to show"
     }])
 
+    let { name, counter: counterData, graphs: graphsData } = template
+
     // data 1
     const [settingData, setSettingData] = useState({
-        name: '',
+        name: name || '',
         counter: [],
         graphs: {},
         userId: userDetails._id
@@ -41,57 +45,57 @@ const SelectedDashboardSettings1 = memo((props) => {
     // data 2
     let [counter, setCounter] = useState([
         {
-            name: '',
-            formula: '',
-            isToday: false,
-            from: '',
-            to: ''
+            name: counterData[0]?.name || '',
+            formula: counterData[0]?.formula || '',
+            isToday: counterData[0]?.isToday || false,
+            from: counterData[0]?.from || '',
+            to: counterData[0]?.to || ''
         },
         {
-            name: '',
-            formula: '',
-            isToday: false,
-            from: '',
-            to: ''
+            name: counterData[1]?.name || '',
+            formula: counterData[1]?.formula || '',
+            isToday: counterData[1]?.isToday || false,
+            from: counterData[1]?.from || '',
+            to: counterData[1]?.to || ''
         },
         {
-            name: '',
-            formula: '',
-            isToday: false,
-            from: '',
-            to: ''
+            name: counterData[2]?.name || '',
+            formula: counterData[2]?.formula || '',
+            isToday: counterData[2]?.isToday || false,
+            from: counterData[2]?.from || '',
+            to: counterData[2]?.to || ''
         },
         {
-            name: '',
-            formula: '',
-            isToday: false,
-            from: '',
-            to: ''
+            name: counterData[3]?.name || '',
+            formula: counterData[3]?.formula || '',
+            isToday: counterData[3]?.isToday || false,
+            from: counterData[3]?.from || '',
+            to: counterData[3]?.to || ''
         }
     ])
 
     // data 3
     let [graphs, setGraphs] = useState({
         graph1: {
-            name: '',
-            yAxis: '',
-            isToday: false,
-            from: '',
-            to: ''
+            name: graphsData?.graph1?.name || '',
+            yAxis: graphsData?.graph1?.yAxis || '',
+            isToday: graphsData?.graph1?.isToday || false,
+            from: graphsData?.graph1?.from || '',
+            to: graphsData?.graph1?.to || ''
         },
         graph2: {
-            name: '',
-            yAxis: '',
-            isToday: false,
-            from: '',
-            to: ''
+            name: graphsData?.graph2?.name || '',
+            yAxis: graphsData?.graph2?.yAxis || '',
+            isToday: graphsData?.graph2?.isToday || false,
+            from: graphsData?.graph2?.from || '',
+            to: graphsData?.graph2?.to || ''
         },
         pieChart: {
-            name: '',
-            device: [],
-            isToday: false,
-            from: '',
-            to: ''
+            name: graphsData?.pieChart?.name || '',
+            device: graphsData?.pieChart?.device || [],
+            isToday: graphsData?.pieChart?.isToday || false,
+            from: graphsData?.pieChart?.from || '',
+            to: graphsData?.pieChart?.to || ''
         },
 
     })
@@ -118,28 +122,19 @@ const SelectedDashboardSettings1 = memo((props) => {
         // get parameters
         axios.get(`${process.env.REACT_APP_API_URL}/device/device-parameters/${currentDevice._id}`, { withCredentials: true })
             .then(response => {
+                setIsLoading(false)
                 if (response.data.length > 0) {
                     setParameters(response.data)
                 }
             })
-            .catch(error => console.log(error))
-
-        //get template by setting id
-        axios.get(`${process.env.REACT_APP_API_URL}/dashboardSetting/${userDetails?.dashboardSetting?._id}`, { withCredentials: true })
-            .then(response => {
-                if (response.data) {
-                    setTemplateData(response.data)
-                    setIsLoading(false)
-                }
-            })
             .catch(error => {
-                console.log(error)
                 setIsLoading(false)
+                console.log(error)
             })
 
 
 
-    }, [props, settingData, currentDevice, userDetails])
+    }, [props, settingData, currentDevice, userDetails, isLoading])
 
     const submitHandler = e => {
         e.preventDefault();
@@ -156,86 +151,41 @@ const SelectedDashboardSettings1 = memo((props) => {
             dashboardType: userDetails.dashboard
         }
 
-        console.log(d1)
-
-        axios.put(`${process.env.REACT_APP_API_URL}/dashboardSetting`, d1, { withCredentials: true })
-            .then(res => {
-                // console.log(res.data.userResult)
-                if (res.data.userResult) {
-                    dispatch(setUserDetails(res.data.userResult))
-                }
-            })
-            .catch(err => console.log(err))
-
-        setIsLoading(false)
-
-        setCounter([
-            {
-                name: '',
-                formula: '',
-                isToday: false,
-                from: '',
-                to: ''
-            },
-            {
-                name: '',
-                formula: '',
-                isToday: false,
-                from: '',
-                to: ''
-            },
-            {
-                name: '',
-                formula: '',
-                isToday: false,
-                from: '',
-                to: ''
-            },
-            {
-                name: '',
-                formula: '',
-                isToday: false,
-                from: '',
-                to: ''
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to save changes.",
+            //icon: "warning",
+            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonText: 'Confirm'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.put(`${process.env.REACT_APP_API_URL}/dashboardSetting`, d1, { withCredentials: true })
+                    .then(res => {
+                        // console.log(res.data.userResult)
+                        if (res.data.userResult) {
+                            dispatch(setUserDetails(res.data.userResult))
+                            Swal.fire({
+                                title: "Save",
+                                text: "Changes save successfully",
+                                icon: "success",
+                                // confirmButtonText: 'Confirm'
+                            })
+                        }
+                    })
+                    .catch(err => console.log(err))
+                setIsLoading(false)
             }
-        ])
-
-        setGraphs({
-            graph1: {
-                name: '',
-                yAxis: '',
-                isToday: false,
-                from: '',
-                to: ''
-            },
-            graph2: {
-                name: '',
-                yAxis: '',
-                isToday: false,
-                from: '',
-                to: ''
-            },
-            pieChart: {
-                name: '',
-                device: [],
-                isToday: false,
-                from: '',
-                to: ''
-            },
-
         })
 
-        setSettingData({
-            name: '',
-            counter: [],
-            graphs: {},
-            userId: userDetails._id
-        })
+
+
+
     }
 
-    if(isLoading) {
+    if (isLoading) {
         return (
-            <div className="d-flex align-items-center justify-content-center" style={{minHeight: '200px'}}>
+            <div className="d-flex align-items-center justify-content-center" style={{ minHeight: '200px' }}>
                 <Spinner animation="border" variant="dark" />
             </div>
         )
@@ -243,7 +193,7 @@ const SelectedDashboardSettings1 = memo((props) => {
 
     return (
         <div className='selectedDashboardSettings border-success'>
-            <h3 className='fw-bold mb-4'> {templateData?.dashboard1?.name || 'Dashboard 1'} </h3>
+            <h3 className='fw-bold mb-4'> {template?.dashboard1?.name || 'Dashboard 1'} </h3>
             <h4> Template Settings </h4>
             <hr className='mt-0' />
 
@@ -266,16 +216,6 @@ const SelectedDashboardSettings1 = memo((props) => {
                             />
                         </div>
                     </div>
-                    {/* 
-                    <div className="col-lg-3 col-md-6">
-                        <label htmlFor="userType" className="form-label"> User Type </label>
-                        <select className="form-select" id='userType' aria-label="Default select example">
-                            <option value='' selected disabled> Select roll </option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                        </select>
-                    </div> */}
                 </div>
 
 
@@ -290,7 +230,6 @@ const SelectedDashboardSettings1 = memo((props) => {
                         <div className="col-lg-3 col-md-6">
                             {/* name */}
                             <div className="mb-3">
-                                {/* <label htmlFor="counterName1" className="form-label">{templateData?.dashboard1?.counter[0].name || 'Counter 1'} </label> */}
                                 <label htmlFor="counterName1" className="form-label">Option 1</label>
                                 <input
                                     type="text"
@@ -612,7 +551,7 @@ const SelectedDashboardSettings1 = memo((props) => {
                 <div className="row">
                     {/* graph 1 */}
                     <div className="col-xxl-4 col-md-6">
-                        <h4 className='mt-4'> {templateData?.dashboard1?.graphs?.graph1?.name || 'Graph 1 Setting'} </h4>
+                        <h4 className='mt-4'> {template?.dashboard1?.graphs?.graph1?.name || 'Graph 1 Setting'} </h4>
                         <hr className='mt-0' />
 
                         <div className="row">
@@ -693,7 +632,7 @@ const SelectedDashboardSettings1 = memo((props) => {
 
                     {/* graph 2 */}
                     <div className="col-xxl-4 col-md-6">
-                        <h4 className='mt-4'> {templateData?.dashboard1?.graphs?.graph2?.name || 'Graph 2 Setting'} </h4>
+                        <h4 className='mt-4'> {template?.dashboard1?.graphs?.graph2?.name || 'Graph 2 Setting'} </h4>
                         <hr className='mt-0' />
 
                         <div className="row">
@@ -775,7 +714,7 @@ const SelectedDashboardSettings1 = memo((props) => {
 
                     {/* pie chart */}
                     <div className="col-xxl-4 col-md-6">
-                        <h4 className='mt-4'> {templateData?.dashboard1?.graphs?.pieChart?.name || 'Pie Chart Settings'} </h4>
+                        <h4 className='mt-4'> {template?.dashboard1?.graphs?.pieChart?.name || 'Pie Chart Settings'} </h4>
                         <hr className='mt-0' />
 
                         <div className="row">

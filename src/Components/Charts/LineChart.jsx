@@ -14,7 +14,7 @@ const LineChart = ({ type, title, name, data, from, to }) => {
         chart: {
             height: 350,
             zoom: {
-                enabled: false
+                enabled: true
             }
         },
         dataLabels: {
