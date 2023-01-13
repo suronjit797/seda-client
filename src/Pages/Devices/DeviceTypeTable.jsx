@@ -1,11 +1,14 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import EditDTModel from '../../Components/Modals/EditDTModel';
 import { FiTrash, FiEdit, } from "react-icons/fi"
+import { ThemeContext } from '../../App.js'
 
 const DeviceTypeTable = ({ data, getDeviceTypes }) => {
+    let { isDark } = useContext(ThemeContext)
+
     const [isLoading, setIsLoading] = useState(false);
     const [SuccessMessage, setSuccessMessage] = useState();
     const [modalShow, setModalShow] = useState(false);
@@ -30,8 +33,8 @@ const DeviceTypeTable = ({ data, getDeviceTypes }) => {
         {
             name: 'Action',
             cell: row => <div>
-                <button className='btn btn-info me-1' onClick={() => editType(row)}><FiEdit/></button>
-                <button className='btn btn-danger' onClick={() => deleteType(row._id)}><FiTrash/></button>
+                <button className='btn btn-info me-1' onClick={() => editType(row)}><FiEdit /></button>
+                <button className='btn btn-danger' onClick={() => deleteType(row._id)}><FiTrash /></button>
             </div>,
             right: 'yes'
         },
@@ -63,7 +66,8 @@ const DeviceTypeTable = ({ data, getDeviceTypes }) => {
                 columns={columns}
                 data={data}
                 pagination
-                striped
+                striped={!isDark}
+                theme={isDark ? 'dark' : 'light '}
                 paginationPerPage={10}
                 paginationRowsPerPageOptions={[10, 20, 50]}
             />

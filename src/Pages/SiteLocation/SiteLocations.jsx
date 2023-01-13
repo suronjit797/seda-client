@@ -1,15 +1,18 @@
 import axios from 'axios';
 import moment from 'moment';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Spinner } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
 import AdminSidebarNav from '../../Components/Admins/AdminSidebarNav';
 import Swal from "sweetalert2";
-import {  useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { FiTrash, FiEye, FiEdit, FiPaperclip } from "react-icons/fi"
+import { ThemeContext } from '../../App.js'
 
 const SiteLocations = () => {
+    let { isDark } = useContext(ThemeContext)
+
     const [siteLocations, setSiteLocations] = useState([]);
     const userDetails = useSelector((state) => state.user.userDetails);
     const [isLoading, setIsLoading] = useState(false);
@@ -115,13 +118,13 @@ const SiteLocations = () => {
                         case 'user':
                             return (
                                 <div className="actions">
-                                    
+
                                 </div>
                             )
                         case 'public':
                             return (
                                 <div className="actions">
-                                    
+
                                 </div>
                             )
                         default:
@@ -179,7 +182,8 @@ const SiteLocations = () => {
                                 columns={columns}
                                 data={siteLocations}
                                 pagination
-                                striped
+                                striped={!isDark}
+                                theme={isDark ? 'dark' : 'light '}
                                 paginationPerPage={10}
                                 paginationRowsPerPageOptions={[10, 20, 50]}
                             />

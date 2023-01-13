@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Chart from 'react-apexcharts'
+import { ThemeContext } from '../../App.js'
 
-const LineChart = ({ type, title, name, data, from, to }) => {
+
+const LineChart = ({ type, title, name, data, from, to, zoom }) => {
+    let { isDark } = useContext(ThemeContext)
     var date = new Date();
-   
     from = new Date(from)
     to = new Date(to)
     const options = {
@@ -14,7 +16,7 @@ const LineChart = ({ type, title, name, data, from, to }) => {
         chart: {
             height: 350,
             zoom: {
-                enabled: true
+                enabled: zoom
             }
         },
         dataLabels: {
@@ -44,6 +46,16 @@ const LineChart = ({ type, title, name, data, from, to }) => {
                 format: 'dd MMM yyyy'
             }
         },
+        theme: isDark ? {
+            mode: 'dark',
+            palette: 'palette1',
+            monochrome: {
+                enabled: false,
+                color: 'green',
+                shadeTo: 'light',
+                shadeIntensity: 0.65
+            },
+        } : {}
     };
 
     return (

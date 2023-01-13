@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Chart from 'react-apexcharts'
+import { ThemeContext } from '../../App.js'
 
 const PieChart = ({ data }) => {
+  let { isDark } = useContext(ThemeContext)
   // console.log(data)
   let labels = data.map(d => d?.name)
   let series = data.map(d => d?.value)
@@ -14,6 +16,16 @@ const PieChart = ({ data }) => {
       text: 'Device (kWh)',
       align: 'center'
     },
+    theme: isDark ? {
+      mode: 'dark',
+      palette: 'palette1',
+      monochrome: {
+        enabled: false,
+        color: 'green',
+        shadeTo: 'light',
+        shadeIntensity: 0.65
+      },
+    } : {},
     labels,
     responsive: [{
       breakpoint: 480,

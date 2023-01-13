@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import NotificationSidebar from '../../Components/Notifications/NotificationSidebar';
@@ -7,9 +7,11 @@ import { FiTrash, FiEye, FiEdit } from "react-icons/fi"
 import moment from 'moment/moment';
 import DataTable from 'react-data-table-component';
 import Swal from "sweetalert2";
-
+import { ThemeContext } from '../../App.js'
 
 const AlarmSummary = () => {
+    let { isDark } = useContext(ThemeContext)
+
     const [notifications, setNotifications] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const getNotifications = async () => {
@@ -64,14 +66,14 @@ const AlarmSummary = () => {
         {
             name: 'Date Alarm Created',
             selector: row => (moment(row.device.createdAt).format("DD/MM/YYYY")),
-            grow:2
+            grow: 2
         },
         {
             name: 'Action',
             cell: row => <div>
                 <Link to={`/alarm-view/` + row._id} className='btn btn-success me-1'><FiEye title="View" /></Link>
                 <Link to={`/edit-alarm/` + row._id} className='btn btn-info me-1'><FiEdit title="Edit" /></Link>
-                <button className='btn btn-danger' onClick={()=>deleteAlarm(row._id)}><FiTrash title="Delete" /></button>
+                <button className='btn btn-danger' onClick={() => deleteAlarm(row._id)}><FiTrash title="Delete" /></button>
             </div>,
             grow: 2,
             center: 'yes'
@@ -125,7 +127,8 @@ const AlarmSummary = () => {
                                 columns={columns}
                                 data={notifications}
                                 pagination
-                                striped
+                                striped={!isDark}
+                                theme={isDark ? 'dark' : 'light '}
                                 paginationPerPage={10}
                                 paginationRowsPerPageOptions={[10, 20, 50]}
                             />

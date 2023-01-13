@@ -5,8 +5,10 @@ import axios from 'axios';
 import { setCurrentSite, setSiteDetails, setCurrentDevice, setUserDetails, setIsLogged } from '../../redux/userSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { BsFillSunFill, BsMoonFill } from 'react-icons/bs';
 
-const Header = ({ handle }) => {
+
+const Header = ({ handle, isDark, setIsDark }) => {
     const navigate = useNavigate()
     const [devices, setDevices] = useState([]);
     const userDetails = useSelector((state) => state?.user?.userDetails);
@@ -207,10 +209,16 @@ const Header = ({ handle }) => {
                     <div className="col-md-2 d-flex justify-content-end align-items-center">
                         {location.pathname === "/" && <button className='btn btn-warning me-5' onClick={handle.enter}>Display</button>}
                         <div>
-                            <img src={userDetails?.avatar} alt="" className='img-fluid rounded-circle' style={{ height: "80px", width: "80px" }} />
+                            <img src={userDetails?.avatar} alt="" className='img-fluid rounded-circle' style={{ height: "60px", width: "60px" }} />
                             <div className='text-center mt-2'>
-                                <button className='btn btn-danger' onClick={() => logOut()}>Logout</button>
+                                <button className='btn btn-danger btn-sm' onClick={() => logOut()}>Logout</button>
                             </div>
+                        </div>
+
+                        <div className='ms-3 fs-5' onClick={() => setIsDark(!isDark)} style={{cursor: 'pointer', userSelect:'none'}}>
+                            {
+                                !!isDark ? <BsMoonFill /> : <BsFillSunFill />
+                            }
                         </div>
                     </div>
                 </div>

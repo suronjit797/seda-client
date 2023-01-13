@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Header from './Components/Layout/Header';
@@ -71,125 +72,147 @@ import RecipientList from './Pages/Notifications/RecipientList';
 import AlarmView from './Pages/Notifications/AlarmView';
 import EditAlarm from './Pages/Notifications/EditAlarm';
 import AddVirtualDevice from './Pages/Devices/AddVirtualDevice';
+import { createContext } from 'react';
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 
+export const ThemeContext = createContext({})
 
 function App() {
+  // const sessionAge = 10 * 60 * 60 * 1000 //10 minute
+  const [isDark, setIsDark] = useState(true)
+
+
+  useEffect(() => {
+    if (isDark) {
+      document.body.classList.add('dark')
+    } else {
+      document.body.classList.remove('dark')
+    }
+
+  }, [isDark])
+
+
   const isLogged = useSelector((state) => state.user?.isLogged);
   const userDetails = useSelector(state => state.user?.userDetails)
   const handle = useFullScreenHandle();
+
+
   return (
-    <BrowserRouter>
-      <div className="App">
-        {isLogged ?
-          <>
-            <Header handle={handle} />
+    <ThemeContext.Provider value={{ isDark, setIsDark }}>
+      <BrowserRouter>
+        <div className="App dark-mode">
+          {isLogged ?
+            <>
+              <Header handle={handle} isDark={isDark} setIsDark={setIsDark} />
 
-            <Navbar handle={handle} />
+              <Navbar handle={handle} />
+              <Routes>
+                {(() => {
+                  switch (userDetails?.dashboard) {
+                    case 1:
+                      return <Route path="/" element={<Dashboard handle={handle} />} />
+                    case 2:
+                      return <Route path="/" element={<DashboardTwo handle={handle} />} />
+                    case 3:
+                      return <Route path="/" element={<DashboardThree handle={handle} />} />
+                    case 4:
+                      return <Route path="/" element={<DashboardFour handle={handle} />} />
+                    default:
+                      return <Route path="/" element={<Dashboard handle={handle} />} />
+                  }
+                })
+                  ()}
+                {/* users related routes */}
+                <Route path="/users" element={<Users />} />
+
+                {/* Installer related routes */}
+                <Route path="/installers" element={<Installers />} />
+                <Route path="/add-installer" element={<AddInstaller />} />
+                <Route path="/installer/:installerId" element={<InstallerView />} />
+                <Route path="/edit-installer/:installerId" element={<EditInstaller />} />
+
+                {/* site admin related routes */}
+                <Route path="/admins" element={<Admins />} />
+                <Route path="/add-admins" element={<AddAdmin />} />
+                <Route path="/admin/:adminId" element={<AdminView />} />
+                <Route path="/admin-sites/:adminId" element={<AdminSites />} />
+                <Route path="/edit-admin/:adminId" element={<EditAdmin />} />
+
+                {/* site Location related routes */}
+                <Route path="/site-locations" element={<SiteLocations />} />
+                <Route path="/add-location" element={<AddSiteLocation />} />
+                <Route path="/site-location/:siteLocationId" element={<SiteLocationView />} />
+                <Route path="/edit-site-location/:siteLocationId" element={<EditSiteLocation />} />
+                <Route path="/site-document/:siteLocationId" element={<SiteDocuments />} />
+
+                {/* site user related routes */}
+                <Route path="/site-users" element={<SiteUsers />} />
+                <Route path="/add-site-user" element={<AddSiteUser />} />
+                <Route path="/site-user/:userId" element={<SiteUserView />} />
+                <Route path="/edit-site-user/:userId" element={<EditSiteUser />} />
+
+                {/* Public user related routes */}
+                <Route path="/public-users" element={<PublicUsers />} />
+                <Route path="/add-public-user" element={<AddPublicUser />} />
+                <Route path="/public-user/:userId" element={<PublicUserView />} />
+                <Route path="/edit-public-user/:userId" element={<EditPublicUser />} />
+
+                {/* Devices related routes */}
+                <Route path="/devices" element={<Devices />} />
+                <Route path="/add-device" element={<AddDevice />} />
+                <Route path="/add-virtual-device" element={<AddVirtualDevice />} />
+                <Route path="/device-types" element={<DeviceTypes />} />
+                <Route path="/device/:deviceId" element={<DeviceView />} />
+                <Route path="/edit-device/:deviceId" element={<EditDevice />} />
+                <Route path="/device-data/:deviceId" element={<DeviceData />} />
+
+
+                {/* Analysis &Reporting related routes */}
+                <Route path="/analysis-reporting" element={<AnalysisReporting />} />
+                <Route path="/device-comparison" element={<DeviceComparison />} />
+
+
+                {/* Settings related routes */}
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/electricity-tariff" element={<ElectricityTariff />} />
+                <Route path="/system-computation" element={<SystemComputation />} />
+                <Route path="/dashboard-settings" element={<DashboardSettings />} />
+                <Route path="/building-background-types" element={<BuildingBackgroundTypes />} />
+                <Route path="/parameters" element={<Parameters />} />
+                <Route path="/formulas" element={<ManageFormulas />} />
+
+                {/* Profile */}
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/edit-profile" element={<EditProfile />} />
+
+                {/* Notification related routes */}
+                <Route path="/alarm-summary" element={<AlarmSummary />} />
+                <Route path="/create-alarm" element={<CreateAlarm />} />
+                <Route path="/recipient-list" element={<RecipientList />} />
+                <Route path="/alarm-view/:alarmId" element={<AlarmView />} />
+                <Route path="/edit-alarm/:alarmId" element={<EditAlarm />} />
+                <Route path='*' element={<p> route not found go to home page </p>} />
+              </Routes>
+              <Footer />
+
+            </>
+            :
             <Routes>
-              {(() => {
-                switch (userDetails?.dashboard) {
-                  case 1:
-                    return <Route path="/" element={<Dashboard handle={handle} />} />
-                  case 2:
-                    return <Route path="/" element={<DashboardTwo handle={handle} />} />
-                  case 3:
-                    return <Route path="/" element={<DashboardThree handle={handle} />} />
-                  case 4:
-                    return <Route path="/" element={<DashboardFour handle={handle} />} />
-                  default:
-                    return <Route path="/" element={<Dashboard handle={handle} />} />
-                }
-              })
-                ()}
-              {/* users related routes */}
-              <Route path="/users" element={<Users />} />
-
-              {/* Installer related routes */}
-              <Route path="/installers" element={<Installers />} />
-              <Route path="/add-installer" element={<AddInstaller />} />
-              <Route path="/installer/:installerId" element={<InstallerView />} />
-              <Route path="/edit-installer/:installerId" element={<EditInstaller />} />
-
-              {/* site admin related routes */}
-              <Route path="/admins" element={<Admins />} />
-              <Route path="/add-admins" element={<AddAdmin />} />
-              <Route path="/admin/:adminId" element={<AdminView />} />
-              <Route path="/admin-sites/:adminId" element={<AdminSites />} />
-              <Route path="/edit-admin/:adminId" element={<EditAdmin />} />
-
-              {/* site Location related routes */}
-              <Route path="/site-locations" element={<SiteLocations />} />
-              <Route path="/add-location" element={<AddSiteLocation />} />
-              <Route path="/site-location/:siteLocationId" element={<SiteLocationView />} />
-              <Route path="/edit-site-location/:siteLocationId" element={<EditSiteLocation />} />
-              <Route path="/site-document/:siteLocationId" element={<SiteDocuments />} />
-
-              {/* site user related routes */}
-              <Route path="/site-users" element={<SiteUsers />} />
-              <Route path="/add-site-user" element={<AddSiteUser />} />
-              <Route path="/site-user/:userId" element={<SiteUserView />} />
-              <Route path="/edit-site-user/:userId" element={<EditSiteUser />} />
-
-              {/* Public user related routes */}
-              <Route path="/public-users" element={<PublicUsers />} />
-              <Route path="/add-public-user" element={<AddPublicUser />} />
-              <Route path="/public-user/:userId" element={<PublicUserView />} />
-              <Route path="/edit-public-user/:userId" element={<EditPublicUser />} />
-
-              {/* Devices related routes */}
-              <Route path="/devices" element={<Devices />} />
-              <Route path="/add-device" element={<AddDevice />} />
-              <Route path="/add-virtual-device" element={<AddVirtualDevice />} />
-              <Route path="/device-types" element={<DeviceTypes />} />
-              <Route path="/device/:deviceId" element={<DeviceView />} />
-              <Route path="/edit-device/:deviceId" element={<EditDevice />} />
-              <Route path="/device-data/:deviceId" element={<DeviceData />} />
-
-
-              {/* Analysis &Reporting related routes */}
-              <Route path="/analysis-reporting" element={<AnalysisReporting />} />
-              <Route path="/device-comparison" element={<DeviceComparison />} />
-
-
-              {/* Settings related routes */}
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/electricity-tariff" element={<ElectricityTariff />} />
-              <Route path="/system-computation" element={<SystemComputation />} />
-              <Route path="/dashboard-settings" element={<DashboardSettings />} />
-              <Route path="/building-background-types" element={<BuildingBackgroundTypes />} />
-              <Route path="/parameters" element={<Parameters />} />
-              <Route path="/formulas" element={<ManageFormulas />} />
-
-              {/* Profile */}
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/edit-profile" element={<EditProfile />} />
-
-              {/* Notification related routes */}
-              <Route path="/alarm-summary" element={<AlarmSummary />} />
-              <Route path="/create-alarm" element={<CreateAlarm />} />
-              <Route path="/recipient-list" element={<RecipientList />} />
-              <Route path="/alarm-view/:alarmId" element={<AlarmView />} />
-              <Route path="/edit-alarm/:alarmId" element={<EditAlarm />} />
-              <Route path='*' element={<p> route not found go to home page </p>} />
+              <Route path="/" element={<SignIn />} />
+              <Route path='/forgot-password' element={<ForgotPassword />} />
+              <Route path='/reset-password/:token' element={<ResetPassword />} />
+              <Route path='/installer-signup' element={<InstallerSignUp />} />
+              <Route path='*' element={<p> route not found please login or go to home page </p>} />
             </Routes>
-            <Footer />
-
-          </>
-          :
-          <Routes>
-            <Route path="/" element={<SignIn />} />
-            <Route path='/forgot-password' element={<ForgotPassword />} />
-            <Route path='/reset-password/:token' element={<ResetPassword />} />
-            <Route path='/installer-signup' element={<InstallerSignUp />} />
-            <Route path='*' element={<p> route not found please login or go to home page </p>} />
-          </Routes>
-        }
-      </div>
-    </BrowserRouter>
+          }
+        </div>
+      </BrowserRouter>
+    </ThemeContext.Provider>
   );
 }
 
 export default App;
+
+

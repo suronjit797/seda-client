@@ -16,7 +16,6 @@ const SelectedDashboardSettings1 = memo((props) => {
     // redux
     let userDetails = useSelector((state) => state?.user?.userDetails);
     let currentDevice = useSelector((state) => state?.user?.currentDevice);
-    let template = userDetails?.dashboardSetting?.dashboard1
 
     // important variables
     const startOfDay = moment().startOf('day').format('yyyy-MM-DDThh:mm:ss');
@@ -32,11 +31,9 @@ const SelectedDashboardSettings1 = memo((props) => {
         name: "No data to show"
     }])
 
-    let { name, counter: counterData, graphs: graphsData } = template
-
     // data 1
     const [settingData, setSettingData] = useState({
-        name: name || '',
+        name: userDetails?.dashboardSetting?.dashboard1?.name || '',
         counter: [],
         graphs: {},
         userId: userDetails._id
@@ -45,57 +42,57 @@ const SelectedDashboardSettings1 = memo((props) => {
     // data 2
     let [counter, setCounter] = useState([
         {
-            name: counterData[0]?.name || '',
-            formula: counterData[0]?.formula || '',
-            isToday: counterData[0]?.isToday || false,
-            from: counterData[0]?.from || '',
-            to: counterData[0]?.to || ''
+            name: userDetails?.dashboardSetting?.dashboard1?.counter[0]?.name || '',
+            formula: userDetails?.dashboardSetting?.dashboard1?.counter[0]?.formula || '',
+            isToday: userDetails?.dashboardSetting?.dashboard1?.counter[0]?.isToday || false,
+            from: userDetails?.dashboardSetting?.dashboard1?.counter[0]?.from || '',
+            to: userDetails?.dashboardSetting?.dashboard1?.counter[0]?.to || ''
         },
         {
-            name: counterData[1]?.name || '',
-            formula: counterData[1]?.formula || '',
-            isToday: counterData[1]?.isToday || false,
-            from: counterData[1]?.from || '',
-            to: counterData[1]?.to || ''
+            name: userDetails?.dashboardSetting?.dashboard1?.counter[1]?.name || '',
+            formula: userDetails?.dashboardSetting?.dashboard1?.counter[1]?.formula || '',
+            isToday: userDetails?.dashboardSetting?.dashboard1?.counter[1]?.isToday || false,
+            from: userDetails?.dashboardSetting?.dashboard1?.counter[1]?.from || '',
+            to: userDetails?.dashboardSetting?.dashboard1?.counter[1]?.to || ''
         },
         {
-            name: counterData[2]?.name || '',
-            formula: counterData[2]?.formula || '',
-            isToday: counterData[2]?.isToday || false,
-            from: counterData[2]?.from || '',
-            to: counterData[2]?.to || ''
+            name: userDetails?.dashboardSetting?.dashboard1?.counter[2]?.name || '',
+            formula: userDetails?.dashboardSetting?.dashboard1?.counter[2]?.formula || '',
+            isToday: userDetails?.dashboardSetting?.dashboard1?.counter[2]?.isToday || false,
+            from: userDetails?.dashboardSetting?.dashboard1?.counter[2]?.from || '',
+            to: userDetails?.dashboardSetting?.dashboard1?.counter[2]?.to || ''
         },
         {
-            name: counterData[3]?.name || '',
-            formula: counterData[3]?.formula || '',
-            isToday: counterData[3]?.isToday || false,
-            from: counterData[3]?.from || '',
-            to: counterData[3]?.to || ''
+            name: userDetails?.dashboardSetting?.dashboard1?.counter[3]?.name || '',
+            formula: userDetails?.dashboardSetting?.dashboard1?.counter[3]?.formula || '',
+            isToday: userDetails?.dashboardSetting?.dashboard1?.counter[3]?.isToday || false,
+            from: userDetails?.dashboardSetting?.dashboard1?.counter[3]?.from || '',
+            to: userDetails?.dashboardSetting?.dashboard1?.counter[3]?.to || ''
         }
     ])
 
     // data 3
     let [graphs, setGraphs] = useState({
         graph1: {
-            name: graphsData?.graph1?.name || '',
-            yAxis: graphsData?.graph1?.yAxis || '',
-            isToday: graphsData?.graph1?.isToday || false,
-            from: graphsData?.graph1?.from || '',
-            to: graphsData?.graph1?.to || ''
+            name: userDetails?.dashboardSetting?.dashboard1?.graphs?.graph1?.name || '',
+            yAxis: userDetails?.dashboardSetting?.dashboard1?.graphs?.graph1?.yAxis || '',
+            isToday: userDetails?.dashboardSetting?.dashboard1?.graphs?.graph1?.isToday || false,
+            from: userDetails?.dashboardSetting?.dashboard1?.graphs?.graph1?.from || '',
+            to: userDetails?.dashboardSetting?.dashboard1?.graphs?.graph1?.to || ''
         },
         graph2: {
-            name: graphsData?.graph2?.name || '',
-            yAxis: graphsData?.graph2?.yAxis || '',
-            isToday: graphsData?.graph2?.isToday || false,
-            from: graphsData?.graph2?.from || '',
-            to: graphsData?.graph2?.to || ''
+            name: userDetails?.dashboardSetting?.dashboard1?.graphs?.graph2?.name || '',
+            yAxis: userDetails?.dashboardSetting?.dashboard1?.graphs?.graph2?.yAxis || '',
+            isToday: userDetails?.dashboardSetting?.dashboard1?.graphs?.graph2?.isToday || false,
+            from: userDetails?.dashboardSetting?.dashboard1?.graphs?.graph2?.from || '',
+            to: userDetails?.dashboardSetting?.dashboard1?.graphs?.graph2?.to || ''
         },
         pieChart: {
-            name: graphsData?.pieChart?.name || '',
-            device: graphsData?.pieChart?.device || [],
-            isToday: graphsData?.pieChart?.isToday || false,
-            from: graphsData?.pieChart?.from || '',
-            to: graphsData?.pieChart?.to || ''
+            name: userDetails?.dashboardSetting?.dashboard1?.graphs?.pieChart?.name || '',
+            device: userDetails?.dashboardSetting?.dashboard1?.graphs?.pieChart?.device || [],
+            isToday: userDetails?.dashboardSetting?.dashboard1?.graphs?.pieChart?.isToday || false,
+            from: userDetails?.dashboardSetting?.dashboard1?.graphs?.pieChart?.from || '',
+            to: userDetails?.dashboardSetting?.dashboard1?.graphs?.pieChart?.to || ''
         },
 
     })
@@ -193,7 +190,7 @@ const SelectedDashboardSettings1 = memo((props) => {
 
     return (
         <div className='selectedDashboardSettings border-success'>
-            <h3 className='fw-bold mb-4'> {template?.dashboard1?.name || 'Dashboard 1'} </h3>
+            <h3 className='fw-bold mb-4'> {userDetails?.dashboardSetting?.dashboard1?.dashboard1?.name || 'Dashboard 1'} </h3>
             <h4> Template Settings </h4>
             <hr className='mt-0' />
 
@@ -551,7 +548,7 @@ const SelectedDashboardSettings1 = memo((props) => {
                 <div className="row">
                     {/* graph 1 */}
                     <div className="col-xxl-4 col-md-6">
-                        <h4 className='mt-4'> {template?.dashboard1?.graphs?.graph1?.name || 'Graph 1 Setting'} </h4>
+                        <h4 className='mt-4'> {userDetails?.dashboardSetting?.dashboard1?.dashboard1?.graphs?.graph1?.name || 'Graph 1 Setting'} </h4>
                         <hr className='mt-0' />
 
                         <div className="row">
@@ -632,7 +629,7 @@ const SelectedDashboardSettings1 = memo((props) => {
 
                     {/* graph 2 */}
                     <div className="col-xxl-4 col-md-6">
-                        <h4 className='mt-4'> {template?.dashboard1?.graphs?.graph2?.name || 'Graph 2 Setting'} </h4>
+                        <h4 className='mt-4'> {userDetails?.dashboardSetting?.dashboard1?.dashboard1?.graphs?.graph2?.name || 'Graph 2 Setting'} </h4>
                         <hr className='mt-0' />
 
                         <div className="row">
@@ -714,7 +711,7 @@ const SelectedDashboardSettings1 = memo((props) => {
 
                     {/* pie chart */}
                     <div className="col-xxl-4 col-md-6">
-                        <h4 className='mt-4'> {template?.dashboard1?.graphs?.pieChart?.name || 'Pie Chart Settings'} </h4>
+                        <h4 className='mt-4'> {userDetails?.dashboardSetting?.dashboard1?.dashboard1?.graphs?.pieChart?.name || 'Pie Chart Settings'} </h4>
                         <hr className='mt-0' />
 
                         <div className="row">

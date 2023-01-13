@@ -1,11 +1,14 @@
 import axios from 'axios';
-import React, {useState} from 'react';
+import React, { useContext, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { FiTrash, FiEdit, } from "react-icons/fi"
 import EditParameterModal from '../../../Components/Modals/EditParameterModal';
 import Swal from "sweetalert2";
+import { ThemeContext } from '../../../App.js'
 
-const ParametersTable = ({data, getParameters}) => {
+const ParametersTable = ({ data, getParameters }) => {
+    let { isDark } = useContext(ThemeContext)
+
     const [modalShow, setModalShow] = useState(false);
     const [parameterToEdit, setParameterToEdit] = useState();
     const columns = [
@@ -32,8 +35,8 @@ const ParametersTable = ({data, getParameters}) => {
         {
             name: 'Action',
             cell: row => <div>
-                <button className='btn btn-info me-1' onClick={() => editParameter(row)}> <FiEdit/>   </button>
-                <button className='btn btn-danger' onClick={()=>deleteParameter(row._id)}><FiTrash/></button>
+                <button className='btn btn-info me-1' onClick={() => editParameter(row)}> <FiEdit />   </button>
+                <button className='btn btn-danger' onClick={() => deleteParameter(row._id)}><FiTrash /></button>
             </div>,
             grow: 2,
             center: 'yes'
@@ -80,7 +83,8 @@ const ParametersTable = ({data, getParameters}) => {
                 columns={columns}
                 data={data}
                 pagination
-                striped
+                striped={!isDark}
+                theme={isDark ? 'dark' : 'light '}
                 paginationPerPage={10}
                 paginationRowsPerPageOptions={[10, 20, 50]}
             />

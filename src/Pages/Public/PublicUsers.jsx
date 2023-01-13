@@ -1,6 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
@@ -8,8 +8,11 @@ import Swal from "sweetalert2";
 import PublicUserSidebar from '../../Components/Public/PublicUserSidebar';
 import { FiTrash, FiEye, FiEdit, FiHome } from "react-icons/fi"
 import { useSelector } from 'react-redux';
+import { ThemeContext } from '../../App.js'
 
 const PublicUsers = () => {
+    let { isDark } = useContext(ThemeContext)
+
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const userDetails = useSelector((state) => state.user.userDetails);
@@ -44,7 +47,7 @@ const PublicUsers = () => {
         },
         {
             name: 'Name',
-            cell:(row)=><div><img src={row.avatar} width={40} height={40} className="my-2 rounded-circle" alt={`${row.name}`}/>  {row.name}</div>,
+            cell: (row) => <div><img src={row.avatar} width={40} height={40} className="my-2 rounded-circle" alt={`${row.name}`} />  {row.name}</div>,
             selector: row => (row),
         },
         {
@@ -127,7 +130,8 @@ const PublicUsers = () => {
                                 columns={columns}
                                 data={users}
                                 pagination
-                                striped
+                                striped={!isDark}
+                                theme={isDark ? 'dark' : 'light '}
                                 paginationPerPage={10}
                                 paginationRowsPerPageOptions={[10, 20, 50]}
                             />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Spinner } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import UsersSidebar from '../../Components/Users/UsersSidebar';
@@ -9,8 +9,12 @@ import { Link } from 'react-router-dom';
 import { AiOutlineEye } from "react-icons/ai"
 import { FiUserCheck, FiUserX, FiTrash } from "react-icons/fi"
 import { useSelector } from 'react-redux';
+import { ThemeContext } from '../../App.js'
+
 
 const Users = () => {
+    let { isDark } = useContext(ThemeContext)
+
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const userDetails = useSelector((state) => state.user.userDetails);
@@ -213,9 +217,11 @@ const Users = () => {
                                 columns={columns}
                                 data={users}
                                 pagination
-                                striped
                                 paginationPerPage={10}
                                 paginationRowsPerPageOptions={[10, 20, 50]}
+                                striped={!isDark}
+                                theme={isDark ? 'dark' : 'light '}
+                                className='mt-3'
                             />
                         </div>
                     </div>

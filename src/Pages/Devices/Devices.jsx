@@ -1,6 +1,6 @@
 import axios from 'axios';
 import moment from 'moment/moment';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Spinner } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
@@ -9,8 +9,11 @@ import { FiEye, FiEdit, FiTrash } from "react-icons/fi"
 import { AiOutlineFundView } from "react-icons/ai"
 import Swal from "sweetalert2";
 import { useSelector } from 'react-redux';
+import { ThemeContext } from '../../App.js'
 
 const Devices = () => {
+    let { isDark } = useContext(ThemeContext)
+
     const [isLoading, setIsLoading] = useState(false);
     const userDetails = useSelector((state) => state?.user?.userDetails);
     const [devices, setDevices] = useState([]);
@@ -188,7 +191,8 @@ const Devices = () => {
                                 columns={columns}
                                 data={devices}
                                 pagination
-                                striped
+                                striped={!isDark}
+                                theme={isDark ? 'dark' : 'light '}
                                 paginationPerPage={10}
                                 paginationRowsPerPageOptions={[10, 20, 50]}
                             />

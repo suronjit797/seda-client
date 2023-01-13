@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import { FiEdit } from "react-icons/fi"
 import { BiStar } from "react-icons/bi"
 import { AiFillStar } from "react-icons/ai"
 import axios from 'axios';
 import Swal from "sweetalert2";
+import { ThemeContext } from '../../App.js'
 
-const DeviceParameters = ({ data, device,getDevice, getDeviceParameters }) => {
+const DeviceParameters = ({ data, device, getDevice, getDeviceParameters }) => {
+    let { isDark } = useContext(ThemeContext)
+
     const columns = [
         {
             name: "No.",
@@ -71,12 +74,6 @@ const DeviceParameters = ({ data, device,getDevice, getDeviceParameters }) => {
         })
     }
 
-
-
-
-
-
-
     return (
         <div>
             <h4 className='mb-3'>Available Device Parameters </h4>
@@ -84,7 +81,8 @@ const DeviceParameters = ({ data, device,getDevice, getDeviceParameters }) => {
                 columns={columns}
                 data={data}
                 pagination
-                striped
+                striped={!isDark}
+                theme={isDark ? 'dark' : 'light '}
                 paginationPerPage={10}
                 paginationRowsPerPageOptions={[10, 20, 50]}
             />

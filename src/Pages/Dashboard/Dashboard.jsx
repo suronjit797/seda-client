@@ -127,8 +127,6 @@ const Dashboard = memo(({ handle }) => {
                 to || template?.graphs?.graph2?.to || endOfMonth
             )
 
-            console.log(template?.graphs?.pieChart?.to)
-
             let pieData = {
                 from: from || template?.graphs?.pieChart?.from || startOfMonth,
                 to: to || template?.graphs?.pieChart?.to || endOfMonth,
@@ -280,6 +278,7 @@ const Dashboard = memo(({ handle }) => {
                                             data={graph2}
                                             color="#1fb35b"
                                             title="Energy Consumption Monthly (kWh)"
+                                            zoom={true}
                                         />) : (<LineChart
                                             type="bar"
                                             from={template?.graphs?.graph2?.from || startOfMonth}
@@ -288,6 +287,7 @@ const Dashboard = memo(({ handle }) => {
                                             data={graph2}
                                             color="#1fb35b"
                                             title="Energy Consumption Monthly (kWh)"
+                                            zoom={true}
                                         />)
                                     }
                                 </div>

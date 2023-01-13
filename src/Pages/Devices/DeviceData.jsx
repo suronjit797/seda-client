@@ -1,12 +1,15 @@
 import axios from 'axios';
 import moment from 'moment/moment';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Spinner } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { Link, useParams } from 'react-router-dom';
 import DevicesSidebar from '../../Components/Devices/DevicesSidebar';
+import { ThemeContext } from '../../App.js'
 
 const DeviceData = () => {
+    let { isDark } = useContext(ThemeContext)
+
     const Params = useParams()
     const deviceId = Params.deviceId
     const [isLoading, setIsLoading] = useState(false);
@@ -66,7 +69,8 @@ const DeviceData = () => {
                                 columns={columns}
                                 data={data}
                                 pagination
-                                striped
+                                striped={!isDark}
+                                theme={isDark ? 'dark' : 'light '}
                                 paginationPerPage={10}
                                 paginationRowsPerPageOptions={[10, 20, 50]}
                             />

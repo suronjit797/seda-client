@@ -1,14 +1,17 @@
 import axios from 'axios';
 import moment from 'moment';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Spinner } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { Link, useParams } from 'react-router-dom';
 import AdminSidebarNav from '../../Components/Admins/AdminSidebarNav';
 import Swal from "sweetalert2";
 import { FiTrash, FiEye, FiEdit, FiPaperclip } from "react-icons/fi"
+import { ThemeContext } from '../../App.js'
 
 const AdminSites = () => {
+    let { isDark } = useContext(ThemeContext)
+
     const Params = useParams()
     const adminId = Params.adminId
     const [siteLocations, setSiteLocations] = useState([]);
@@ -16,7 +19,7 @@ const AdminSites = () => {
     const [isLoading, setIsLoading] = useState(false);
     const getSiteLocations = async () => {
         setIsLoading(true)
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/admin-sites/`+adminId, { withCredentials: true })
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/site-location/admin-sites/` + adminId, { withCredentials: true })
         if (response) {
             setSiteLocations(response.data.sort((a, b) => a.createdAt < b.createdAt ? 1 : -1))
             setIsLoading(false)
@@ -32,7 +35,7 @@ const AdminSites = () => {
     }
 
     useEffect(() => {
-        document.title="SEDA - All Site Locations"
+        document.title = "SEDA - All Site Locations"
         getAdmin()
         getSiteLocations()
         // eslint-disable-next-line
@@ -47,23 +50,23 @@ const AdminSites = () => {
         {
             name: 'Name',
             selector: row => (row.name),
-            
+
         },
         {
             name: 'Building Name',
             selector: row => (row.buildingName),
-            
+
         },
         {
             name: 'Contact Person',
             selector: row => (row.contactPersonName),
-           
+
         },
         {
             name: 'Phone',
             cell: row => <>+6{row.contactPersonPhone}</>,
             selector: row => (row.contactPersonPhone),
-           
+
         },
         {
             name: 'Installer',
@@ -77,16 +80,16 @@ const AdminSites = () => {
         {
             name: 'Action',
             cell: row => <div>
-                <Link to={`/site-location/`+ row._id} className='btn btn-success me-1'><FiEye title="View"/></Link>
-                <Link to={`/edit-site-location/`+ row._id} className='btn btn-info me-1'><FiEdit title="Edit"/></Link>
-                <Link to={`/site-document/`+ row._id} className='btn btn-warning me-1'><FiPaperclip title="Documents"/></Link>
-                <button className='btn btn-danger' onClick={()=>deleteSiteLocation(row._id)}><FiTrash title="Delete"/></button>
+                <Link to={`/site-location/` + row._id} className='btn btn-success me-1'><FiEye title="View" /></Link>
+                <Link to={`/edit-site-location/` + row._id} className='btn btn-info me-1'><FiEdit title="Edit" /></Link>
+                <Link to={`/site-document/` + row._id} className='btn btn-warning me-1'><FiPaperclip title="Documents" /></Link>
+                <button className='btn btn-danger' onClick={() => deleteSiteLocation(row._id)}><FiTrash title="Delete" /></button>
             </div>,
-            grow:2,
-            center:'yes'
+            grow: 2,
+            center: 'yes'
         },
     ];
-    const deleteSiteLocation = async(siteLocationId)=>{
+    const deleteSiteLocation = async (siteLocationId) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You want to delete this site location?",
@@ -96,23 +99,23 @@ const AdminSites = () => {
             confirmButtonText: 'Confirm'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`${process.env.REACT_APP_API_URL}/site-location/`+siteLocationId, { withCredentials: true })
-                        .then(res => {
-                            getSiteLocations()
-                            Swal.fire({
-                                title: "Done!",
-                                text: "Site location Successfully Deleted",
-                                icon: "success",
-                                timer: 2000,
-                                button: false
-                            })
-                        });
+                axios.delete(`${process.env.REACT_APP_API_URL}/site-location/` + siteLocationId, { withCredentials: true })
+                    .then(res => {
+                        getSiteLocations()
+                        Swal.fire({
+                            title: "Done!",
+                            text: "Site location Successfully Deleted",
+                            icon: "success",
+                            timer: 2000,
+                            button: false
+                        })
+                    });
             } else if (
-              result.dismiss === Swal.DismissReason.cancel
+                result.dismiss === Swal.DismissReason.cancel
             ) {
-               
+
             }
-          })
+        })
     }
     return (
         <div className='site-Locations'>
@@ -131,7 +134,8 @@ const AdminSites = () => {
                                 columns={columns}
                                 data={siteLocations}
                                 pagination
-                                striped
+                                striped={!isDark}
+                                theme={isDark ? 'dark' : 'light '}
                                 paginationPerPage={10}
                                 paginationRowsPerPageOptions={[10, 20, 50]}
                             />

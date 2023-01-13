@@ -1,7 +1,9 @@
-import React, {useEffect} from 'react';
+import React, { useContext, useEffect } from 'react';
 import { FullScreen } from "react-full-screen";
+import { ThemeContext } from '../../App.js'
 
 const DashboardFour = ({ handle }) => {
+    let { isDark } = useContext(ThemeContext)
     useEffect(() => {
         document.title = "SEDA - Dashboard"
     }, []);
@@ -45,7 +47,7 @@ const DashboardFour = ({ handle }) => {
                             </div>
                         </div>
                     </div>
-                    <div className="row bg-light mb-2">
+                    <div className={`row ${isDark ? 'bg-dark' : 'bg-light'} mb-2`}>
                         <aside className='col-md-4'>
                             <div className='row d-flex justify-content-center'><h5 className="col-4 bg-warning text-white text-center p-2">Solar Side</h5></div>
                             <div className="row mb-3">

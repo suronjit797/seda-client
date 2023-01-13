@@ -20,6 +20,16 @@ const DashboardSettings = () => {
     const [SuccessMessage, setSuccessMessage] = useState();
     const [IsLoading, setIsLoading] = useState(false);
 
+
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_API_URL}/users/me`, { withCredentials: true })
+            .then(res => dispatch(setUserDetails(res.data)))
+            .catch(err => console.log(err))
+    }, [])
+
+
+
+
     useEffect(() => {
         document.title = "Seda - Dashboard Settings"
         if (userDetails) {

@@ -64,7 +64,7 @@ const Navbar = ({ handle }) => {
         }
     }, [dropdownIsOpen, NotificationDropdownIsOpen])
     return (
-        <nav className="navbar navbar-expand-lg navbar-bg p-0">
+        <nav className="navbar navbar-expand-lg navbar-bg p-0 ">
             <div className="container-fluid">
                 <button className="navbar-toggler" type="button" onClick={(e) => setToggleNav(!ToggleNav)} data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>

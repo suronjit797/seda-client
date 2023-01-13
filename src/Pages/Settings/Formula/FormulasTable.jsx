@@ -1,10 +1,13 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import { FiTrash } from "react-icons/fi"
 import Swal from "sweetalert2";
+import { ThemeContext } from '../../../App.js'
 
 const FormulasTable = ({ formulas, getFormulas }) => {
+    let { isDark } = useContext(ThemeContext)
+
     const columns = [
         {
             name: "No",
@@ -70,7 +73,8 @@ const FormulasTable = ({ formulas, getFormulas }) => {
                 columns={columns}
                 data={formulas}
                 pagination
-                striped
+                striped={!isDark}
+                theme={isDark ? 'dark' : 'light '}
                 paginationPerPage={10}
                 paginationRowsPerPageOptions={[10, 20, 50]}
             />

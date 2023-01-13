@@ -1,13 +1,16 @@
 import axios from 'axios';
 import moment from 'moment/moment';
-import React from 'react';
+import React, { useContext } from 'react';
 import DataTable from 'react-data-table-component';
 import { FiTrash, FiEye } from "react-icons/fi"
-import {BsFillPlayFill, BsPauseFill} from "react-icons/bs"
+import { BsFillPlayFill, BsPauseFill } from "react-icons/bs"
 import { Link } from 'react-router-dom';
 import Swal from "sweetalert2";
+import { ThemeContext } from '../../App.js'
 
 const RecipientListTable = ({ data, getAssignedAlarm }) => {
+    let { isDark } = useContext(ThemeContext)
+
     const columns = [
         {
             name: "No.",
@@ -30,7 +33,7 @@ const RecipientListTable = ({ data, getAssignedAlarm }) => {
         },
         {
             name: 'User Type',
-            cell: (row) => <div className='text-capitalize'>{row.role==="user" ? "System User" : row.role}</div>,
+            cell: (row) => <div className='text-capitalize'>{row.role === "user" ? "System User" : row.role}</div>,
             selector: row => (row.role),
         },
         {
@@ -141,7 +144,8 @@ const RecipientListTable = ({ data, getAssignedAlarm }) => {
                 columns={columns}
                 data={data}
                 pagination
-                striped
+                striped={!isDark}
+                theme={isDark ? 'dark' : 'light '}
                 paginationPerPage={10}
                 paginationRowsPerPageOptions={[10, 20, 50]}
             />

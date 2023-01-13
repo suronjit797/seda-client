@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { FiTrash, FiEdit, } from "react-icons/fi"
 import { Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import DataTable from 'react-data-table-component';
 import EditETariffModal from '../Modals/EditETariffModal';
 import { useSelector } from 'react-redux';
+import { ThemeContext } from '../../App.js'
 
 export default function ElectricityTariffTable({ data, getElectricityTariff }) {
+    let { isDark } = useContext(ThemeContext)
+
     const [isLoading, setIsLoading] = useState(false);
     const userDetails = useSelector((state) => state.user.userDetails);
     const [SuccessMessage, setSuccessMessage] = useState();
@@ -92,7 +95,8 @@ export default function ElectricityTariffTable({ data, getElectricityTariff }) {
                 columns={columns}
                 data={data}
                 pagination
-                striped
+                striped={!isDark}
+                theme={isDark ? 'dark' : 'light '}
                 paginationPerPage={3}
                 paginationRowsPerPageOptions={[10, 20, 50]}
             />

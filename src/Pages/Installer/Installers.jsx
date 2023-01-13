@@ -1,6 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import { Spinner } from 'react-bootstrap';
@@ -8,7 +8,11 @@ import InstallerSidebarNav from '../../Components/Installer/InstallerSidebarNav'
 import Swal from "sweetalert2";
 import { FiTrash, FiEye, FiEdit } from "react-icons/fi"
 import { useSelector } from 'react-redux';
+import { ThemeContext } from '../../App.js'
+
 const Installers = () => {
+    let { isDark } = useContext(ThemeContext)
+
     const userDetails = useSelector((state) => state.user.userDetails);
     const [installers, setInstallers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -143,7 +147,8 @@ const Installers = () => {
                                 columns={columns}
                                 data={installers}
                                 pagination
-                                striped
+                                striped={!isDark}
+                                theme={isDark ? 'dark' : 'light '}
                                 paginationPerPage={10}
                                 paginationRowsPerPageOptions={[10, 20, 50]}
                             />

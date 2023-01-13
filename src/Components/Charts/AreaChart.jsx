@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Chart from 'react-apexcharts'
+import { ThemeContext } from '../../App.js'
 
 const AreaChart = ({ name, title, data, from, to }) => {
-    // console.log(data[0])
+    let { isDark } = useContext(ThemeContext)
+    console.log(isDark)
     var date = new Date();
     from = new Date(from)
     to = new Date(to)
@@ -47,6 +49,15 @@ const AreaChart = ({ name, title, data, from, to }) => {
                 stops: [0, 100]
             }
         },
+        theme: !isDark ? {
+            mode: 'light',
+            palette: 'palette9',
+            // monochrome: {
+            //     enabled: true,
+            //     shadeTo: 'light',
+            //     shadeIntensity: 0.65
+            // },
+        } : {mode: 'dark',},
     }
     return (
         <div>
