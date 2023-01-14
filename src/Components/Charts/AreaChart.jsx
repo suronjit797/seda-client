@@ -43,7 +43,7 @@ const AreaChart = ({ name, title, data, from, to }) => {
             type: 'gradient',
             gradient: {
                 shadeIntensity: 1,
-                opacityFrom: 0.7,
+                opacityFrom: 0.5,
                 opacityTo: 0.9,
                 stops: [0, 100]
             }
