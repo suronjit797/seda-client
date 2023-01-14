@@ -287,6 +287,9 @@ const DashboardThree = ({ handle }) => {
     let data3 = [31, 34, 60, 28, 97, 66, 89, 83, 61, 8, 83, 62]
     let data4 = [20, 15, 33, 57, 11, 83, 26, 97, 15, 10, 37, 55]
     useEffect(() => {
+       
+    }, []);
+    useEffect(() => {
         document.title = "SEDA - Dashboard"
     }, []);
     return (
