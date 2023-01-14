@@ -1,0 +1,60 @@
+body.dark {
+    --bs-body-bg: var(--dark-bg);
+    --bs-body-color: var(--dark-color);
+    --bs-card-bg: var(--dark-bg);
+    --bs-dark-rgb: auto;
+}
+
+/* card */
+body.dark .card {
+    --bs-card-bg: var(--dark-card-bg);
+}
+
+/* list-group */
+body.dark .list-group {
+    --bs-list-group-bg: var(--dark-card-bg);
+}
+
+body.dark .list-group a {
+    color: var(--dark-color) !important;
+}
+
+/* table */
+body.dark table {
+    color: var(--dark-color) !important;
+}
+
+body.dark table tbody tr:nth-of-type(odd)>* {
+    color: var(--dark-color) !important;
+}
+
+body.dark .dataTables_wrapper select {
+    color: var(--dark-color);
+    background-color: var(--dark-bg);
+}
+
+body.dark .dataTables_wrapper input {
+    color: var(--dark-color);
+    background-color: var(--dark-bg);
+}
+
+body.dark .form-control,
+body.dark .form-select {
+    background-color: var(--dark-bg);
+    color: var(--dark-color);
+    border-color: var(--dark-bg);
+}
+
+body.dark .input-group-text {
+    background-color: var(--dark-bg-2);
+    color: var(--dark-color);
+    border-color: var(--dark-bg);
+}
+
+body.dark input#from[type='datetime-local'] {
+    background-color: var(--dark-bg-2);
+}
+
+body.dark .fullscreen-enabled {
+    background-color: var(--dark-bg);
+}

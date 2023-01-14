@@ -119,6 +119,11 @@ const Header = ({ handle, isDark, setIsDark }) => {
         })
     }
 
+    let darkHandler = () => {
+        setIsDark(!isDark)
+        localStorage.setItem("isDark", !isDark)
+    }
+
 
 
     let background = '/images/bg-3.jpg'
@@ -215,7 +220,7 @@ const Header = ({ handle, isDark, setIsDark }) => {
                             </div>
                         </div>
 
-                        <div className='ms-3 fs-5' onClick={() => setIsDark(!isDark)} style={{cursor: 'pointer', userSelect:'none'}}>
+                        <div className='ms-3 fs-5' onClick={darkHandler} style={{ cursor: 'pointer', userSelect: 'none' }}>
                             {
                                 !!isDark ? <BsMoonFill /> : <BsFillSunFill />
                             }

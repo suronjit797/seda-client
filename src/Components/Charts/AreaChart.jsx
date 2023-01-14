@@ -4,7 +4,6 @@ import { ThemeContext } from '../../App.js'
 
 const AreaChart = ({ name, title, data, from, to }) => {
     let { isDark } = useContext(ThemeContext)
-    console.log(isDark)
     var date = new Date();
     from = new Date(from)
     to = new Date(to)
@@ -49,15 +48,7 @@ const AreaChart = ({ name, title, data, from, to }) => {
                 stops: [0, 100]
             }
         },
-        theme: !isDark ? {
-            mode: 'light',
-            palette: 'palette9',
-            // monochrome: {
-            //     enabled: true,
-            //     shadeTo: 'light',
-            //     shadeIntensity: 0.65
-            // },
-        } : {mode: 'dark',},
+        theme: isDark ? { mode: 'dark' } : { mode: 'light', },
     }
     return (
         <div>

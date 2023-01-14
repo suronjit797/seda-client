@@ -37,7 +37,7 @@ a:hover {
 }
 
 .fullscreen-enabled {
-  background-color: #fff !important;
+  background-color: #fff;
 }
 
 .vh60 {
@@ -112,63 +112,6 @@ img {
   max-width: 100% !important;
 }
 
-svg{
+svg {
   background-color: transparent !important;
 }
-
-:root{
-  --dark-bg: #13232c;
-  --dark-color: #c3cdd3;
-  --dark-card-bd: #0e1c26;
-}
-
-body.dark {
-  --bs-body-bg: var(--dark-bg);
-  --bs-body-color: var(--dark-color);
-  --bs-card-cap-bg: var(--dark-bg);
-  --bs-dark-rgb: auto;
-}
-
-/* card */
-body.dark .card{
-  --bs-card-bg: var(--dark-card-bd);
-}
-
-/* list-group */
-body.dark .list-group{
-  --bs-list-group-bg: var(--dark-card-bd);
-}
-body.dark .list-group a{
-  color:  var(--dark-color) !important;
-}
-
-/* table */
-body.dark table{
-  color: var(--dark-color) !important;
-}
-body.dark table tbody tr:nth-of-type(odd)>*{
-  color: var(--dark-color) !important;
-}
-
-body.dark .dataTables_wrapper select{
-  color: var(--dark-color);
-  background-color: var(--dark-bg);
-}
-body.dark .dataTables_wrapper input{
-  color: var(--dark-color);
-  background-color: var(--dark-bg);
-}
-
-/* 
-body {
-  margin: 0;
-  font-family: var(--bs-body-font-family);
-  font-size: var(--bs-body-font-size);
-  font-weight: var(--bs-body-font-weight);
-  line-height: var(--bs-body-line-height);
-  color: var(--bs-body-color);
-  text-align: var(--bs-body-text-align);
-  background-color: var(--bs-body-bg);
-  -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: transparent;
-} */
