@@ -10,7 +10,7 @@ import PieChart from '../../Components/Charts/PieChart';
 import moment from 'moment'
 
 const Dashboard = memo(({ handle }) => {
-    let month = new Date().getMonth()
+    // let month = new Date().getMonth()
     const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
     const endOfMonth = moment().endOf('month').format('YYYY-MM-DD');
     const startOfDay = moment().startOf('day').format('YYYY-MM-DD');
@@ -23,8 +23,8 @@ const Dashboard = memo(({ handle }) => {
     // state
     const [showFilter, setShowFilter] = useState(false);
     const [showFilterData, setShowFilterData] = useState(false);
-    const [from, setFrom] = useState();
-    const [to, setTo] = useState();
+    const [from, setFrom] = useState(template?.graphs?.graph1?.from || startOfMonth);
+    const [to, setTo] = useState(template?.graphs?.graph1?.to || endOfMonth);
 
     // counter
     const [counter1, setCounter1] = useState({})
@@ -62,9 +62,9 @@ const Dashboard = memo(({ handle }) => {
             if (response.data.length > 0) {
                 setPieChartData(response.data)
                 setShowFilter(false)
-                setShowFilterData(false)
             }
         }
+        setShowFilterData(false)
     }
 
     useEffect(() => {
@@ -151,7 +151,6 @@ const Dashboard = memo(({ handle }) => {
     let min = deviceData.length ? Math.min(...deviceData.map(data => data[1])) : 0
     let max = deviceData.length ? Math.max(...deviceData.map(data => data[1])) : 0
     let average = allNumber.length > 0 ? (allNumber.reduce((a, b) => Number(a) + Number(b))) / allNumber.length : 0
-
 
 
     return (

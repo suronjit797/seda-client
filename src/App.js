@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import './darkMode.css'
 import Header from './Components/Layout/Header';
 import Navbar from './Components/Layout/Navbar';
 import Dashboard from './Pages/Dashboard/Dashboard';
@@ -81,7 +82,7 @@ export const ThemeContext = createContext({})
 
 function App() {
   // const sessionAge = 10 * 60 * 60 * 1000 //10 minute
-  const [isDark, setIsDark] = useState(true)
+  const [isDark, setIsDark] = useState(JSON.parse(localStorage.getItem('isDark')) || false)
 
 
   useEffect(() => {
