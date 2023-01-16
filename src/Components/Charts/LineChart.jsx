@@ -36,10 +36,10 @@ const LineChart = ({ type, title, name, data, from, to, zoom }) => {
             },
         },
         xaxis: {
-            type: 'datetime',
-            min: new Date(from).getTime() || new Date(date.getFullYear(), date.getMonth(), 1).getTime(),
-            max: new Date(to).getTime() || new Date(date.getFullYear(), date.getMonth() + 1, 0).getTime(),
-            tickAmount: 6,
+            type: 'month',
+            // min: new Date(from).getTime() || new Date(date.getFullYear(), date.getMonth(), 1).getTime(),
+            // max: new Date(to).getTime() || new Date(date.getFullYear(), date.getMonth() + 1, 0).getTime(),
+            // tickAmount: 6,
         },
         tooltip: {
             x: {

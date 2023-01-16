@@ -49,7 +49,7 @@ const Dashboard = memo(({ handle }) => {
 
     // graph 2
     const g2 = async (deviceId, parameter, from, to) => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/byParameter/${deviceId}/${parameter}/${from}/${to}`, { withCredentials: true })
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/chart/monthlyKWH/${deviceId}/${parameter}/${from}/${to}`, { withCredentials: true })
         if (response) {
             setGraph2(response.data)
         }
@@ -85,7 +85,7 @@ const Dashboard = memo(({ handle }) => {
         }
         const counter2 = {
             formulaName: template?.counter[1].formula || 'CO2 Emission',
-            deviceId: currentDevice._id,
+            deviceId: currentDevice?._id,
             from: template?.counter[1].from || startOfDay,
             to: template?.counter[1].to || endOfDay
         }
@@ -102,8 +102,7 @@ const Dashboard = memo(({ handle }) => {
             to: template?.counter[3]?.to || endOfMonth
         }
 
-        if (!!currentDevice._id) {
-            getPieData()
+        if (!!currentDevice?._id) {
             getCounter(counter1, setCounter1)
             getCounter(counter2, setCounter2)
             getCounter(counter3, setCounter3)
@@ -114,14 +113,14 @@ const Dashboard = memo(({ handle }) => {
     }, [currentDevice, showFilterData])
 
     useEffect(() => {
-        if (currentDevice) {
+        if (currentDevice?._id) {
             getDeviceData(currentDevice._id,
                 template?.graphs?.graph1?.yAxis || 'KWH',
                 from || template?.graphs?.graph1?.from || startOfMonth,
                 to || template?.graphs?.graph1?.to || endOfMonth
             )
 
-            g2(currentDevice._id,
+            g2(currentDevice?._id,
                 template?.graphs?.graph2?.yAxis || 'KWH',
                 from || template?.graphs?.graph2?.from || startOfMonth,
                 to || template?.graphs?.graph2?.to || endOfMonth
@@ -130,9 +129,17 @@ const Dashboard = memo(({ handle }) => {
             let pieData = {
                 from: from || template?.graphs?.pieChart?.from || startOfMonth,
                 to: to || template?.graphs?.pieChart?.to || endOfMonth,
-                queryDevice: template?.graphs?.pieChart?.device
+                queryDevice: template?.graphs?.pieChart?.device,
+                deviceId: currentDevice._id,
             }
             getPieData(pieData)
+        } else {
+            setDeviceData([])
+            setGraph2([])
+            setPieChartData([{
+                value: 1,
+                name: "No data to show"
+            }])
         }
 
         // eslint-disable-next-line

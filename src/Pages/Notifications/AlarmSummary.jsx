@@ -37,43 +37,43 @@ const AlarmSummary = () => {
         },
         {
             name: 'Alarm Name',
-            cell: (row) => <div>{row.name}</div>,
+            cell: (row) => <div>{row?.name}</div>,
             selector: row => (row),
         },
         {
             name: 'Device Name',
-            selector: row => (row.device.name),
+            selector: row => (row?.device?.name),
         },
         {
             name: 'Device Type',
-            selector: row => (row.device.deviceType.name),
+            selector: row => (row?.device?.deviceType?.name),
         },
         {
             name: 'Site Name',
-            cell: row => <>{row.site.name}</>,
-            selector: row => (row.site),
+            cell: row => <>{row?.site?.name}</>,
+            selector: row => (row?.site),
         },
         {
             name: 'Installer',
-            cell: row => <>{row.site.installer.name}</>,
-            selector: row => (row.site),
+            cell: row => <>{row?.site?.installer?.name}</>,
+            selector: row => (row?.site),
         },
         {
             name: 'Site Admin',
-            cell: row => <>{row.site.admin.name}</>,
-            selector: row => (row.site),
+            cell: row => <>{row?.site?.admin?.name}</>,
+            selector: row => (row?.site),
         },
         {
             name: 'Date Alarm Created',
-            selector: row => (moment(row.device.createdAt).format("DD/MM/YYYY")),
+            selector: row => (moment(row?.device?.createdAt).format("DD/MM/YYYY")),
             grow: 2
         },
         {
             name: 'Action',
             cell: row => <div>
-                <Link to={`/alarm-view/` + row._id} className='btn btn-success me-1'><FiEye title="View" /></Link>
-                <Link to={`/edit-alarm/` + row._id} className='btn btn-info me-1'><FiEdit title="Edit" /></Link>
-                <button className='btn btn-danger' onClick={() => deleteAlarm(row._id)}><FiTrash title="Delete" /></button>
+            <Link to={`/alarm-view/` + row?._id} className='btn btn-success me-1'><FiEye title="View" /></Link>
+            <Link to={`/edit-alarm/` + row?._id} className='btn btn-info me-1'><FiEdit title="Edit" /></Link>
+            <button className='btn btn-danger' onClick={() => deleteAlarm(row?._id)}><FiTrash title="Delete" /></button>
             </div>,
             grow: 2,
             center: 'yes'

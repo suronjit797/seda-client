@@ -82,17 +82,19 @@ export const ThemeContext = createContext({})
 
 function App() {
   // const sessionAge = 10 * 60 * 60 * 1000 //10 minute
-  const [isDark, setIsDark] = useState(JSON.parse(localStorage.getItem('isDark')) || false)
+  let d = JSON.parse(localStorage.getItem('isDark')) 
+  const [isDark, setIsDark] = useState(!!d || false)
 
 
   useEffect(() => {
+    setIsDark(!!d || false)
     if (isDark) {
       document.body.classList.add('dark')
     } else {
       document.body.classList.remove('dark')
     }
 
-  }, [isDark])
+  }, [isDark, d])
 
 
   const isLogged = useSelector((state) => state.user?.isLogged);

@@ -42,28 +42,28 @@ const SelectedDashboardSettings1 = memo((props) => {
     // data 2
     let [counter, setCounter] = useState([
         {
-            name: userDetails?.dashboardSetting?.dashboard1?.counter[0]?.name || '',
+            name: userDetails?.dashboardSetting?.dashboard1?.counter[0]?.name || 'Today Consumption',
             formula: userDetails?.dashboardSetting?.dashboard1?.counter[0]?.formula || '',
             isToday: userDetails?.dashboardSetting?.dashboard1?.counter[0]?.isToday || false,
             from: userDetails?.dashboardSetting?.dashboard1?.counter[0]?.from || '',
             to: userDetails?.dashboardSetting?.dashboard1?.counter[0]?.to || ''
         },
         {
-            name: userDetails?.dashboardSetting?.dashboard1?.counter[1]?.name || '',
+            name: userDetails?.dashboardSetting?.dashboard1?.counter[1]?.name || 'Today CO2 emissions',
             formula: userDetails?.dashboardSetting?.dashboard1?.counter[1]?.formula || '',
             isToday: userDetails?.dashboardSetting?.dashboard1?.counter[1]?.isToday || false,
             from: userDetails?.dashboardSetting?.dashboard1?.counter[1]?.from || '',
             to: userDetails?.dashboardSetting?.dashboard1?.counter[1]?.to || ''
         },
         {
-            name: userDetails?.dashboardSetting?.dashboard1?.counter[2]?.name || '',
+            name: userDetails?.dashboardSetting?.dashboard1?.counter[2]?.name || 'Consumption this month',
             formula: userDetails?.dashboardSetting?.dashboard1?.counter[2]?.formula || '',
             isToday: userDetails?.dashboardSetting?.dashboard1?.counter[2]?.isToday || false,
             from: userDetails?.dashboardSetting?.dashboard1?.counter[2]?.from || '',
             to: userDetails?.dashboardSetting?.dashboard1?.counter[2]?.to || ''
         },
         {
-            name: userDetails?.dashboardSetting?.dashboard1?.counter[3]?.name || '',
+            name: userDetails?.dashboardSetting?.dashboard1?.counter[3]?.name || 'This month CO2 emissions',
             formula: userDetails?.dashboardSetting?.dashboard1?.counter[3]?.formula || '',
             isToday: userDetails?.dashboardSetting?.dashboard1?.counter[3]?.isToday || false,
             from: userDetails?.dashboardSetting?.dashboard1?.counter[3]?.from || '',
@@ -112,22 +112,30 @@ const SelectedDashboardSettings1 = memo((props) => {
             .then(response => {
                 if (response.data.length > 0) {
                     setPieKey(response.data)
-                }
-            })
-            .catch(error => console.log(error))
-
-        // get parameters
-        axios.get(`${process.env.REACT_APP_API_URL}/device/device-parameters/${currentDevice._id}`, { withCredentials: true })
-            .then(response => {
-                setIsLoading(false)
-                if (response.data.length > 0) {
-                    setParameters(response.data)
+                    setIsLoading(false)
                 }
             })
             .catch(error => {
-                setIsLoading(false)
                 console.log(error)
+                setIsLoading(false)
             })
+
+        // get parameters
+        if (currentDevice?._id) {
+            axios.get(`${process.env.REACT_APP_API_URL}/device/device-parameters/${currentDevice._id}`, { withCredentials: true })
+                .then(response => {
+                    setIsLoading(false)
+                    if (response.data.length > 0) {
+                        setParameters(response.data)
+                    }
+                })
+                .catch(error => {
+                    setIsLoading(false)
+                    console.log(error)
+                })
+        }
+
+
 
 
 
